@@ -240,7 +240,7 @@
             <div id="addedObjectsList"></div>
             <button type="button" id="addMoreBtn" onclick="addAnotherObject()">Lägg till fler objekt</button>
             <button type="submit" id="submitBtn">Skicka alla objekt</button>
-            <button type="button" id="cancelBtn">Avbryt</button>
+            <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
         </form>
     </div>
 
@@ -266,8 +266,7 @@
         var centerMarker = document.getElementById('centerMarker');
         var centerMarkerContainer = document.getElementById('centerMarkerContainer');
         var confirmButton = document.getElementById('confirmButton');
-
-        var addedObjects = [];
+        var lastMarker = null;
 
         function selectType(type, iconSrc) {
             document.getElementById('categoryInput').value = type;
@@ -301,7 +300,12 @@
                     iconAnchor: [15, 15], // Ankaret placerar ikonen så att den centreras korrekt
                 });
 
-                L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+                // Ta bort tidigare marker om den finns
+                if (lastMarker) {
+                    map.removeLayer(lastMarker);
+                }
+
+                lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
 
                 // Dölj den fasta ikonen och bekräftelseknappen
                 centerMarkerContainer.style.display = 'none';
@@ -311,6 +315,18 @@
             } else {
                 console.error("latitudeInput eller longitudeInput kunde inte hittas.");
             }
+        }
+
+        function cancelAndRemove() {
+            // Ta bort den senaste markören om den finns
+            if (lastMarker) {
+                map.removeLayer(lastMarker);
+                lastMarker = null;
+            }
+
+            // Stäng formuläret och visa startmeddelandet igen
+            closeInputForm();
+            document.getElementById('startMessage').style.display = 'block';
         }
 
         function addAnotherObject() {
@@ -375,10 +391,6 @@
             }).catch(error => {
                 alert('Ett nätverksfel uppstod: ' + error.message);
             });
-        };
-
-        document.getElementById('cancelBtn').onclick = function() {
-            closeInputForm();
         };
 
         function openInputForm() {
