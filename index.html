@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jaktkartan - Lägg till objekt</title>
+    <title>Objektskartan - Lägg till objekt</title>
     <style>
         body, html {
             height: 100%;
@@ -116,12 +116,16 @@
             z-index: 5000;
             pointer-events: none;
             display: none;
+            width: 100px;
+            height: 100px;
         }
         #centerMarkerContainer .crosshair {
             position: absolute;
-            width: 40px;
-            height: 40px;
-            background: none;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
         }
         #centerMarkerContainer .crosshair::before, #centerMarkerContainer .crosshair::after {
             content: '';
@@ -143,7 +147,7 @@
             transform: translateY(-50%);
         }
         #centerMarkerContainer img {
-            width: 30px; /* Gör ikonen mindre */
+            width: 30px; /* Storlek på ikonen */
             height: 30px;
             position: absolute;
             top: 50%;
@@ -179,8 +183,8 @@
 
     <!-- Startruta -->
     <div id="startMessage">
-        <h3>Välkommen till Jaktkartan</h3>
-        <p>Välj vad du vill lägga till på kartan genom att klicka på ett alternativ nedan:</p>
+        <h3>Välkommen till Objektskartan!</h3>
+        <p>Föreslå förändringar på Jaktkartan eller annonsera hos oss!</p>
         <div id="typeSelection">
             <div class="option" onclick="selectType('Dagkort', 'bilder/jaktkort_ikon.png')">
                 <img src="bilder/jaktkort_ikon.png" alt="Dagkort">
@@ -208,7 +212,7 @@
     </div>
 
     <!-- Bekräftelseknapp -->
-    <button id="confirmButton" onclick="confirmPosition()">OK</button>
+    <button id="confirmButton" onclick="confirmPosition()">Placera</button>
 
     <!-- Inmatningsformulär -->
     <div id="inputForm">
