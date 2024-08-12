@@ -108,12 +108,27 @@
             width: 60px;
             margin-bottom: 5px;
         }
-        .floating-icon {
-            position: absolute;
+        #centerMarker {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5000;
             pointer-events: none;
-            width: 40px;
-            height: 40px;
-            z-index: 10000;
+            display: none;
+        }
+        #confirmButton {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 5001;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
             display: none;
         }
     </style>
@@ -153,6 +168,12 @@
         </div>
     </div>
 
+    <!-- Ikon som fixeras i mitten av skärmen -->
+    <img id="centerMarker" src="" alt="Markeringsikon">
+
+    <!-- Bekräftelseknapp -->
+    <button id="confirmButton" onclick="confirmPosition()">OK</button>
+
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
@@ -167,9 +188,6 @@
             <button type="button" id="cancelBtn">Avbryt</button>
         </form>
     </div>
-
-    <!-- Flytande ikon -->
-    <img id="floatingIcon" class="floating-icon" src="" alt="Ikon">
 
     <!-- Tackmeddelande -->
     <div id="thankYouMessage">
@@ -190,42 +208,44 @@
         }).addTo(map);
 
         var currentLat, currentLng;
-        var floatingIcon = document.getElementById('floatingIcon');
+        var centerMarker = document.getElementById('centerMarker');
+        var confirmButton = document.getElementById('confirmButton');
 
         function selectType(type, iconSrc) {
             document.getElementById('categoryInput').value = type;
             document.getElementById('formTitle').innerText = 'Lägg till ' + type;
             document.getElementById('startMessage').style.display = 'none';
 
-            // Visa och uppdatera den flytande ikonen
-            floatingIcon.src = iconSrc;
-            floatingIcon.style.display = 'block';
-
-            // Flytta ikonen med muspekaren
-            document.addEventListener('mousemove', moveIcon);
+            // Visa den fasta ikonen i mitten av skärmen och bekräftelseknappen
+            centerMarker.src = iconSrc;
+            centerMarker.style.display = 'block';
+            confirmButton.style.display = 'block';
         }
 
-        function moveIcon(e) {
-            // Beräkna positionen så att ikonen centreras vid muspekaren
-            const iconWidth = floatingIcon.offsetWidth / 2;
-            const iconHeight = floatingIcon.offsetHeight / 2;
-            
-            floatingIcon.style.left = (e.pageX - iconWidth) + 'px';
-            floatingIcon.style.top = (e.pageY - iconHeight) + 'px';
-        }
+        function confirmPosition() {
+            // Hämta den aktuella mittpunkten på kartan
+            var center = map.getCenter();
+            currentLat = center.lat;
+            currentLng = center.lng;
 
-        map.on('click', function(e) {
-            currentLat = e.latlng.lat;
-            currentLng = e.latlng.lng;
             document.getElementById('latitudeInput').value = currentLat;
             document.getElementById('longitudeInput').value = currentLng;
 
-            // Stoppa musens rörelse och dölja ikonen
-            document.removeEventListener('mousemove', moveIcon);
-            floatingIcon.style.display = 'none';
+            // Lägg till markören på kartan med den valda ikonen
+            var icon = L.icon({
+                iconUrl: centerMarker.src,
+                iconSize: [40, 40], // Storlek på ikonen
+                iconAnchor: [20, 40], // Ankaret placerar ikonen så att dess spets pekar på den valda platsen
+            });
+
+            L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+
+            // Dölj den fasta ikonen och bekräftelseknappen
+            centerMarker.style.display = 'none';
+            confirmButton.style.display = 'none';
 
             openInputForm();
-        });
+        }
 
         document.getElementById('suggestionForm').onsubmit = function(event) {
             event.preventDefault(); // Hindra standardformulärinlämning
@@ -236,14 +256,10 @@
             var info = document.getElementById('infoInput').value;
 
             if (name) {
-                var marker = L.marker([currentLat, currentLng]).addTo(map);
-
                 var objectList = document.getElementById("objectList");
                 var li = document.createElement("li");
                 li.innerHTML = category + ": " + name + " - " + currentLat + ", " + currentLng + " - " + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL");
                 objectList.appendChild(li);
-
-                marker.bindPopup("<b>" + category + ": " + name + "</b><br>" + currentLat + ", " + currentLng + "<br>" + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL") + "<br>" + info).openPopup();
 
                 // Skicka formuläret med Formspree
                 var formData = new FormData(document.getElementById('suggestionForm'));
