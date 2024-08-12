@@ -18,6 +18,7 @@
             top: 0;
             left: 0;
             z-index: 1;
+            display: none; /* Dölj kartan tills användaren har valt ett alternativ */
         }
         #infoPanel {
             position: absolute;
@@ -110,6 +111,14 @@
             text-align: center;
             margin-bottom: 20px;
         }
+        #typeSelection .option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #typeSelection .option img {
+            margin-bottom: 5px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
@@ -124,12 +133,27 @@
     </div>
 
     <!-- Typval -->
-    <div id="typeSelection">
-        <h3>Vad vill du lägga till?</h3>
-        <img src="bilder/jaktkort_ikon.png" alt="Dagkort" onclick="selectType('Dagkort')">
-        <img src="bilder/jaktskyttebanor_ikon.png" alt="Jaktskyttebana" onclick="selectType('Jaktskyttebana')">
-        <img src="bilder/kurser_ikon.png" alt="Kurser" onclick="selectType('Kurs')">
-        <img src="bilder/massa_ikon.png" alt="Mässa" onclick="selectType('Mässa')">
+    <div id="startMessage">
+        <h3>Vad vill du lägga till på kartan?</h3>
+        <div id="typeSelection">
+            <div class="option" onclick="selectType('Dagkort')">
+                <img src="bilder/jaktkort_ikon.png" alt="Dagkort">
+                <span>Dagkort för jakt</span>
+            </div>
+            <div class="option" onclick="selectType('Jaktskyttebana')">
+                <img src="bilder/jaktskyttebanor_ikon.png" alt="Jaktskyttebana">
+                <span>Jaktskyttebana</span>
+            </div>
+            <div class="option" onclick="selectType('Kurs')">
+                <img src="bilder/kurser_ikon.png" alt="Kurser">
+                <span>Kurs</span>
+            </div>
+            <div class="option" onclick="selectType('Mässa')">
+                <img src="bilder/massa_ikon.png" alt="Mässa">
+                <span>Mässa</span>
+            </div>
+        </div>
+        <button onclick="closeStartMessage()">Avbryt</button>
     </div>
 
     <!-- Inmatningsformulär -->
@@ -155,14 +179,6 @@
         <button onclick="goToJaktkartan()">Till Jaktkartan.se</button>
     </div>
 
-    <!-- Startruta -->
-    <div id="startMessage">
-        <img src="Laddning_logga.png" alt="Jaktkartan.se Logga">
-        <h3>Jaktkartans förslag-tjänst!</h3>
-        <p>Klicka på en kategori för att börja lägga till ett objekt. Fyll i detaljerna i formuläret som visas, och tryck på "Skicka" för att skicka in din information.</p>
-        <button onclick="closeStartMessage()">Fortsätt</button>
-    </div>
-
     <script>
         var map = L.map('map', {
             scrollWheelZoom: true,
@@ -175,6 +191,13 @@
 
         var currentLat, currentLng;
 
+        function selectType(type) {
+            document.getElementById('categoryInput').value = type;
+            document.getElementById('formTitle').innerText = 'Lägg till ' + type;
+            document.getElementById('startMessage').style.display = 'none';
+            document.getElementById('map').style.display = 'block';  // Visa kartan
+        }
+
         map.on('click', function(e) {
             currentLat = e.latlng.lat;
             currentLng = e.latlng.lng;
@@ -182,13 +205,6 @@
             document.getElementById('longitudeInput').value = currentLng;
             openInputForm();
         });
-
-        function selectType(type) {
-            document.getElementById('categoryInput').value = type;
-            document.getElementById('formTitle').innerText = 'Lägg till ' + type;
-            document.getElementById('typeSelection').style.display = 'none';
-            document.getElementById('inputForm').style.display = 'block';
-        }
 
         document.getElementById('suggestionForm').onsubmit = function(event) {
             event.preventDefault(); // Hindra standardformulärinlämning
@@ -239,7 +255,6 @@
 
         function closeInputForm() {
             document.getElementById('inputForm').style.display = 'none';
-            document.getElementById('typeSelection').style.display = 'block';
             document.getElementById('categoryInput').value = '';
             document.getElementById('nameInput').value = '';
             document.getElementById('urlInput').value = '';
@@ -256,7 +271,8 @@
 
         function addNewSuggestion() {
             closeThankYouMessage();
-            document.getElementById('typeSelection').style.display = 'block';
+            document.getElementById('map').style.display = 'none';  // Dölj kartan igen
+            document.getElementById('startMessage').style.display = 'block';  // Visa typvalet igen
         }
 
         function goToJaktkartan() {
@@ -265,7 +281,6 @@
 
         function closeStartMessage() {
             document.getElementById('startMessage').style.display = 'none';
-            document.getElementById('typeSelection').style.display = 'block';
         }
 
         window.onload = function() {
