@@ -206,8 +206,12 @@
         }
 
         function moveIcon(e) {
-            floatingIcon.style.left = e.pageX + 'px';
-            floatingIcon.style.top = e.pageY + 'px';
+            // Beräkna positionen så att ikonen centreras vid muspekaren
+            const iconWidth = floatingIcon.offsetWidth / 2;
+            const iconHeight = floatingIcon.offsetHeight / 2;
+            
+            floatingIcon.style.left = (e.pageX - iconWidth) + 'px';
+            floatingIcon.style.top = (e.pageY - iconHeight) + 'px';
         }
 
         map.on('click', function(e) {
