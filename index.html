@@ -3,96 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jaktkartan - Lägg till Jaktskyttebana</title>
+    <title>Jaktkartan - Lägg till Jaktskyttebana, Mässa, Dagkort, Kurs</title>
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        #map {
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-        #infoPanel {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 300px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            z-index: 1000;
-            max-height: calc(100% - 20px);
-            overflow-y: auto;
-        }
-        #infoPanel h3 {
-            margin-top: 0;
-        }
-        #objectList {
-            list-style-type: none;
-            padding: 0;
-        }
-        #objectList li {
-            margin: 5px 0;
-        }
-        #inputForm, #thankYouMessage, #startMessage {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border: 2px solid #444;
-            padding: 20px;
-            z-index: 1000;
-            width: 300px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-        }
-        #inputForm h3, #thankYouMessage h3, #startMessage h3 {
-            margin-top: 0;
-        }
-        #inputForm input, #inputForm textarea {
-            width: 100%;
-            margin: 5px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #inputForm button, #thankYouMessage button, #startMessage button {
-            margin-top: 10px;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #submitBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        #cancelBtn {
-            background-color: #f44336;
-            color: white;
-        }
-        #thankYouMessage a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        #startMessage {
-            background-color: rgba(255, 255, 255, 0.9);
-        }
-        #startMessage img {
-            width: 100px;
-            display: block;
-            margin: 0 auto 20px auto;
-        }
+        /* Ditt befintliga CSS-stilark */
+        /* Lägg till nya stilar om nödvändigt */
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
@@ -102,16 +16,22 @@
 
     <!-- Informationspanel -->
     <div id="infoPanel">
-        <h3>Jaktskyttebanor</h3>
+        <h3>Föreslagna objekt</h3>
         <ul id="objectList"></ul>
     </div>
 
     <!-- Inmatningsformulär -->
     <div id="inputForm">
-        <h3>Lägg till Jaktskyttebana</h3>
+        <h3>Lägg till objekt</h3>
         <form id="suggestionForm" action="https://formspree.io/f/xrbzkraj" method="POST">
-            <input type="text" name="name" id="nameInput" placeholder="Namn på Jaktskyttebana" required>
-            <input type="text" name="url" id="urlInput" placeholder="Jaktskyttebanans hemsida/facebook">
+            <select id="categoryInput" name="category" required>
+                <option value="Jaktskyttebana">Jaktskyttebana</option>
+                <option value="Mässa">Mässa</option>
+                <option value="Dagkort">Dagkort för jakt</option>
+                <option value="Kurs">Kurs</option>
+            </select>
+            <input type="text" name="name" id="nameInput" placeholder="Namn på objektet" required>
+            <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
             <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
             <input type="hidden" name="latitude" id="latitudeInput">
             <input type="hidden" name="longitude" id="longitudeInput">
@@ -131,8 +51,8 @@
     <!-- Startruta -->
     <div id="startMessage">
         <img src="Laddning_logga.png" alt="Jaktkartan.se Logga">
-        <h3>Jaktkartans förslagskarta!</h3>
-        <p>Välj objekt som du vill föreslå ska läggas till på Jaktkartan.se.</p>
+        <h3>Jaktkartans förslag-tjänst!</h3>
+        <p>Klicka på kartan för att lägga till ett objekt. Välj kategori, fyll i detaljerna i formuläret som visas, och tryck på "Skicka" för att skicka in din information.</p>
         <button onclick="closeStartMessage()">Fortsätt</button>
     </div>
 
@@ -159,6 +79,7 @@
         document.getElementById('suggestionForm').onsubmit = function(event) {
             event.preventDefault(); // Hindra standardformulärinlämning
 
+            var category = document.getElementById('categoryInput').value;
             var name = document.getElementById('nameInput').value;
             var url = document.getElementById('urlInput').value || "Ingen URL angiven";
             var info = document.getElementById('infoInput').value;
@@ -168,10 +89,10 @@
 
                 var objectList = document.getElementById("objectList");
                 var li = document.createElement("li");
-                li.innerHTML = name + " - " + currentLat + ", " + currentLng + " - " + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL");
+                li.innerHTML = category + ": " + name + " - " + currentLat + ", " + currentLng + " - " + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL");
                 objectList.appendChild(li);
 
-                marker.bindPopup("<b>" + name + "</b><br>" + currentLat + ", " + currentLng + "<br>" + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL") + "<br>" + info).openPopup();
+                marker.bindPopup("<b>" + category + ": " + name + "</b><br>" + currentLat + ", " + currentLng + "<br>" + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL") + "<br>" + info).openPopup();
 
                 // Skicka formuläret med Formspree
                 var formData = new FormData(document.getElementById('suggestionForm'));
@@ -204,6 +125,7 @@
 
         function closeInputForm() {
             document.getElementById('inputForm').style.display = 'none';
+            document.getElementById('categoryInput').value = 'Jaktskyttebana';
             document.getElementById('nameInput').value = '';
             document.getElementById('urlInput').value = '';
             document.getElementById('infoInput').value = '';
