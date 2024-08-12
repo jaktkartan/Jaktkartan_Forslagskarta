@@ -108,6 +108,14 @@
             width: 60px;
             margin-bottom: 5px;
         }
+        .floating-icon {
+            position: absolute;
+            pointer-events: none;
+            width: 40px;
+            height: 40px;
+            z-index: 10000;
+            display: none;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
@@ -126,19 +134,19 @@
         <h3>Välkommen till Jaktkartan</h3>
         <p>Välj vad du vill lägga till på kartan genom att klicka på ett alternativ nedan:</p>
         <div id="typeSelection">
-            <div class="option" onclick="selectType('Dagkort')">
+            <div class="option" onclick="selectType('Dagkort', 'bilder/jaktkort_ikon.png')">
                 <img src="bilder/jaktkort_ikon.png" alt="Dagkort">
                 <span>Dagkort för jakt</span>
             </div>
-            <div class="option" onclick="selectType('Jaktskyttebana')">
+            <div class="option" onclick="selectType('Jaktskyttebana', 'bilder/jaktskyttebanor_ikon.png')">
                 <img src="bilder/jaktskyttebanor_ikon.png" alt="Jaktskyttebana">
                 <span>Jaktskyttebana</span>
             </div>
-            <div class="option" onclick="selectType('Kurs')">
+            <div class="option" onclick="selectType('Kurs', 'bilder/kurser_ikon.png')">
                 <img src="bilder/kurser_ikon.png" alt="Kurser">
                 <span>Kurs</span>
             </div>
-            <div class="option" onclick="selectType('Mässa')">
+            <div class="option" onclick="selectType('Mässa', 'bilder/massa_ikon.png')">
                 <img src="bilder/massa_ikon.png" alt="Mässa">
                 <span>Mässa</span>
             </div>
@@ -160,6 +168,9 @@
         </form>
     </div>
 
+    <!-- Flytande ikon -->
+    <img id="floatingIcon" class="floating-icon" src="" alt="Ikon">
+
     <!-- Tackmeddelande -->
     <div id="thankYouMessage">
         <h3>Tack!</h3>
@@ -179,11 +190,24 @@
         }).addTo(map);
 
         var currentLat, currentLng;
+        var floatingIcon = document.getElementById('floatingIcon');
 
-        function selectType(type) {
+        function selectType(type, iconSrc) {
             document.getElementById('categoryInput').value = type;
             document.getElementById('formTitle').innerText = 'Lägg till ' + type;
             document.getElementById('startMessage').style.display = 'none';
+
+            // Visa och uppdatera den flytande ikonen
+            floatingIcon.src = iconSrc;
+            floatingIcon.style.display = 'block';
+
+            // Flytta ikonen med muspekaren
+            document.addEventListener('mousemove', moveIcon);
+        }
+
+        function moveIcon(e) {
+            floatingIcon.style.left = e.pageX + 'px';
+            floatingIcon.style.top = e.pageY + 'px';
         }
 
         map.on('click', function(e) {
@@ -191,6 +215,11 @@
             currentLng = e.latlng.lng;
             document.getElementById('latitudeInput').value = currentLat;
             document.getElementById('longitudeInput').value = currentLng;
+
+            // Stoppa musens rörelse och dölja ikonen
+            document.removeEventListener('mousemove', moveIcon);
+            floatingIcon.style.display = 'none';
+
             openInputForm();
         });
 
