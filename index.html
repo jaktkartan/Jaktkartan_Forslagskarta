@@ -267,6 +267,7 @@
         var centerMarkerContainer = document.getElementById('centerMarkerContainer');
         var confirmButton = document.getElementById('confirmButton');
         var lastMarker = null;
+        var addedObjects = [];
 
         function selectType(type, iconSrc) {
             document.getElementById('categoryInput').value = type;
@@ -317,18 +318,6 @@
             }
         }
 
-        function cancelAndRemove() {
-            // Ta bort den senaste markören om den finns
-            if (lastMarker) {
-                map.removeLayer(lastMarker);
-                lastMarker = null;
-            }
-
-            // Stäng formuläret och visa startmeddelandet igen
-            closeInputForm();
-            document.getElementById('startMessage').style.display = 'block';
-        }
-
         function addAnotherObject() {
             var category = document.getElementById('categoryInput').value;
             var name = document.getElementById('nameInput').value;
@@ -359,7 +348,24 @@
                 // Återgå till kartan för att lägga till fler objekt
                 closeInputForm();
                 document.getElementById('startMessage').style.display = 'block';
+
+                // Reset för nästa objekt
+                lastMarker = null;
+                centerMarkerContainer.style.display = 'block';
+                confirmButton.style.display = 'block';
             }
+        }
+
+        function cancelAndRemove() {
+            // Ta bort den senaste markören om den finns
+            if (lastMarker) {
+                map.removeLayer(lastMarker);
+                lastMarker = null;
+            }
+
+            // Stäng formuläret och visa startmeddelandet igen
+            closeInputForm();
+            document.getElementById('startMessage').style.display = 'block';
         }
 
         document.getElementById('suggestionForm').onsubmit = function(event) {
