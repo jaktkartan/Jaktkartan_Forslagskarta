@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jaktkartan - Lägg till Jaktskyttebana</title>
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            overflow: hidden;
+        }
+        #map {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        #infoPanel {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 300px;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            padding: 10px;
+            z-index: 1000;
+            max-height: calc(100% - 20px);
+            overflow-y: auto;
+        }
+        #infoPanel h3 {
+            margin-top: 0;
+        }
+        #objectList {
+            list-style-type: none;
+            padding: 0;
+        }
+        #objectList li {
+            margin: 5px 0;
+        }
+        #inputForm, #thankYouMessage, #startMessage {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            border: 2px solid #444;
+            padding: 20px;
+            z-index: 1000;
+            width: 300px;
+            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
+        }
+        #inputForm h3, #thankYouMessage h3, #startMessage h3 {
+            margin-top: 0;
+        }
+        #inputForm input, #inputForm textarea {
+            width: 100%;
+            margin: 5px 0;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        #inputForm button, #thankYouMessage button, #startMessage button {
+            margin-top: 10px;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submitBtn {
+            background-color: #4CAF50;
+            color: white;
+        }
+        #cancelBtn {
+            background-color: #f44336;
+            color: white;
+        }
+        #thankYouMessage a {
+            color: #007BFF;
+            text-decoration: none;
+        }
+        #startMessage {
+            background-color: rgba(255, 255, 255, 0.9);
+        }
+        #startMessage img {
+            width: 100px;
+            display: block;
+            margin: 0 auto 20px auto;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+</head>
+<body>
+    <div id="map"></div>
+
+    <!-- Informationspanel -->
+    <div id="infoPanel">
+        <h3>Jaktskyttebanor</h3>
+        <ul id="objectList"></ul>
+    </div>
+
+    <!-- Inmatningsformulär -->
+    <div id="inputForm">
+        <h3>Lägg till Jaktskyttebana</h3>
+        <form id="suggestionForm" action="https://formspree.io/f/xrbzkraj" method="POST">
+            <input type="text" name="name" id="nameInput" placeholder="Namn på Jaktskyttebana" required>
+            <input type="text" name="url" id="urlInput" placeholder="Jaktskyttebanans hemsida/facebook">
+            <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+            <input type="hidden" name="latitude" id="latitudeInput">
+            <input type="hidden" name="longitude" id="longitudeInput">
+            <button type="submit" id="submitBtn">Skicka</button>
+            <button type="button" id="cancelBtn">Avbryt</button>
+        </form>
+    </div>
+
+    <!-- Tackmeddelande -->
+    <div id="thankYouMessage">
+        <h3>Tack!</h3>
+        <p>Tack för att du vill förbättra <a href="https://www.jaktkartan.se" target="_blank">Jaktkartan.se</a></p>
+        <button onclick="addNewSuggestion()">Lägg till nytt förslag</button>
+        <button onclick="goToJaktkartan()">Till Jaktkartan.se</button>
+    </div>
+
+    <!-- Startruta -->
+    <div id="startMessage">
+        <img src="Laddning_logga.png" alt="Jaktkartan.se Logga">
+        <h3>Jaktkartans förslag-tjänst!</h3>
+        <p>Klicka på kartan för att lägga till en jaktskyttebana. Fyll i detaljerna i formuläret som visas, och tryck på "Skicka" för att skicka in din information.</p>
+        <button onclick="closeStartMessage()">Fortsätt</button>
+    </div>
+
+    <script>
+        var map = L.map('map', {
+            scrollWheelZoom: true,
+            zoomControl: true
+        }).setView([62.0, 15.0], 5);
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var currentLat, currentLng;
+
+        map.on('click', function(e) {
+            currentLat = e.latlng.lat;
+            currentLng = e.latlng.lng;
+            document.getElementById('latitudeInput').value = currentLat;
+            document.getElementById('longitudeInput').value = currentLng;
+            openInputForm();
+        });
+
+        document.getElementById('suggestionForm').onsubmit = function(event) {
+            event.preventDefault(); // Hindra standardformulärinlämning
+
+            var name = document.getElementById('nameInput').value;
+            var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+            var info = document.getElementById('infoInput').value;
+
+            if (name) {
+                var marker = L.marker([currentLat, currentLng]).addTo(map);
+
+                var objectList = document.getElementById("objectList");
+                var li = document.createElement("li");
+                li.innerHTML = name + " - " + currentLat + ", " + currentLng + " - " + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL");
+                objectList.appendChild(li);
+
+                marker.bindPopup("<b>" + name + "</b><br>" + currentLat + ", " + currentLng + "<br>" + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL") + "<br>" + info).openPopup();
+
+                // Skicka formuläret med Formspree
+                var formData = new FormData(document.getElementById('suggestionForm'));
+                fetch(document.getElementById('suggestionForm').action, {
+                    method: "POST",
+                    body: formData,
+                    headers: {
+                        'Accept': 'application/json'
+                    }
+                }).then(response => {
+                    if (response.ok) {
+                        closeInputForm();
+                        showThankYouMessage();
+                    } else {
+                        alert('Något gick fel när formuläret skickades. Försök igen senare.');
+                    }
+                }).catch(error => {
+                    alert('Ett nätverksfel uppstod: ' + error.message);
+                });
+            }
+        };
+
+        document.getElementById('cancelBtn').onclick = function() {
+            closeInputForm();
+        };
+
+        function openInputForm() {
+            document.getElementById('inputForm').style.display = 'block';
+        }
+
+        function closeInputForm() {
+            document.getElementById('inputForm').style.display = 'none';
+            document.getElementById('nameInput').value = '';
+            document.getElementById('urlInput').value = '';
+            document.getElementById('infoInput').value = '';
+        }
+
+        function showThankYouMessage() {
+            document.getElementById('thankYouMessage').style.display = 'block';
+        }
+
+        function closeThankYouMessage() {
+            document.getElementById('thankYouMessage').style.display = 'none';
+        }
+
+        function addNewSuggestion() {
+            closeThankYouMessage();
+            // Vänta på att användaren ska klicka på kartan igen för att lägga till en ny punkt
+        }
+
+        function goToJaktkartan() {
+            window.location.href = 'https://www.jaktkartan.se';
+        }
+
+        function closeStartMessage() {
+            document.getElementById('startMessage').style.display = 'none';
+        }
+
+        window.onload = function() {
+            document.getElementById('startMessage').style.display = 'block';
+        };
+    </script>
+</body>
+</html>
