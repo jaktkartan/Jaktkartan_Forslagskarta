@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jaktkartan - Lägg till Jaktskyttebana, Mässa, Dagkort, Kurs</title>
-<style>
+    <title>Jaktkartan - Lägg till objekt</title>
+    <style>
         body, html {
             height: 100%;
             margin: 0;
@@ -42,7 +42,7 @@
         #objectList li {
             margin: 5px 0;
         }
-        #inputForm, #thankYouMessage, #startMessage {
+        #inputForm, #thankYouMessage, #startMessage, #typeSelection {
             display: none;
             position: fixed;
             top: 50%;
@@ -93,6 +93,23 @@
             display: block;
             margin: 0 auto 20px auto;
         }
+        #typeSelection img {
+            width: 60px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        #typeSelection {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        #typeSelection h3 {
+            width: 100%;
+            text-align: center;
+            margin-bottom: 20px;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
@@ -106,16 +123,20 @@
         <ul id="objectList"></ul>
     </div>
 
+    <!-- Typval -->
+    <div id="typeSelection">
+        <h3>Vad vill du lägga till?</h3>
+        <img src="bilder/jaktkort_ikon.png" alt="Dagkort" onclick="selectType('Dagkort')">
+        <img src="bilder/jaktskyttebanor_ikon.png" alt="Jaktskyttebana" onclick="selectType('Jaktskyttebana')">
+        <img src="bilder/kurser_ikon.png" alt="Kurser" onclick="selectType('Kurs')">
+        <img src="bilder/massa_ikon.png" alt="Mässa" onclick="selectType('Mässa')">
+    </div>
+
     <!-- Inmatningsformulär -->
     <div id="inputForm">
-        <h3>Lägg till objekt</h3>
+        <h3 id="formTitle">Lägg till objekt</h3>
         <form id="suggestionForm" action="https://formspree.io/f/xrbzkraj" method="POST">
-            <select id="categoryInput" name="category" required>
-                <option value="Jaktskyttebana">Jaktskyttebana</option>
-                <option value="Mässa">Mässa</option>
-                <option value="Dagkort">Dagkort för jakt</option>
-                <option value="Kurs">Kurs</option>
-            </select>
+            <input type="hidden" name="category" id="categoryInput">
             <input type="text" name="name" id="nameInput" placeholder="Namn på objektet" required>
             <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
             <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
@@ -138,7 +159,7 @@
     <div id="startMessage">
         <img src="Laddning_logga.png" alt="Jaktkartan.se Logga">
         <h3>Jaktkartans förslag-tjänst!</h3>
-        <p>Klicka på kartan för att lägga till ett objekt. Välj kategori, fyll i detaljerna i formuläret som visas, och tryck på "Skicka" för att skicka in din information.</p>
+        <p>Klicka på en kategori för att börja lägga till ett objekt. Fyll i detaljerna i formuläret som visas, och tryck på "Skicka" för att skicka in din information.</p>
         <button onclick="closeStartMessage()">Fortsätt</button>
     </div>
 
@@ -161,6 +182,13 @@
             document.getElementById('longitudeInput').value = currentLng;
             openInputForm();
         });
+
+        function selectType(type) {
+            document.getElementById('categoryInput').value = type;
+            document.getElementById('formTitle').innerText = 'Lägg till ' + type;
+            document.getElementById('typeSelection').style.display = 'none';
+            document.getElementById('inputForm').style.display = 'block';
+        }
 
         document.getElementById('suggestionForm').onsubmit = function(event) {
             event.preventDefault(); // Hindra standardformulärinlämning
@@ -211,7 +239,8 @@
 
         function closeInputForm() {
             document.getElementById('inputForm').style.display = 'none';
-            document.getElementById('categoryInput').value = 'Jaktskyttebana';
+            document.getElementById('typeSelection').style.display = 'block';
+            document.getElementById('categoryInput').value = '';
             document.getElementById('nameInput').value = '';
             document.getElementById('urlInput').value = '';
             document.getElementById('infoInput').value = '';
@@ -227,7 +256,7 @@
 
         function addNewSuggestion() {
             closeThankYouMessage();
-            // Vänta på att användaren ska klicka på kartan igen för att lägga till en ny punkt
+            document.getElementById('typeSelection').style.display = 'block';
         }
 
         function goToJaktkartan() {
@@ -236,6 +265,7 @@
 
         function closeStartMessage() {
             document.getElementById('startMessage').style.display = 'none';
+            document.getElementById('typeSelection').style.display = 'block';
         }
 
         window.onload = function() {
