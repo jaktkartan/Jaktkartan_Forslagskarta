@@ -232,6 +232,8 @@
         <h3 id="formTitle">Lägg till objekt</h3>
         <form id="suggestionForm" method="POST">
             <input type="hidden" name="category" id="categoryInput">
+            <input type="hidden" name="latitude" id="latitudeInput">
+            <input type="hidden" name="longitude" id="longitudeInput">
             <input type="text" name="name" id="nameInput" placeholder="Namn på objektet" required>
             <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
             <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
@@ -284,23 +286,31 @@
             currentLat = center.lat;
             currentLng = center.lng;
 
-            document.getElementById('latitudeInput').value = currentLat;
-            document.getElementById('longitudeInput').value = currentLng;
+            var latitudeInput = document.getElementById('latitudeInput');
+            var longitudeInput = document.getElementById('longitudeInput');
 
-            // Lägg till markören på kartan med den valda ikonen
-            var icon = L.icon({
-                iconUrl: centerMarker.src,
-                iconSize: [30, 30], // Storlek på ikonen
-                iconAnchor: [15, 15], // Ankaret placerar ikonen så att den centreras korrekt
-            });
+            // Kontrollera att elementen finns
+            if (latitudeInput && longitudeInput) {
+                latitudeInput.value = currentLat;
+                longitudeInput.value = currentLng;
 
-            L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+                // Lägg till markören på kartan med den valda ikonen
+                var icon = L.icon({
+                    iconUrl: centerMarker.src,
+                    iconSize: [30, 30], // Storlek på ikonen
+                    iconAnchor: [15, 15], // Ankaret placerar ikonen så att den centreras korrekt
+                });
 
-            // Dölj den fasta ikonen och bekräftelseknappen
-            centerMarkerContainer.style.display = 'none';
-            confirmButton.style.display = 'none';
+                L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
 
-            openInputForm();
+                // Dölj den fasta ikonen och bekräftelseknappen
+                centerMarkerContainer.style.display = 'none';
+                confirmButton.style.display = 'none';
+
+                openInputForm();
+            } else {
+                console.error("latitudeInput eller longitudeInput kunde inte hittas.");
+            }
         }
 
         function addAnotherObject() {
