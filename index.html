@@ -77,6 +77,10 @@
             background-color: #4CAF50;
             color: white;
         }
+        #addMoreBtn {
+            background-color: #2196F3;
+            color: white;
+        }
         #cancelBtn {
             background-color: #f44336;
             color: white;
@@ -168,6 +172,15 @@
             cursor: pointer;
             display: none;
         }
+        #addedObjectsList {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 150px;
+            overflow-y: auto;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
@@ -217,14 +230,14 @@
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
-        <form id="suggestionForm" action="https://formspree.io/f/xrbzkraj" method="POST">
+        <form id="suggestionForm" method="POST">
             <input type="hidden" name="category" id="categoryInput">
             <input type="text" name="name" id="nameInput" placeholder="Namn på objektet" required>
             <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
             <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
-            <input type="hidden" name="latitude" id="latitudeInput">
-            <input type="hidden" name="longitude" id="longitudeInput">
-            <button type="submit" id="submitBtn">Skicka</button>
+            <div id="addedObjectsList"></div>
+            <button type="button" id="addMoreBtn" onclick="addAnotherObject()">Lägg till fler objekt</button>
+            <button type="submit" id="submitBtn">Skicka alla objekt</button>
             <button type="button" id="cancelBtn">Avbryt</button>
         </form>
     </div>
@@ -251,6 +264,8 @@
         var centerMarker = document.getElementById('centerMarker');
         var centerMarkerContainer = document.getElementById('centerMarkerContainer');
         var confirmButton = document.getElementById('confirmButton');
+
+        var addedObjects = [];
 
         function selectType(type, iconSrc) {
             document.getElementById('categoryInput').value = type;
@@ -288,39 +303,68 @@
             openInputForm();
         }
 
-        document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault(); // Hindra standardformulärinlämning
-
+        function addAnotherObject() {
             var category = document.getElementById('categoryInput').value;
             var name = document.getElementById('nameInput').value;
             var url = document.getElementById('urlInput').value || "Ingen URL angiven";
             var info = document.getElementById('infoInput').value;
 
             if (name) {
-                var objectList = document.getElementById("objectList");
-                var li = document.createElement("li");
-                li.innerHTML = category + ": " + name + " - " + currentLat + ", " + currentLng + " - " + (url ? "<a href='" + url + "' target='_blank'>" + url + "</a>" : "Ingen URL");
-                objectList.appendChild(li);
-
-                // Skicka formuläret med Formspree
-                var formData = new FormData(document.getElementById('suggestionForm'));
-                fetch(document.getElementById('suggestionForm').action, {
-                    method: "POST",
-                    body: formData,
-                    headers: {
-                        'Accept': 'application/json'
-                    }
-                }).then(response => {
-                    if (response.ok) {
-                        closeInputForm();
-                        showThankYouMessage();
-                    } else {
-                        alert('Något gick fel när formuläret skickades. Försök igen senare.');
-                    }
-                }).catch(error => {
-                    alert('Ett nätverksfel uppstod: ' + error.message);
+                addedObjects.push({
+                    category: category,
+                    name: name,
+                    url: url,
+                    info: info,
+                    lat: currentLat,
+                    lng: currentLng
                 });
+
+                // Lägg till objektet i listan i formuläret
+                var addedObjectsList = document.getElementById('addedObjectsList');
+                var listItem = document.createElement('div');
+                listItem.innerHTML = `<strong>${category}</strong>: ${name} - ${currentLat}, ${currentLng}`;
+                addedObjectsList.appendChild(listItem);
+
+                // Rensa formuläret för nästa inmatning
+                document.getElementById('nameInput').value = '';
+                document.getElementById('urlInput').value = '';
+                document.getElementById('infoInput').value = '';
+
+                // Återgå till kartan för att lägga till fler objekt
+                closeInputForm();
+                document.getElementById('startMessage').style.display = 'block';
             }
+        }
+
+        document.getElementById('suggestionForm').onsubmit = function(event) {
+            event.preventDefault(); // Hindra standardformulärinlämning
+
+            // Skapa en sammanställning av alla objekt
+            var summary = addedObjects.map(function(obj, index) {
+                return `Objekt ${index + 1}:\nKategori: ${obj.category}\nNamn: ${obj.name}\nPlats: ${obj.lat}, ${obj.lng}\nURL: ${obj.url}\nInfo: ${obj.info}\n\n`;
+            }).join('');
+
+            // Skapa ett dolt textfält för att skicka sammanställningen via Formspree
+            var formData = new FormData();
+            formData.append("objects_summary", summary);
+
+            // Skicka formuläret med Formspree
+            fetch("https://formspree.io/f/xrbzkraj", {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    closeInputForm();
+                    showThankYouMessage();
+                } else {
+                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
+                }
+            }).catch(error => {
+                alert('Ett nätverksfel uppstod: ' + error.message);
+            });
         };
 
         document.getElementById('cancelBtn').onclick = function() {
@@ -333,10 +377,6 @@
 
         function closeInputForm() {
             document.getElementById('inputForm').style.display = 'none';
-            document.getElementById('categoryInput').value = '';
-            document.getElementById('nameInput').value = '';
-            document.getElementById('urlInput').value = '';
-            document.getElementById('infoInput').value = '';
         }
 
         function showThankYouMessage() {
