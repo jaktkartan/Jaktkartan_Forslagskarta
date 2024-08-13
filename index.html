@@ -5,182 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objektskartan - Lägg till objekt</title>
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        #map {
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-        #infoPanel {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 300px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            z-index: 1000;
-            max-height: calc(100% - 20px);
-            overflow-y: auto;
-        }
-        #infoPanel h3 {
-            margin-top: 0;
-        }
-        #objectList {
-            list-style-type: none;
-            padding: 0;
-        }
-        #objectList li {
-            margin: 5px 0;
-        }
-        #inputForm, #thankYouMessage, #startMessage {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border: 2px solid #444;
-            padding: 20px;
-            z-index: 1000;
-            width: 300px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-        }
-        #inputForm h3, #thankYouMessage h3, #startMessage h3 {
-            margin-top: 0;
-        }
-        #inputForm input, #inputForm textarea {
-            width: 100%;
-            margin: 5px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #inputForm button, #thankYouMessage button, #startMessage button {
-            margin-top: 10px;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #submitBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        #addMoreBtn {
-            background-color: #2196F3;
-            color: white;
-        }
-        #cancelBtn {
-            background-color: #f44336;
-            color: white;
-        }
-        #thankYouMessage a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        #startMessage {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        #typeSelection {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        #typeSelection .option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-        }
-        #typeSelection .option img {
-            width: 60px;
-            margin-bottom: 5px;
-        }
-        #centerMarkerContainer {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 5000;
-            pointer-events: none;
-            display: none;
-            width: 100px;
-            height: 100px;
-        }
-        #centerMarkerContainer .crosshair {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            transform: translate(-50%, -50%);
-        }
-        #centerMarkerContainer .crosshair::before, #centerMarkerContainer .crosshair::after {
-            content: '';
-            position: absolute;
-            background-color: #000;
-        }
-        #centerMarkerContainer .crosshair::before {
-            width: 1px;
-            height: 100%;
-            left: 50%;
-            top: 0;
-            transform: translateX(-50%);
-        }
-        #centerMarkerContainer .crosshair::after {
-            height: 1px;
-            width: 100%;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-        }
-        #centerMarkerContainer img {
-            width: 30px; /* Storlek på ikonen */
-            height: 30px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        #confirmButton {
-            position: fixed;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5001;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
-        #addedObjectsList {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
+        /* Din CSS för stilar och layout */
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
@@ -230,7 +55,7 @@
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
-        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbwpjnwU_yHGrE29tUeMr2C2QZxwfadMWHldJM9PYpk9QY5q8V-0wMDOVqDZvy7nqmfX/exec" method="POST">
+        <form id="suggestionForm" action="https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec" method="POST">
             <input type="hidden" name="category" id="categoryInput">
             <input type="hidden" name="latitude" id="latitudeInput">
             <input type="hidden" name="longitude" id="longitudeInput">
@@ -253,177 +78,159 @@
     </div>
 
     <script>
-    var map = L.map('map', {
-        scrollWheelZoom: true,
-        zoomControl: true
-    }).setView([62.0, 15.0], 5);
+        var map = L.map('map', {
+            scrollWheelZoom: true,
+            zoomControl: true
+        }).setView([62.0, 15.0], 5);
 
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
 
-    var currentLat, currentLng;
-    var centerMarker = document.getElementById('centerMarker');
-    var centerMarkerContainer = document.getElementById('centerMarkerContainer');
-    var confirmButton = document.getElementById('confirmButton');
-    var lastMarker = null;
-    var addedObjects = [];
+        var currentLat, currentLng;
+        var centerMarker = document.getElementById('centerMarker');
+        var centerMarkerContainer = document.getElementById('centerMarkerContainer');
+        var confirmButton = document.getElementById('confirmButton');
+        var lastMarker = null;
+        var addedObjects = [];
 
-    function selectType(type, iconSrc) {
-        document.getElementById('categoryInput').value = type; // Uppdatera categoryInput
-        console.log("Selected type:", type); // Logga vald typ för verifiering
-        document.getElementById('formTitle').innerText = 'Lägg till ' + type;
-        document.getElementById('startMessage').style.display = 'none';
+        function selectType(type, iconSrc) {
+            document.getElementById('categoryInput').value = type;  // Se till att category skickas korrekt
+            document.getElementById('formTitle').innerText = 'Lägg till ' + type;
+            document.getElementById('startMessage').style.display = 'none';
 
-        // Visa den fasta ikonen med sikte i mitten av skärmen och bekräftelseknappen
-        centerMarker.src = iconSrc;
-        centerMarkerContainer.style.display = 'block';
-        confirmButton.style.display = 'block';
-    }
-
-    function confirmPosition() {
-    var center = map.getCenter();
-    currentLat = center.lat.toString();  // Konvertera till sträng
-    currentLng = center.lng.toString();  // Konvertera till sträng
-
-    var latitudeInput = document.getElementById('latitudeInput');
-    var longitudeInput = document.getElementById('longitudeInput');
-
-    if (latitudeInput && longitudeInput) {
-        latitudeInput.value = currentLat;
-        longitudeInput.value = currentLng;
-
-        var icon = L.icon({
-            iconUrl: centerMarker.src,
-            iconSize: [30, 30],
-            iconAnchor: [15, 15],
-        });
-
-        if (lastMarker) {
-            map.removeLayer(lastMarker);
-        }
-
-        lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
-
-        centerMarkerContainer.style.display = 'none';
-        confirmButton.style.display = 'none';
-
-        openInputForm();
-    } else {
-        console.error("latitudeInput eller longitudeInput kunde inte hittas.");
-    }
-}
-
-
-
-    function addAnotherObject() {
-        var category = document.getElementById('categoryInput').value;
-        var name = document.getElementById('nameInput').value;
-        var url = document.getElementById('urlInput').value || "Ingen URL angiven";
-        var info = document.getElementById('infoInput').value;
-
-        if (name) {
-            addedObjects.push({
-                category: category,
-                name: name,
-                url: url,
-                info: info,
-                lat: currentLat,
-                lng: currentLng
-            });
-
-            var addedObjectsList = document.getElementById('addedObjectsList');
-            var listItem = document.createElement('div');
-            listItem.innerHTML = `<strong>${category}</strong>: ${name} - ${currentLat}, ${currentLng}`;
-            addedObjectsList.appendChild(listItem);
-
-            document.getElementById('nameInput').value = '';
-            document.getElementById('urlInput').value = '';
-            document.getElementById('infoInput').value = '';
-
-            closeInputForm();
-            lastMarker = null;
+            // Visa den fasta ikonen med sikte i mitten av skärmen och bekräftelseknappen
+            centerMarker.src = iconSrc;
             centerMarkerContainer.style.display = 'block';
             confirmButton.style.display = 'block';
         }
-    }
 
-    function cancelAndRemove() {
-        if (lastMarker) {
-            map.removeLayer(lastMarker);
-            lastMarker = null;
+        function confirmPosition() {
+            var center = map.getCenter();
+            currentLat = center.lat.toString();  // Konvertera till sträng
+            currentLng = center.lng.toString();  // Konvertera till sträng
+
+            var latitudeInput = document.getElementById('latitudeInput');
+            var longitudeInput = document.getElementById('longitudeInput');
+
+            if (latitudeInput && longitudeInput) {
+                latitudeInput.value = currentLat;
+                longitudeInput.value = currentLng;
+
+                var icon = L.icon({
+                    iconUrl: centerMarker.src,
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15],
+                });
+
+                if (lastMarker) {
+                    map.removeLayer(lastMarker);
+                }
+
+                lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+
+                centerMarkerContainer.style.display = 'none';
+                confirmButton.style.display = 'none';
+
+                openInputForm();
+            } else {
+                console.error("latitudeInput eller longitudeInput kunde inte hittas.");
+            }
         }
 
-        closeInputForm();
-        document.getElementById('startMessage').style.display = 'block';
-    }
+        function addAnotherObject() {
+            var category = document.getElementById('categoryInput').value;
+            var name = document.getElementById('nameInput').value;
+            var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+            var info = document.getElementById('infoInput').value;
 
-    document.getElementById('suggestionForm').onsubmit = function(event) {
-        event.preventDefault();
+            if (name) {
+                addedObjects.push({
+                    category: category,
+                    name: name,
+                    url: url,
+                    info: info,
+                    lat: currentLat,
+                    lng: currentLng
+                });
 
-        var category = document.getElementById('categoryInput').value;
-        var name = document.getElementById('nameInput').value;
-        var url = document.getElementById('urlInput').value;
-        var info = document.getElementById('infoInput').value;
-        var lat = document.getElementById('latitudeInput').value;
-        var lng = document.getElementById('longitudeInput').value;
+                var addedObjectsList = document.getElementById('addedObjectsList');
+                var listItem = document.createElement('div');
+                listItem.innerHTML = `<strong>${category}</strong>: ${name} - ${currentLat}, ${currentLng}`;
+                addedObjectsList.appendChild(listItem);
 
-        console.log("Submitting with data:", { category, name, url, info, lat, lng });
+                document.getElementById('nameInput').value = '';
+                document.getElementById('urlInput').value = '';
+                document.getElementById('infoInput').value = '';
 
-        var formData = new FormData();
-        formData.append('category', category);
-        formData.append('name', name);
-        formData.append('url', url);
-        formData.append('info', info);
-        formData.append('latitude', lat);
-        formData.append('longitude', lng);
-
-        fetch(document.getElementById('suggestionForm').action, {
-            method: "POST",
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        }).then(response => {
-            if (response.ok) {
                 closeInputForm();
-                showThankYouMessage();
-            } else {
-                alert('Något gick fel när formuläret skickades. Försök igen senare.');
+                lastMarker = null;
+                centerMarkerContainer.style.display = 'block';
+                confirmButton.style.display = 'block';
             }
-        }).catch(error => {
-            alert('Ett nätverksfel uppstod: ' + error.message);
-        });
-    };
+        }
 
-    function openInputForm() {
-        document.getElementById('inputForm').style.display = 'block';
-    }
+        function cancelAndRemove() {
+            if (lastMarker) {
+                map.removeLayer(lastMarker);
+                lastMarker = null;
+            }
 
-    function closeInputForm() {
-        document.getElementById('inputForm').style.display = 'none';
-    }
+            closeInputForm();
+            document.getElementById('startMessage').style.display = 'block';
+        }
 
-    function showThankYouMessage() {
-        document.getElementById('thankYouMessage').style.display = 'block';
-    }
+        document.getElementById('suggestionForm').onsubmit = function(event) {
+            event.preventDefault();
 
-    function closeThankYouMessage() {
-        document.getElementById('thankYouMessage').style.display = 'none';
-    }
+            var formData = new FormData(document.getElementById('suggestionForm'));
 
-    function addNewSuggestion() {
-        closeThankYouMessage();
-        document.getElementById('startMessage').style.display = 'block';
-    }
+            fetch(document.getElementById('suggestionForm').action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    closeInputForm();
+                    showThankYouMessage();
+                } else {
+                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
+                }
+            }).catch(error => {
+                alert('Ett nätverksfel uppstod: ' + error.message);
+            });
+        };
 
-    function goToJaktkartan() {
-        window.location.href = 'https://www.jaktkartan.se';
-    }
+        function openInputForm() {
+            document.getElementById('inputForm').style.display = 'block';
+        }
 
-    window.onload = function() {
-        document.getElementById('startMessage').style.display = 'block';
-    };
-</script>
+        function closeInputForm() {
+            document.getElementById('inputForm').style.display = 'none';
+        }
+
+        function showThankYouMessage() {
+            document.getElementById('thankYouMessage').style.display = 'block';
+        }
+
+        function closeThankYouMessage() {
+            document.getElementById('thankYouMessage').style.display = 'none';
+        }
+
+        function addNewSuggestion() {
+            closeThankYouMessage();
+            document.getElementById('startMessage').style.display = 'block';
+        }
+
+        function goToJaktkartan() {
+            window.location.href = 'https://www.jaktkartan.se';
+        }
+
+        window.onload = function() {
+            document.getElementById('startMessage').style.display = 'block';
+        };
+    </script>
 </body>
 </html>
