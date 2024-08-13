@@ -282,37 +282,38 @@
     }
 
     function confirmPosition() {
-        var center = map.getCenter();
-        currentLat = center.lat;
-        currentLng = center.lng;
+    var center = map.getCenter();
+    currentLat = center.lat.toFixed(5);  // Begränsar till 5 decimaler för precision
+    currentLng = center.lng.toFixed(5);  // Begränsar till 5 decimaler för precision
 
-        var latitudeInput = document.getElementById('latitudeInput');
-        var longitudeInput = document.getElementById('longitudeInput');
+    var latitudeInput = document.getElementById('latitudeInput');
+    var longitudeInput = document.getElementById('longitudeInput');
 
-        if (latitudeInput && longitudeInput) {
-            latitudeInput.value = currentLat;
-            longitudeInput.value = currentLng;
+    if (latitudeInput && longitudeInput) {
+        latitudeInput.value = currentLat;
+        longitudeInput.value = currentLng;
 
-            var icon = L.icon({
-                iconUrl: centerMarker.src,
-                iconSize: [30, 30],
-                iconAnchor: [15, 15],
-            });
+        var icon = L.icon({
+            iconUrl: centerMarker.src,
+            iconSize: [30, 30],
+            iconAnchor: [15, 15],
+        });
 
-            if (lastMarker) {
-                map.removeLayer(lastMarker);
-            }
-
-            lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
-
-            centerMarkerContainer.style.display = 'none';
-            confirmButton.style.display = 'none';
-
-            openInputForm();
-        } else {
-            console.error("latitudeInput eller longitudeInput kunde inte hittas.");
+        if (lastMarker) {
+            map.removeLayer(lastMarker);
         }
+
+        lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+
+        centerMarkerContainer.style.display = 'none';
+        confirmButton.style.display = 'none';
+
+        openInputForm();
+    } else {
+        console.error("latitudeInput eller longitudeInput kunde inte hittas.");
     }
+}
+
 
     function addAnotherObject() {
         var category = document.getElementById('categoryInput').value;
