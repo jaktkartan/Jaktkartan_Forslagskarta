@@ -253,191 +253,175 @@
     </div>
 
     <script>
-        var map = L.map('map', {
-            scrollWheelZoom: true,
-            zoomControl: true
-        }).setView([62.0, 15.0], 5);
+    var map = L.map('map', {
+        scrollWheelZoom: true,
+        zoomControl: true
+    }).setView([62.0, 15.0], 5);
 
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        }).addTo(map);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
 
-        var currentLat, currentLng;
-        var centerMarker = document.getElementById('centerMarker');
-        var centerMarkerContainer = document.getElementById('centerMarkerContainer');
-        var confirmButton = document.getElementById('confirmButton');
-        var lastMarker = null;
-        var addedObjects = [];
+    var currentLat, currentLng;
+    var centerMarker = document.getElementById('centerMarker');
+    var centerMarkerContainer = document.getElementById('centerMarkerContainer');
+    var confirmButton = document.getElementById('confirmButton');
+    var lastMarker = null;
+    var addedObjects = [];
 
-        function selectType(type, iconSrc) {
-            document.getElementById('categoryInput').value = type; // Se till att category fylls i
-            document.getElementById('formTitle').innerText = 'Lägg till ' + type;
-            document.getElementById('startMessage').style.display = 'none';
+    function selectType(type, iconSrc) {
+        document.getElementById('categoryInput').value = type; // Uppdatera categoryInput
+        console.log("Selected type:", type); // Logga vald typ för verifiering
+        document.getElementById('formTitle').innerText = 'Lägg till ' + type;
+        document.getElementById('startMessage').style.display = 'none';
 
-            // Visa den fasta ikonen med sikte i mitten av skärmen och bekräftelseknappen
-            centerMarker.src = iconSrc;
+        // Visa den fasta ikonen med sikte i mitten av skärmen och bekräftelseknappen
+        centerMarker.src = iconSrc;
+        centerMarkerContainer.style.display = 'block';
+        confirmButton.style.display = 'block';
+    }
+
+    function confirmPosition() {
+        var center = map.getCenter();
+        currentLat = center.lat;
+        currentLng = center.lng;
+
+        var latitudeInput = document.getElementById('latitudeInput');
+        var longitudeInput = document.getElementById('longitudeInput');
+
+        if (latitudeInput && longitudeInput) {
+            latitudeInput.value = currentLat;
+            longitudeInput.value = currentLng;
+
+            var icon = L.icon({
+                iconUrl: centerMarker.src,
+                iconSize: [30, 30],
+                iconAnchor: [15, 15],
+            });
+
+            if (lastMarker) {
+                map.removeLayer(lastMarker);
+            }
+
+            lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+
+            centerMarkerContainer.style.display = 'none';
+            confirmButton.style.display = 'none';
+
+            openInputForm();
+        } else {
+            console.error("latitudeInput eller longitudeInput kunde inte hittas.");
+        }
+    }
+
+    function addAnotherObject() {
+        var category = document.getElementById('categoryInput').value;
+        var name = document.getElementById('nameInput').value;
+        var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+        var info = document.getElementById('infoInput').value;
+
+        if (name) {
+            addedObjects.push({
+                category: category,
+                name: name,
+                url: url,
+                info: info,
+                lat: currentLat,
+                lng: currentLng
+            });
+
+            var addedObjectsList = document.getElementById('addedObjectsList');
+            var listItem = document.createElement('div');
+            listItem.innerHTML = `<strong>${category}</strong>: ${name} - ${currentLat}, ${currentLng}`;
+            addedObjectsList.appendChild(listItem);
+
+            document.getElementById('nameInput').value = '';
+            document.getElementById('urlInput').value = '';
+            document.getElementById('infoInput').value = '';
+
+            closeInputForm();
+            lastMarker = null;
             centerMarkerContainer.style.display = 'block';
             confirmButton.style.display = 'block';
         }
+    }
 
-        function confirmPosition() {
-            // Hämta den aktuella mittpunkten på kartan
-            var center = map.getCenter();
-            currentLat = center.lat;
-            currentLng = center.lng;
-
-            var latitudeInput = document.getElementById('latitudeInput');
-            var longitudeInput = document.getElementById('longitudeInput');
-
-            // Kontrollera att elementen finns
-            if (latitudeInput && longitudeInput) {
-                latitudeInput.value = currentLat;
-                longitudeInput.value = currentLng;
-
-                // Lägg till markören på kartan med den valda ikonen
-                var icon = L.icon({
-                    iconUrl: centerMarker.src,
-                    iconSize: [30, 30], // Storlek på ikonen
-                    iconAnchor: [15, 15], // Ankaret placerar ikonen så att den centreras korrekt
-                });
-
-                // Ta bort tidigare marker om den finns
-                if (lastMarker) {
-                    map.removeLayer(lastMarker);
-                }
-
-                lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
-
-                // Dölj den fasta ikonen och bekräftelseknappen
-                centerMarkerContainer.style.display = 'none';
-                confirmButton.style.display = 'none';
-
-                openInputForm();
-            } else {
-                console.error("latitudeInput eller longitudeInput kunde inte hittas.");
-            }
+    function cancelAndRemove() {
+        if (lastMarker) {
+            map.removeLayer(lastMarker);
+            lastMarker = null;
         }
 
-        function addAnotherObject() {
-            var category = document.getElementById('categoryInput').value;
-            var name = document.getElementById('nameInput').value;
-            var url = document.getElementById('urlInput').value || "Ingen URL angiven";
-            var info = document.getElementById('infoInput').value;
+        closeInputForm();
+        document.getElementById('startMessage').style.display = 'block';
+    }
 
-            if (name) {
-                addedObjects.push({
-                    category: category,
-                    name: name,
-                    url: url,
-                    info: info,
-                    lat: currentLat,
-                    lng: currentLng
-                });
+    document.getElementById('suggestionForm').onsubmit = function(event) {
+        event.preventDefault();
 
-                // Lägg till objektet i listan i formuläret
-                var addedObjectsList = document.getElementById('addedObjectsList');
-                var listItem = document.createElement('div');
-                listItem.innerHTML = `<strong>${category}</strong>: ${name} - ${currentLat}, ${currentLng}`;
-                addedObjectsList.appendChild(listItem);
+        var category = document.getElementById('categoryInput').value;
+        var name = document.getElementById('nameInput').value;
+        var url = document.getElementById('urlInput').value;
+        var info = document.getElementById('infoInput').value;
+        var lat = document.getElementById('latitudeInput').value;
+        var lng = document.getElementById('longitudeInput').value;
 
-                // Rensa formuläret för nästa inmatning
-                document.getElementById('nameInput').value = '';
-                document.getElementById('urlInput').value = '';
-                document.getElementById('infoInput').value = '';
+        console.log("Submitting with data:", { category, name, url, info, lat, lng });
 
-                // Återgå till kartan för att lägga till fler objekt
+        var formData = new FormData();
+        formData.append('category', category);
+        formData.append('name', name);
+        formData.append('url', url);
+        formData.append('info', info);
+        formData.append('latitude', lat);
+        formData.append('longitude', lng);
+
+        fetch(document.getElementById('suggestionForm').action, {
+            method: "POST",
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        }).then(response => {
+            if (response.ok) {
                 closeInputForm();
-
-                // Förbered kartan för nästa objekt
-                lastMarker = null;
-                centerMarkerContainer.style.display = 'block';
-                confirmButton.style.display = 'block';
+                showThankYouMessage();
+            } else {
+                alert('Något gick fel när formuläret skickades. Försök igen senare.');
             }
-        }
+        }).catch(error => {
+            alert('Ett nätverksfel uppstod: ' + error.message);
+        });
+    };
 
-        function cancelAndRemove() {
-            // Ta bort den senaste markören om den finns
-            if (lastMarker) {
-                map.removeLayer(lastMarker);
-                lastMarker = null;
-            }
+    function openInputForm() {
+        document.getElementById('inputForm').style.display = 'block';
+    }
 
-            // Stäng formuläret och visa startmeddelandet igen
-            closeInputForm();
-            document.getElementById('startMessage').style.display = 'block';
-        }
+    function closeInputForm() {
+        document.getElementById('inputForm').style.display = 'none';
+    }
 
-        document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault(); // Hindra standardformulärinlämning
+    function showThankYouMessage() {
+        document.getElementById('thankYouMessage').style.display = 'block';
+    }
 
-            // Skapa en sammanställning av alla objekt
-            addedObjects.push({
-                category: document.getElementById('categoryInput').value,
-                name: document.getElementById('nameInput').value,
-                url: document.getElementById('urlInput').value,
-                info: document.getElementById('infoInput').value,
-                lat: document.getElementById('latitudeInput').value,
-                lng: document.getElementById('longitudeInput').value
-            });
+    function closeThankYouMessage() {
+        document.getElementById('thankYouMessage').style.display = 'none';
+    }
 
-            var formData = new FormData();
+    function addNewSuggestion() {
+        closeThankYouMessage();
+        document.getElementById('startMessage').style.display = 'block';
+    }
 
-            addedObjects.forEach(function(obj, index) {
-                formData.append('category' + index, obj.category);
-                formData.append('name' + index, obj.name);
-                formData.append('url' + index, obj.url);
-                formData.append('info' + index, obj.info);
-                formData.append('latitude' + index, obj.lat);
-                formData.append('longitude' + index, obj.lng);
-            });
+    function goToJaktkartan() {
+        window.location.href = 'https://www.jaktkartan.se';
+    }
 
-            // Skicka formuläret med Google Apps Script
-            fetch(document.getElementById('suggestionForm').action, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    closeInputForm();
-                    showThankYouMessage();
-                } else {
-                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
-                }
-            }).catch(error => {
-                alert('Ett nätverksfel uppstod: ' + error.message);
-            });
-        };
-
-        function openInputForm() {
-            document.getElementById('inputForm').style.display = 'block';
-        }
-
-        function closeInputForm() {
-            document.getElementById('inputForm').style.display = 'none';
-        }
-
-        function showThankYouMessage() {
-            document.getElementById('thankYouMessage').style.display = 'block';
-        }
-
-        function closeThankYouMessage() {
-            document.getElementById('thankYouMessage').style.display = 'none';
-        }
-
-        function addNewSuggestion() {
-            closeThankYouMessage();
-            document.getElementById('startMessage').style.display = 'block';
-        }
-
-        function goToJaktkartan() {
-            window.location.href = 'https://www.jaktkartan.se';
-        }
-
-        window.onload = function() {
-            document.getElementById('startMessage').style.display = 'block';
-        };
-    </script>
+    window.onload = function() {
+        document.getElementById('startMessage').style.display = 'block';
+    };
+</script>
 </body>
 </html>
