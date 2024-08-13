@@ -283,8 +283,8 @@
 
     function confirmPosition() {
     var center = map.getCenter();
-    currentLat = center.lat.toFixed(5);  // Begränsar till 5 decimaler för precision
-    currentLng = center.lng.toFixed(5);  // Begränsar till 5 decimaler för precision
+    currentLat = center.lat.toString();  // Konvertera till sträng
+    currentLng = center.lng.toString();  // Konvertera till sträng
 
     var latitudeInput = document.getElementById('latitudeInput');
     var longitudeInput = document.getElementById('longitudeInput');
@@ -313,6 +313,7 @@
         console.error("latitudeInput eller longitudeInput kunde inte hittas.");
     }
 }
+
 
 
     function addAnotherObject() {
