@@ -270,7 +270,7 @@
         var addedObjects = [];
 
         function selectType(type, iconSrc) {
-            document.getElementById('categoryInput').value = type;
+            document.getElementById('categoryInput').value = type; // Se till att category fylls i
             document.getElementById('formTitle').innerText = 'Lägg till ' + type;
             document.getElementById('startMessage').style.display = 'none';
 
@@ -367,46 +367,48 @@
             document.getElementById('startMessage').style.display = 'block';
         }
 
-document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault(); // Hindra standardformulärinlämning
+        document.getElementById('suggestionForm').onsubmit = function(event) {
+            event.preventDefault(); // Hindra standardformulärinlämning
 
-    // Logga datan som skickas
-    console.log({
-        category: document.getElementById('categoryInput').value,
-        name: document.getElementById('nameInput').value,
-        url: document.getElementById('urlInput').value,
-        info: document.getElementById('infoInput').value,
-        lat: document.getElementById('latitudeInput').value,
-        lng: document.getElementById('longitudeInput').value
-    });
+            // Skapa en sammanställning av alla objekt
+            addedObjects.push({
+                category: document.getElementById('categoryInput').value,
+                name: document.getElementById('nameInput').value,
+                url: document.getElementById('urlInput').value,
+                info: document.getElementById('infoInput').value,
+                lat: document.getElementById('latitudeInput').value,
+                lng: document.getElementById('longitudeInput').value
+            });
 
-    // Samma kod för att skicka formuläret via fetch
-    var formData = new FormData();
-    formData.append('category', document.getElementById('categoryInput').value);
-    formData.append('name', document.getElementById('nameInput').value);
-    formData.append('url', document.getElementById('urlInput').value);
-    formData.append('info', document.getElementById('infoInput').value);
-    formData.append('latitude', document.getElementById('latitudeInput').value);
-    formData.append('longitude', document.getElementById('longitudeInput').value);
+            var formData = new FormData();
 
-    fetch(document.getElementById('suggestionForm').action, {
-        method: "POST",
-        body: formData,
-        headers: {
-            'Accept': 'application/json'
-        }
-    }).then(response => {
-        if (response.ok) {
-            closeInputForm();
-            showThankYouMessage();
-        } else {
-            alert('Något gick fel när formuläret skickades. Försök igen senare.');
-        }
-    }).catch(error => {
-        alert('Ett nätverksfel uppstod: ' + error.message);
-    });
-};
+            addedObjects.forEach(function(obj, index) {
+                formData.append('category' + index, obj.category);
+                formData.append('name' + index, obj.name);
+                formData.append('url' + index, obj.url);
+                formData.append('info' + index, obj.info);
+                formData.append('latitude' + index, obj.lat);
+                formData.append('longitude' + index, obj.lng);
+            });
 
+            // Skicka formuläret med Google Apps Script
+            fetch(document.getElementById('suggestionForm').action, {
+                method: "POST",
+                body: formData,
+                headers: {
+                    'Accept': 'application/json'
+                }
+            }).then(response => {
+                if (response.ok) {
+                    closeInputForm();
+                    showThankYouMessage();
+                } else {
+                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
+                }
+            }).catch(error => {
+                alert('Ett nätverksfel uppstod: ' + error.message);
+            });
+        };
 
         function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
