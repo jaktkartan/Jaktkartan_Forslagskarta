@@ -230,7 +230,7 @@
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
-        <form id="suggestionForm" method="POST">
+        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbwpjnwU_yHGrE29tUeMr2C2QZxwfadMWHldJM9PYpk9QY5q8V-0wMDOVqDZvy7nqmfX/exec" method="POST">
             <input type="hidden" name="category" id="categoryInput">
             <input type="hidden" name="latitude" id="latitudeInput">
             <input type="hidden" name="longitude" id="longitudeInput">
@@ -371,16 +371,28 @@
             event.preventDefault(); // Hindra standardformulärinlämning
 
             // Skapa en sammanställning av alla objekt
-            var summary = addedObjects.map(function(obj, index) {
-                return `Objekt ${index + 1}:\nKategori: ${obj.category}\nNamn: ${obj.name}\nPlats: ${obj.lat}, ${obj.lng}\nURL: ${obj.url}\nInfo: ${obj.info}\n\n`;
-            }).join('');
+            addedObjects.push({
+                category: document.getElementById('categoryInput').value,
+                name: document.getElementById('nameInput').value,
+                url: document.getElementById('urlInput').value,
+                info: document.getElementById('infoInput').value,
+                lat: document.getElementById('latitudeInput').value,
+                lng: document.getElementById('longitudeInput').value
+            });
 
-            // Skapa ett dolt textfält för att skicka sammanställningen via Formspree
             var formData = new FormData();
-            formData.append("objects_summary", summary);
 
-            // Skicka formuläret med Formspree
-            fetch("https://formspree.io/f/xrbzkraj", {
+            addedObjects.forEach(function(obj, index) {
+                formData.append('category' + index, obj.category);
+                formData.append('name' + index, obj.name);
+                formData.append('url' + index, obj.url);
+                formData.append('info' + index, obj.info);
+                formData.append('latitude' + index, obj.lat);
+                formData.append('longitude' + index, obj.lng);
+            });
+
+            // Skicka formuläret med Google Apps Script
+            fetch(document.getElementById('suggestionForm').action, {
                 method: "POST",
                 body: formData,
                 headers: {
