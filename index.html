@@ -231,12 +231,12 @@
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
     <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbwpjnwU_yHGrE29tUeMr2C2QZxwfadMWHldJM9PYpk9QY5q8V-0wMDOVqDZvy7nqmfX/exec" method="POST">
-    <input type="hidden" name="Typ" id="categoryInput">
-    <input type="text" name="Namn" id="nameInput" placeholder="Namn på objektet" required>
-    <input type="text" name="URL" id="urlInput" placeholder="Objektets hemsida/facebook">
-    <textarea name="info" id="Info" rows="3" placeholder="Övrig information"></textarea>
-    <input type="hidden" name="Latitud" id="latitudeInput">
-    <input type="hidden" name="Longitud" id="longitudeInput">
+    <input type="hidden" name="typ" id="categoryInput">
+    <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
+    <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
+    <textarea name="info" id="info" rows="3" placeholder="Övrig information"></textarea>
+    <input type="hidden" name="latitud" id="latitudeInput">
+    <input type="hidden" name="longitud" id="longitudeInput">
     <div id="addedObjectsList"></div>
     <button type="button" id="addMoreBtn" onclick="addAnotherObject()">Lägg till fler objekt</button>
     <button type="submit" id="submitBtn">Skicka alla objekt</button>
