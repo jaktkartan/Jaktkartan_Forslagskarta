@@ -230,7 +230,7 @@
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
-        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbwpjnwU_yHGrE29tUeMr2C2QZxwfadMWHldJM9PYpk9QY5q8V-0wMDOVqDZvy7nqmfX/exec" method="POST">
+        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbzmn5TIZ0vfIrQ2akHqHpqwnrM5AryeW6Fg99qftnb-jHt7RZCeMnuwvHxnSLk0sL5J/exec" method="POST">
             <input type="hidden" name="typ" id="categoryInput">
             <input type="hidden" name="latitud" id="latitudeInput">
             <input type="hidden" name="longitud" id="longitudeInput">
@@ -353,6 +353,26 @@
             closeInputForm();
             document.getElementById('startMessage').style.display = 'block';
         }
+
+        document.getElementById('suggestionForm').onsubmit = function(event) {
+            event.preventDefault();
+
+            var formData = new FormData(document.getElementById('suggestionForm'));
+
+            fetch(document.getElementById('suggestionForm').action, {
+                method: "POST",
+                body: formData,
+            }).then(response => {
+                if (response.ok) {
+                    closeInputForm();
+                    showThankYouMessage();
+                } else {
+                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
+                }
+            }).catch(error => {
+                alert('Ett nätverksfel uppstod: ' + error.message);
+            });
+        };
 
         function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
