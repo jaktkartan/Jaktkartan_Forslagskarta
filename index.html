@@ -274,6 +274,8 @@
             document.getElementById('formTitle').innerText = 'Lägg till ' + type;
             document.getElementById('startMessage').style.display = 'none';
 
+            console.log("Selected category: " + document.getElementById('categoryInput').value); // Logga vald kategori
+
             // Visa den fasta ikonen med sikte i mitten av skärmen och bekräftelseknappen
             centerMarker.src = iconSrc;
             centerMarkerContainer.style.display = 'block';
@@ -358,7 +360,11 @@
         document.getElementById('suggestionForm').onsubmit = function(event) {
             event.preventDefault();
 
+            // Logga alla formulärvärden
             var formData = new FormData(document.getElementById('suggestionForm'));
+            formData.forEach((value, key) => {
+                console.log(key + ": " + value);
+            });
 
             fetch(document.getElementById('suggestionForm').action, {
                 method: "POST",
