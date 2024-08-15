@@ -357,30 +357,34 @@
         }
 
         document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault();
+    event.preventDefault();
 
-            var formData = new FormData(document.getElementById('suggestionForm'));
-            formData.forEach((value, key) => {
-                console.log(key + ": " + value);
-            });
+    var formData = new FormData(document.getElementById('suggestionForm'));
+    formData.forEach((value, key) => {
+        console.log(key + ": " + value);
+    });
 
-            fetch(document.getElementById('suggestionForm').action, {
-                method: "POST",
-                body: formData,
-                headers: {
-                    'Accept': 'application/json'
-                }
-            }).then(response => {
-                if (response.ok) {
-                    closeInputForm();
-                    showThankYouMessage();
-                } else {
-                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
-                }
-            }).catch(error => {
-                alert('Ett nätverksfel uppstod: ' + error.message);
-            });
-        };
+    console.log('Latitude input value:', document.getElementById('latitudeInput').value);
+    console.log('Longitude input value:', document.getElementById('longitudeInput').value);
+
+    fetch(document.getElementById('suggestionForm').action, {
+        method: "POST",
+        body: formData,
+        headers: {
+            'Accept': 'application/json'
+        }
+    }).then(response => {
+        if (response.ok) {
+            closeInputForm();
+            showThankYouMessage();
+        } else {
+            alert('Något gick fel när formuläret skickades. Försök igen senare.');
+        }
+    }).catch(error => {
+        alert('Ett nätverksfel uppstod: ' + error.message);
+    });
+};
+
 
         function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
