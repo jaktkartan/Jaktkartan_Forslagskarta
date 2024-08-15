@@ -237,7 +237,10 @@
             <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
             <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
             <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+            <div id="addedObjectsList"></div>
+            <button type="button" id="addMoreBtn" onclick="addAnotherObject()">Lägg till fler objekt</button>
             <button type="submit" id="submitBtn">Skicka alla objekt</button>
+            <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
         </form>
     </div>
 
@@ -264,11 +267,13 @@
         var centerMarkerContainer = document.getElementById('centerMarkerContainer');
         var confirmButton = document.getElementById('confirmButton');
         var lastMarker = null;
+        var addedObjects = [];
 
         function selectType(type, iconSrc) {
             document.getElementById('categoryInput').value = type;
             document.getElementById('formTitle').innerText = 'Lägg till ' + type;
             document.getElementById('startMessage').style.display = 'none';
+
             centerMarker.src = iconSrc;
             centerMarkerContainer.style.display = 'block';
             confirmButton.style.display = 'block';
@@ -279,26 +284,104 @@
             currentLat = center.lat.toString();
             currentLng = center.lng.toString();
 
-            document.getElementById('latitudeInput').value = currentLat;
-            document.getElementById('longitudeInput').value = currentLng;
+            var latitudeInput = document.getElementById('latitudeInput');
+            var longitudeInput = document.getElementById('longitudeInput');
 
-            var icon = L.icon({
-                iconUrl: centerMarker.src,
-                iconSize: [30, 30],
-                iconAnchor: [15, 15],
-            });
+            if (latitudeInput && longitudeInput) {
+                latitudeInput.value = currentLat;
+                longitudeInput.value = currentLng;
 
+                var icon = L.icon({
+                    iconUrl: centerMarker.src,
+                    iconSize: [30, 30],
+                    iconAnchor: [15, 15],
+                });
+
+                if (lastMarker) {
+                    map.removeLayer(lastMarker);
+                }
+
+                lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+
+                centerMarkerContainer.style.display = 'none';
+                confirmButton.style.display = 'none';
+
+                openInputForm();
+            } else {
+                console.error("latitudeInput eller longitudeInput kunde inte hittas.");
+            }
+        }
+
+        function addAnotherObject() {
+            var category = document.getElementById('categoryInput').value;
+            var name = document.getElementById('nameInput').value;
+            var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+            var info = document.getElementById('infoInput').value;
+
+            if (name) {
+                addedObjects.push({
+                    category: category,
+                    name: name,
+                    url: url,
+                    info: info,
+                    lat: currentLat,
+                    lng: currentLng
+                });
+
+                var addedObjectsList = document.getElementById('addedObjectsList');
+                var listItem = document.createElement('div');
+                listItem.innerHTML = `<strong>${category}</strong>: ${name} - ${currentLat}, ${currentLng}`;
+                addedObjectsList.appendChild(listItem);
+
+                document.getElementById('nameInput').value = '';
+                document.getElementById('urlInput').value = '';
+                document.getElementById('infoInput').value = '';
+
+                closeInputForm();
+                lastMarker = null;
+                centerMarkerContainer.style.display = 'block';
+                confirmButton.style.display = 'block';
+            }
+        }
+
+        function cancelAndRemove() {
             if (lastMarker) {
                 map.removeLayer(lastMarker);
+                lastMarker = null;
             }
 
-            lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+            closeInputForm();
+            document.getElementById('startMessage').style.display = 'block';
+        }
 
-            centerMarkerContainer.style.display = 'none';
-            confirmButton.style.display = 'none';
-
+        function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
         }
+
+        function closeInputForm() {
+            document.getElementById('inputForm').style.display = 'none';
+        }
+
+        function showThankYouMessage() {
+            document.getElementById('thankYouMessage').style.display = 'block';
+        }
+
+        function closeThankYouMessage() {
+            document.getElementById('thankYouMessage').style.display = 'none';
+        }
+
+        function addNewSuggestion() {
+            closeThankYouMessage();
+            document.getElementById('startMessage').style.display = 'block';
+        }
+
+        function goToJaktkartan() {
+            window.location.href = 'https://www.jaktkartan.se';
+        }
+
+        window.onload = function() {
+            document.getElementById('startMessage').style.display = 'block';
+        };
     </script>
 </body>
 </html>
