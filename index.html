@@ -359,16 +359,20 @@
    document.getElementById('suggestionForm').onsubmit = function(event) {
     event.preventDefault();
 
-    var formData = new FormData(document.getElementById('suggestionForm'));
-    formData.forEach((value, key) => {
-        console.log(key + ": " + value);
-    });
+    var formData = {
+        typ: document.getElementById('categoryInput').value,
+        latitud: document.getElementById('latitudeInput').value,
+        longitud: document.getElementById('longitudeInput').value,
+        namn: document.getElementById('nameInput').value,
+        url: document.getElementById('urlInput').value,
+        info: document.getElementById('infoInput').value
+    };
 
     fetch(document.getElementById('suggestionForm').action, {
         method: "POST",
-        body: formData,
+        body: JSON.stringify(formData),
         headers: {
-            'Accept': 'application/json'
+            'Content-Type': 'application/json'
         }
     }).then(response => {
         if (response.ok) {
@@ -381,6 +385,7 @@
         alert('Ett nätverksfel uppstod: ' + error.message);
     });
 };
+
 
 
 
