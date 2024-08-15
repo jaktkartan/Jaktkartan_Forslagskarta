@@ -5,182 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objektskartan - Lägg till objekt</title>
     <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            overflow: hidden;
-        }
-        #map {
-            height: 100%;
-            width: 100%;
-            position: absolute;
-            top: 0;
-            left: 0;
-            z-index: 1;
-        }
-        #infoPanel {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 300px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            z-index: 1000;
-            max-height: calc(100% - 20px);
-            overflow-y: auto;
-        }
-        #infoPanel h3 {
-            margin-top: 0;
-        }
-        #objectList {
-            list-style-type: none;
-            padding: 0;
-        }
-        #objectList li {
-            margin: 5px 0;
-        }
-        #inputForm, #thankYouMessage, #startMessage {
-            display: none;
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            background-color: white;
-            border: 2px solid #444;
-            padding: 20px;
-            z-index: 1000;
-            width: 300px;
-            box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-        }
-        #inputForm h3, #thankYouMessage h3, #startMessage h3 {
-            margin-top: 0;
-        }
-        #inputForm input, #inputForm textarea {
-            width: 100%;
-            margin: 5px 0;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        #inputForm button, #thankYouMessage button, #startMessage button {
-            margin-top: 10px;
-            padding: 10px;
-            width: 100%;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        #submitBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        #addMoreBtn {
-            background-color: #2196F3;
-            color: white;
-        }
-        #cancelBtn {
-            background-color: #f44336;
-            color: white;
-        }
-        #thankYouMessage a {
-            color: #007BFF;
-            text-decoration: none;
-        }
-        #startMessage {
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 20px;
-            border-radius: 10px;
-        }
-        #typeSelection {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 20px;
-            margin-top: 20px;
-        }
-        #typeSelection .option {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            cursor: pointer;
-        }
-        #typeSelection .option img {
-            width: 60px;
-            margin-bottom: 5px;
-        }
-        #centerMarkerContainer {
-            position: fixed;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 5000;
-            pointer-events: none;
-            display: none;
-            width: 100px;
-            height: 100px;
-        }
-        #centerMarkerContainer .crosshair {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            width: 100%;
-            height: 100%;
-            transform: translate(-50%, -50%);
-        }
-        #centerMarkerContainer .crosshair::before, #centerMarkerContainer .crosshair::after {
-            content: '';
-            position: absolute;
-            background-color: #000;
-        }
-        #centerMarkerContainer .crosshair::before {
-            width: 1px;
-            height: 100%;
-            left: 50%;
-            top: 0;
-            transform: translateX(-50%);
-        }
-        #centerMarkerContainer .crosshair::after {
-            height: 1px;
-            width: 100%;
-            top: 50%;
-            left: 0;
-            transform: translateY(-50%);
-        }
-        #centerMarkerContainer img {
-            width: 30px; /* Storlek på ikonen */
-            height: 30px;
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-        }
-        #confirmButton {
-            position: fixed;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5001;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
-        #addedObjectsList {
-            margin-top: 10px;
-            padding: 10px;
-            background-color: #f9f9f9;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            max-height: 150px;
-            overflow-y: auto;
-        }
+        /* Din ursprungliga CSS-kod */
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
@@ -230,18 +55,18 @@
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
-    <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbwpjnwU_yHGrE29tUeMr2C2QZxwfadMWHldJM9PYpk9QY5q8V-0wMDOVqDZvy7nqmfX/exec" method="POST">
-    <input type="hidden" name="typ" id="categoryInput">
-    <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
-    <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
-    <textarea name="info" id="info" rows="3" placeholder="Övrig information"></textarea>
-    <input type="hidden" name="latitud" id="latitudeInput">
-    <input type="hidden" name="longitud" id="longitudeInput">
-    <div id="addedObjectsList"></div>
-    <button type="button" id="addMoreBtn" onclick="addAnotherObject()">Lägg till fler objekt</button>
-    <button type="submit" id="submitBtn">Skicka alla objekt</button>
-    <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
-</form>
+        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbwpjnwU_yHGrE29tUeMr2C2QZxwfadMWHldJM9PYpk9QY5q8V-0wMDOVqDZvy7nqmfX/exec" method="POST">
+            <input type="hidden" name="typ" id="categoryInput">
+            <input type="hidden" name="latitud" id="latitudeInput">
+            <input type="hidden" name="longitud" id="longitudeInput">
+            <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
+            <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
+            <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+            <div id="addedObjectsList"></div>
+            <button type="button" id="addMoreBtn" onclick="addAnotherObject()">Lägg till fler objekt</button>
+            <button type="submit" id="submitBtn">Skicka alla objekt</button>
+            <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
+        </form>
     </div>
 
     <!-- Tackmeddelande -->
@@ -270,13 +95,12 @@
         var addedObjects = [];
 
         function selectType(type, iconSrc) {
-            document.getElementById('categoryInput').value = type;  // Se till att "typ" skickas korrekt
+            document.getElementById('categoryInput').value = type;
             document.getElementById('formTitle').innerText = 'Lägg till ' + type;
             document.getElementById('startMessage').style.display = 'none';
 
-            console.log("Selected category: " + document.getElementById('categoryInput').value); // Logga vald kategori
+            console.log("Selected category: " + document.getElementById('categoryInput').value);
 
-            // Visa den fasta ikonen med sikte i mitten av skärmen och bekräftelseknappen
             centerMarker.src = iconSrc;
             centerMarkerContainer.style.display = 'block';
             confirmButton.style.display = 'block';
@@ -284,8 +108,8 @@
 
         function confirmPosition() {
             var center = map.getCenter();
-            currentLat = center.lat.toString();  // Konvertera till sträng
-            currentLng = center.lng.toString();  // Konvertera till sträng
+            currentLat = center.lat.toString();
+            currentLng = center.lng.toString();
 
             var latitudeInput = document.getElementById('latitudeInput');
             var longitudeInput = document.getElementById('longitudeInput');
@@ -360,7 +184,6 @@
         document.getElementById('suggestionForm').onsubmit = function(event) {
             event.preventDefault();
 
-            // Logga alla formulärvärden
             var formData = new FormData(document.getElementById('suggestionForm'));
             formData.forEach((value, key) => {
                 console.log(key + ": " + value);
