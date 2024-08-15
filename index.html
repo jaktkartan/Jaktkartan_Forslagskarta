@@ -231,10 +231,10 @@
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
         <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbwpjnwU_yHGrE29tUeMr2C2QZxwfadMWHldJM9PYpk9QY5q8V-0wMDOVqDZvy7nqmfX/exec" method="POST">
-            <input type="hidden" name="category" id="categoryInput">
-            <input type="hidden" name="latitude" id="latitudeInput">
-            <input type="hidden" name="longitude" id="longitudeInput">
-            <input type="text" name="name" id="nameInput" placeholder="Namn på objektet" required>
+            <input type="hidden" name="typ" id="categoryInput">
+            <input type="hidden" name="latitud" id="latitudeInput">
+            <input type="hidden" name="longitud" id="longitudeInput">
+            <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
             <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
             <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
             <div id="addedObjectsList"></div>
@@ -270,7 +270,7 @@
         var addedObjects = [];
 
         function selectType(type, iconSrc) {
-            document.getElementById('categoryInput').value = type;  // Se till att category skickas korrekt
+            document.getElementById('categoryInput').value = type;  // Se till att "typ" skickas korrekt
             document.getElementById('formTitle').innerText = 'Lägg till ' + type;
             document.getElementById('startMessage').style.display = 'none';
 
