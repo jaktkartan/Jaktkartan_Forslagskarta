@@ -101,13 +101,37 @@ function addObject() {
 
         // Uppdatera knappen "Skicka objekt"
         updateSubmitButton();
+
+        // Dölj och kollapsa inmatningsformuläret
+        collapseInputForm();
     } else {
         alert("Vänligen fyll i namnet på objektet.");
         return;
     }
-    
-    // Rensa inmatningsfälten för att förbereda för nästa objekt
-    clearFormData();
+}
+
+function collapseInputForm() {
+    // Dölj formuläret
+    document.getElementById('inputForm').style.display = 'none';
+
+    // Visa en knapp för att lägga till fler objekt
+    document.getElementById('addMoreBtn').style.display = 'block';
+}
+
+function addAnotherObject() {
+    // Återställ så att användaren kan lägga till en ny punkt
+    document.getElementById('addMoreBtn').style.display = 'none';
+    document.getElementById('inputForm').style.display = 'none';
+    document.getElementById('startMessage').style.display = 'block';
+
+    // Ta bort den senaste markören och tillåt användaren att välja en ny position
+    if (lastMarker) {
+        map.removeLayer(lastMarker);
+        lastMarker = null;
+    }
+
+    centerMarkerContainer.style.display = 'block';
+    confirmButton.style.display = 'block';  // Gör knappen synlig igen
 }
 
 function addObjectToUI(index) {
