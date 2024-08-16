@@ -48,20 +48,23 @@
     <!-- Bekräftelseknapp -->
     <button id="confirmButton" onclick="confirmPosition()">Placera</button>
 
-    <!-- Inmatningsformulär -->
-    <div id="inputForm">
-        <h3 id="formTitle">Lägg till objekt</h3>
-        <form id="suggestionForm">
-            <input type="hidden" name="typ" id="categoryInput">
-            <input type="hidden" name="latitud" id="latitudeInput">
-            <input type="hidden" name="longitud" id="longitudeInput">
-            <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
-            <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
-            <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
-            <button type="button" id="addObjectBtn" onclick="addObject()">Lägg till</button>
-            <button type="button" id="addMoreBtn" onclick="addAnotherObject()" style="display: none;">Lägg till fler objekt</button>
-        </form>
-    </div>
+<!-- Inmatningsformulär -->
+<div id="inputForm">
+    <h3 id="formTitle">Lägg till objekt</h3>
+    <form id="suggestionForm">
+        <input type="hidden" name="typ" id="categoryInput">
+        <input type="hidden" name="latitud" id="latitudeInput">
+        <input type="hidden" name="longitud" id="longitudeInput">
+        <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
+        <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
+        <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+        <button type="button" id="addObjectBtn" onclick="addObject()">Lägg till</button>
+        <button type="button" id="addMoreBtn" onclick="addAnotherObject()" style="display: none;">Lägg till fler objekt</button>
+        <!-- Lägg till submit-knappen här -->
+        <button type="submit" id="submitBtn">Skicka objekt</button>
+    </form>
+</div>
+
 
     <!-- Redigeringsfält för tillagda objekt -->
     <div id="addedObjectsList"></div>
