@@ -131,21 +131,26 @@ function addAnotherObject() {
 function addObjectToUI(index) {
     var objectData = addedObjects[index];
     var addedObjectsList = document.getElementById('addedObjectsList');
-    var listItem = document.createElement('div');
-    listItem.className = 'object-tab';
-    listItem.innerHTML = `
-        <div class="object-header" onclick="toggleObjectDetails(this)">
-            <strong>${objectData.category}</strong>: ${objectData.name}
-        </div>
-        <div class="object-details" style="display: none;">
-            <p><strong>Namn:</strong> <input type="text" value="${objectData.name}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'name', this.value)"></p>
-            <p><strong>URL:</strong> <input type="text" value="${objectData.url}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'url', this.value)"></p>
-            <p><strong>Info:</strong> <textarea style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'info', this.value)">${objectData.info}</textarea></p>
-            <button type="button" onclick="deleteObject(${index}, this)">Ta bort objekt</button>
-        </div>
-    `;
+    
+    if (addedObjectsList) {
+        var listItem = document.createElement('div');
+        listItem.className = 'object-tab';
+        listItem.innerHTML = `
+            <div class="object-header" onclick="toggleObjectDetails(this)">
+                <strong>${objectData.category}</strong>: ${objectData.name}
+            </div>
+            <div class="object-details" style="display: none;">
+                <p><strong>Namn:</strong> <input type="text" value="${objectData.name}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'name', this.value)"></p>
+                <p><strong>URL:</strong> <input type="text" value="${objectData.url}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'url', this.value)"></p>
+                <p><strong>Info:</strong> <textarea style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'info', this.value)">${objectData.info}</textarea></p>
+                <button type="button" onclick="deleteObject(${index}, this)">Ta bort objekt</button>
+            </div>
+        `;
 
-    addedObjectsList.appendChild(listItem);
+        addedObjectsList.appendChild(listItem);
+    } else {
+        console.error("addedObjectsList element not found");
+    }
 }
 
 function toggleObjectDetails(headerElement) {
