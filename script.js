@@ -16,34 +16,27 @@ var currentObject = null; // Håller det aktuella objektet som inte är sparat �
 var addedObjects = [];
 
 function selectType(type, iconSrc) {
+    // Rensa formuläret och visa startmeddelandet
+    clearFormData();
+    closeAllObjectDetails();
     document.getElementById('categoryInput').value = type;
     document.getElementById('formTitle').innerText = 'Lägg till ' + type;
     document.getElementById('startMessage').style.display = 'none';
-
-    clearFormData(); // Rensa formuläret när ett nytt objekt väljs
-    closeAllObjectDetails(); // Stäng alla flikar när ett nytt objekt väljs
-
     document.getElementById('nameInput').placeholder = 'Namn på ' + type.toLowerCase();
     document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
-
     centerMarker.src = iconSrc;
     centerMarkerContainer.style.display = 'block';
-    confirmButton.style.display = 'block';  // Se till att knappen visas
+    confirmButton.style.display = 'block'; 
 }
 
 function confirmPosition() {
-    console.log("Placera-knappen klickades"); // För felsökning
-
     var center = map.getCenter();
-    currentLat = center.lat.toString(); // Konvertera till sträng utan att avrunda
-    currentLng = center.lng.toString(); // Konvertera till sträng utan att avrunda
+    currentLat = center.lat.toString(); 
+    currentLng = center.lng.toString(); 
 
-    var latitudeInput = document.getElementById('latitudeInput');
-    var longitudeInput = document.getElementById('longitudeInput');
-
-    if (latitudeInput && longitudeInput) {
-        latitudeInput.value = currentLat;
-        longitudeInput.value = currentLng;
+    if (currentLat && currentLng) {
+        document.getElementById('latitudeInput').value = currentLat;
+        document.getElementById('longitudeInput').value = currentLng;
 
         var icon = L.icon({
             iconUrl: centerMarker.src,
@@ -56,31 +49,20 @@ function confirmPosition() {
         }
 
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
-
         centerMarkerContainer.style.display = 'none';
-        confirmButton.style.display = 'none';  // Knappen ska försvinna efter bekräftelse
-
+        confirmButton.style.display = 'none'; 
         openInputForm();
     } else {
-        console.error("latitudeInput eller longitudeInput kunde inte hittas.");
+        console.error("Kunde inte få tag på latitud och longitud.");
     }
 }
 
 function openInputForm() {
     document.getElementById('inputForm').style.display = 'block';
-
-    // Fyll i latitud och longitud fälten men inte andra fält än
-    if (currentLat && currentLng) {
-        document.getElementById('latitudeInput').value = currentLat;
-        document.getElementById('longitudeInput').value = currentLng;
-    }
-
-    // Se till att Avbryt-knappen visas när formuläret är öppet
     document.getElementById('cancelBtn').style.display = 'block';
 }
 
 function addObject() {
-    // Skapa currentObject först nu när formuläret är ifyllt
     var name = document.getElementById('nameInput').value;
     var url = document.getElementById('urlInput').value || "Ingen URL angiven";
     var info = document.getElementById('infoInput').value;
@@ -93,46 +75,30 @@ function addObject() {
             info: info,
             lat: currentLat,
             lng: currentLng,
-            marker: lastMarker // Spara marker referensen för att kunna ta bort den senare
+            marker: lastMarker 
         };
 
-        console.log("Current Object Created:", currentObject); // Logga currentObject
+        addedObjects.push(currentObject); 
+        addObjectToUI(addedObjects.length - 1);
+        currentObject = null; 
 
-        addedObjects.push(currentObject); // Lägg till det aktuella objektet till arrayen
-        addObjectToUI(addedObjects.length - 1); // Lägg till objektet i UI:t
-        currentObject = null; // Nollställ det aktuella objektet
-
-        // Uppdatera knappen "Skicka objekt"
         updateSubmitButton();
 
-        // Dölj "Lägg till"-knappen och visa "Lägg till fler objekt"-knappen
         document.getElementById('addObjectBtn').style.display = 'none';
         document.getElementById('addMoreBtn').style.display = 'block';
     } else {
         alert("Vänligen fyll i namnet på objektet.");
-        return;
     }
 }
 
 function addAnotherObject() {
-    // Återställ så att användaren kan lägga till en ny punkt
-    document.getElementById('startMessage').style.display = 'block';
-
-    // Ta bort den senaste markören men behåll tidigare markerade objekt
     lastMarker = null;
-
     centerMarkerContainer.style.display = 'block';
-    confirmButton.style.display = 'block';  // Gör knappen synlig igen
-
-    // Återställ formuläret för att lägga till ett nytt objekt
+    confirmButton.style.display = 'block'; 
     clearFormData();
-
-    // Visa "Lägg till"-knappen igen och dölj "Lägg till fler objekt"-knappen
     document.getElementById('addObjectBtn').style.display = 'block';
     document.getElementById('addMoreBtn').style.display = 'none';
-
-    // Se till att formuläret visas
-    document.getElementById('inputForm').style.display = 'block';
+    document.getElementById('inputForm').style.display = 'none';
 }
 
 function addObjectToUI(index) {
@@ -153,21 +119,16 @@ function addObjectToUI(index) {
                 <button type="button" onclick="deleteObject(${index}, this)">Ta bort objekt</button>
             </div>
         `;
-
         addedObjectsList.appendChild(listItem);
-        addedObjectsList.style.display = 'block'; // Se till att redigeringsfältet visas
+        addedObjectsList.style.display = 'block';
     } else {
-        console.error("addedObjectsList element not found");
+        console.error("Redigeringslistan hittades inte.");
     }
 }
 
 function toggleObjectDetails(headerElement) {
     var details = headerElement.nextElementSibling;
-    if (details.style.display === "none") {
-        details.style.display = "block";
-    } else {
-        details.style.display = "none";
-    }
+    details.style.display = details.style.display === "none" ? "block" : "none";
 }
 
 function closeAllObjectDetails() {
@@ -187,12 +148,10 @@ function deleteObject(index, buttonElement) {
 
     var object = addedObjects[index];
     if (object.marker) {
-        map.removeLayer(object.marker); // Ta bort marker från kartan
+        map.removeLayer(object.marker);
     }
 
-    addedObjects.splice(index, 1); // Ta bort objektet från arrayen
-
-    // Uppdatera knappen "Skicka objekt"
+    addedObjects.splice(index, 1); 
     updateSubmitButton();
 }
 
@@ -201,12 +160,12 @@ function updateSubmitButton() {
     if (submitButton) {
         submitButton.disabled = addedObjects.length === 0;
     } else {
-        console.error("Submit button not found");
+        console.error("Submit-knappen hittades inte.");
     }
 }
 
 document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault();  // Förhindra standard formulärinlämning
+    event.preventDefault();  
 
     if (addedObjects.length === 0) {
         alert("För att skicka, lägg till ett objekt.");
@@ -231,20 +190,19 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
             }).then(response => {
                 return response.text();
             }).then(text => {
-                console.log(text);  // Kontrollera svaret från servern
+                console.log(text); 
             }).catch(error => {
                 console.error('Ett nätverksfel uppstod:', error);
             });
         });
 
-        // Visa tackmeddelandet
         showThankYouMessage();
     }
 };
 
 function showThankYouMessage() {
-    closeInputForm();  // Stäng inmatningsrutan
-    document.getElementById('thankYouMessage').style.display = 'block'; // Visa tackmeddelandet
+    closeInputForm();  
+    document.getElementById('thankYouMessage').style.display = 'block'; 
 }
 
 function closeInputForm() {
@@ -257,19 +215,17 @@ function cancelAndRemove() {
         lastMarker = null;
     }
 
-    currentObject = null; // Nollställ det aktuella objektet om det avbryts
-    clearFormData(); // Rensa formuläret när "Avbryt" klickas
+    currentObject = null; 
+    clearFormData(); 
 
     closeInputForm();
     document.getElementById('startMessage').style.display = 'block';
-
-    // Dölj "Avbryt"-knappen när formuläret stängs
     document.getElementById('cancelBtn').style.display = 'none';
 }
 
 function addNewSuggestion() {
     closeThankYouMessage();
-    location.reload();  // Laddar om sidan
+    location.reload();  
 }
 
 function closeThankYouMessage() {
@@ -290,5 +246,5 @@ function clearFormData() {
 
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
-    updateSubmitButton(); // Inaktivera knappen "Skicka objekt" vid start
+    updateSubmitButton(); 
 };
