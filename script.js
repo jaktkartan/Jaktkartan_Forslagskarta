@@ -74,6 +74,9 @@ function openInputForm() {
         document.getElementById('latitudeInput').value = currentLat;
         document.getElementById('longitudeInput').value = currentLng;
     }
+
+    // Se till att Avbryt-knappen visas när formuläret är öppet
+    document.getElementById('cancelBtn').style.display = 'block';
 }
 
 function addObject() {
@@ -105,6 +108,10 @@ function addObject() {
         // Dölj "Lägg till"-knappen och visa "Lägg till fler objekt"-knappen
         document.getElementById('addObjectBtn').style.display = 'none';
         document.getElementById('addMoreBtn').style.display = 'block';
+
+        // Kollapsa inmatningsformuläret efter att objektet har lagts till
+        document.getElementById('inputForm').style.maxHeight = '0px';
+        document.getElementById('inputForm').style.overflow = 'hidden';
     } else {
         alert("Vänligen fyll i namnet på objektet.");
         return;
@@ -127,6 +134,10 @@ function addAnotherObject() {
     // Visa "Lägg till"-knappen igen och dölj "Lägg till fler objekt"-knappen
     document.getElementById('addObjectBtn').style.display = 'block';
     document.getElementById('addMoreBtn').style.display = 'none';
+
+    // Visa inmatningsformuläret igen för att lägga till ett nytt objekt
+    document.getElementById('inputForm').style.maxHeight = '98%';
+    document.getElementById('inputForm').style.overflow = 'auto';
 }
 
 function addObjectToUI(index) {
@@ -149,6 +160,7 @@ function addObjectToUI(index) {
         `;
 
         addedObjectsList.appendChild(listItem);
+        addedObjectsList.style.display = 'block'; // Se till att redigeringsfältet visas
     } else {
         console.error("addedObjectsList element not found");
     }
@@ -255,6 +267,9 @@ function cancelAndRemove() {
 
     closeInputForm();
     document.getElementById('startMessage').style.display = 'block';
+
+    // Dölj "Avbryt"-knappen när formuläret stängs
+    document.getElementById('cancelBtn').style.display = 'none';
 }
 
 function addNewSuggestion() {
