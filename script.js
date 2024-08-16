@@ -102,8 +102,7 @@ function addObject() {
         // Uppdatera knappen "Skicka objekt"
         updateSubmitButton();
 
-        // Dölj inmatningsfälten och visa knappen för att lägga till fler objekt
-        document.getElementById('inputFields').style.display = 'none';
+        // Visa knappen för att lägga till fler objekt
         document.getElementById('addMoreBtn').style.display = 'block';
     } else {
         alert("Vänligen fyll i namnet på objektet.");
@@ -113,19 +112,16 @@ function addObject() {
 
 function addAnotherObject() {
     // Återställ så att användaren kan lägga till en ny punkt
-    document.getElementById('addMoreBtn').style.display = 'none';
-    document.getElementById('inputFields').style.display = 'block';
-    document.getElementById('inputForm').style.display = 'none';
     document.getElementById('startMessage').style.display = 'block';
 
-    // Ta bort den senaste markören och tillåt användaren att välja en ny position
-    if (lastMarker) {
-        map.removeLayer(lastMarker);
-        lastMarker = null;
-    }
+    // Ta bort den senaste markören men behåll tidigare markerade objekt
+    lastMarker = null;
 
     centerMarkerContainer.style.display = 'block';
     confirmButton.style.display = 'block';  // Gör knappen synlig igen
+
+    // Återställ formuläret för att lägga till ett nytt objekt
+    clearFormData();
 }
 
 function addObjectToUI(index) {
