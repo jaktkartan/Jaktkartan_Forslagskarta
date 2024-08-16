@@ -92,7 +92,6 @@ function addAnotherObject() {
         listItem.innerHTML = `
             <div class="object-header" onclick="toggleObjectDetails(this)">
                 <strong>${category}</strong>: ${name}
-                <span class="coordinates">${currentLat}, ${currentLng}</span>
             </div>
             <div class="object-details" style="display: none;">
                 <p><strong>Namn:</strong> <input type="text" value="${name}" onchange="updateObjectData(${addedObjects.length - 1}, 'name', this.value)"></p>
@@ -138,45 +137,33 @@ function deleteObject(index, buttonElement) {
 document.getElementById('suggestionForm').onsubmit = function(event) {
     event.preventDefault();  // Förhindra standard formulärinlämning
 
-    var category = document.getElementById('categoryInput').value;
-    var name = document.getElementById('nameInput').value;
-    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
-    var info = document.getElementById('infoInput').value;
+    if (confirm("Är du säker på att du vill skicka objekten?")) {
+        var suggestionForm = document.getElementById('suggestionForm');
 
-    // Lägg till objektet till addedObjects-arrayen
-    addedObjects.push({
-        category: category,
-        name: name,
-        url: url,
-        info: info,
-        lat: currentLat,
-        lng: currentLng
-    });
+        addedObjects.forEach(function(object) {
+            var formData = new FormData();
+            formData.append('typ', object.category || 'Ingen typ angiven');
+            formData.append('namn', object.name);
+            formData.append('url', object.url);
+            formData.append('info', object.info);
+            formData.append('latitud', object.lat);
+            formData.append('longitud', object.lng);
 
-    // Skicka varje objekt
-    addedObjects.forEach(function(object) {
-        var formData = new FormData();
-        formData.append('typ', object.category || 'Ingen typ angiven');
-        formData.append('namn', object.name);
-        formData.append('url', object.url);
-        formData.append('info', object.info);
-        formData.append('latitud', object.lat);
-        formData.append('longitud', object.lng);
-
-        fetch(document.getElementById('suggestionForm').action, {
-            method: "POST",
-            body: formData,
-        }).then(response => {
-            return response.text();
-        }).then(text => {
-            console.log(text);  // Kontrollera svaret från servern
-        }).catch(error => {
-            console.error('Ett nätverksfel uppstod:', error);
+            fetch(suggestionForm.action, {
+                method: "POST",
+                body: formData,
+            }).then(response => {
+                return response.text();
+            }).then(text => {
+                console.log(text);  // Kontrollera svaret från servern
+            }).catch(error => {
+                console.error('Ett nätverksfel uppstod:', error);
+            });
         });
-    });
 
-    // Visa tackmeddelandet
-    showThankYouMessage();
+        // Visa tackmeddelandet
+        showThankYouMessage();
+    }
 };
 
 function showThankYouMessage() {
@@ -224,4 +211,3 @@ function clearFormData() {
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
 };
-
