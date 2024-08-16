@@ -375,13 +375,13 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
     })
     .then(response => response.text())
     .then(result => {
-        console.log(result); // Visa resultat i konsolen för att verifiera
-        showThankYouMessage(); // Visa tackmeddelande på sidan
+        showThankYouMessage(); // Visa ditt tackmeddelande
     })
     .catch(error => {
         console.error('Ett fel uppstod:', error);
     });
 };
+
 
 
         function cancelAndRemove() {
