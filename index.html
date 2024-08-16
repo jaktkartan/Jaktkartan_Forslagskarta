@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objektskartan - Lägg till objekt</title>
     <style>
+        /* Din ursprungliga CSS-stil */
         body, html {
             height: 100%;
             margin: 0;
@@ -348,42 +349,6 @@
             }
         }
 
-document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault();  // Förhindra standard formulärinlämning
-
-    // Samla alla objekt i en sträng
-    var objectsString = "";
-
-    addedObjects.forEach(function(object) {
-        objectsString += `Typ: ${object.category}\n`;
-        objectsString += `Namn: ${object.name}\n`;
-        objectsString += `URL: ${object.url}\n`;
-        objectsString += `Info: ${object.info}\n`;
-        objectsString += `Latitud: ${object.lat}\n`;
-        objectsString += `Longitud: ${object.lng}\n\n`;
-    });
-
-    // Lägg till samlad data i det dolda fältet
-    document.getElementById('objectsField').value = objectsString;
-
-    var formData = new FormData(document.getElementById('suggestionForm'));
-
-    // Skicka formuläret med AJAX
-    fetch(document.getElementById('suggestionForm').action, {
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(result => {
-        showThankYouMessage(); // Visa ditt tackmeddelande
-    })
-    .catch(error => {
-        console.error('Ett fel uppstod:', error);
-    });
-};
-
-
-
         function cancelAndRemove() {
             if (lastMarker) {
                 map.removeLayer(lastMarker);
@@ -394,6 +359,38 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
             document.getElementById('startMessage').style.display = 'block';
         }
 
+        document.getElementById('suggestionForm').onsubmit = function(event) {
+            event.preventDefault();  // Förhindra standard formulärinlämning
+
+            var formData = new FormData(document.getElementById('suggestionForm'));
+            var objectsString = "";
+
+            addedObjects.forEach(function(object) {
+                objectsString += `Typ: ${object.category}\n`;
+                objectsString += `Namn: ${object.name}\n`;
+                objectsString += `URL: ${object.url}\n`;
+                objectsString += `Info: ${object.info}\n`;
+                objectsString += `Latitud: ${object.lat}\n`;
+                objectsString += `Longitud: ${object.lng}\n\n`;
+            });
+
+            formData.append('objects', objectsString);
+
+            fetch(document.getElementById('suggestionForm').action, {
+                method: "POST",
+                body: formData,
+            }).then(response => {
+                if (response.ok) {
+                    closeInputForm();
+                    showThankYouMessage();
+                } else {
+                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
+                }
+            }).catch(error => {
+                alert('Ett nätverksfel uppstod: ' + error.message);
+            });
+        };
+
         function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
         }
@@ -403,7 +400,8 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
         }
 
         function showThankYouMessage() {
-            document.getElementById('thankYouMessage').style.display = 'block';
+            closeInputForm();  // Stäng inmatningsrutan
+            document.getElementById('thankYouMessage').style.display = 'block'; // Visa tackmeddelandet
         }
 
         function closeThankYouMessage() {
