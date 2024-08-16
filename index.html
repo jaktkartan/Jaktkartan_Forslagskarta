@@ -362,12 +362,13 @@
 document.getElementById('suggestionForm').onsubmit = function(event) {
     event.preventDefault();  // Förhindra standard formulärinlämning
 
-    // Spara det sista objektet i addedObjects
+    // Spara det sista inmatade objektet i addedObjects
     var category = document.getElementById('categoryInput').value;
     var name = document.getElementById('nameInput').value;
     var url = document.getElementById('urlInput').value || "Ingen URL angiven";
     var info = document.getElementById('infoInput').value;
 
+    // Kontrollera om det finns ett namn, vilket är obligatoriskt
     if (name) {
         addedObjects.push({
             category: category,
@@ -377,11 +378,15 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
             lat: currentLat,
             lng: currentLng
         });
+
+        // Töm inmatningsfälten efter att objektet har lagts till
+        document.getElementById('nameInput').value = '';
+        document.getElementById('urlInput').value = '';
+        document.getElementById('infoInput').value = '';
     }
 
     // Skapa en sträng som innehåller alla tillagda objekt
     var objectsString = "";
-
     addedObjects.forEach(function(object) {
         objectsString += `Typ: ${object.category}\n`;
         objectsString += `Namn: ${object.name}\n`;
@@ -393,6 +398,9 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
 
     // Placera strängen i det dolda fältet
     document.getElementById('objectsField').value = objectsString;
+
+    // Verifiera att det dolda fältet har fyllts korrekt (För felsökning, kan tas bort senare)
+    console.log("Dolt fält innehåll: ", document.getElementById('objectsField').value);
 
     // Skicka formuläret med fetch
     fetch(document.getElementById('suggestionForm').action, {
