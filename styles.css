@@ -146,17 +146,25 @@ body, html {
 }
 
 /* Knappens stil */
+#cancelBtn {
+    background-color: #b22222; /* Jordnära röd färg */
+    color: white;
+}
+
 #confirmButton {
     position: fixed;
-    bottom: 50px; /* Placerar knappen 50px från botten av sidan */
-    left: 50%; 
-    transform: translateX(-50%); /* Centrerar knappen horisontellt */
-    z-index: 2001; /* Högre än panelens z-index för att placeras ovanför panelen */
+    bottom: 50px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2001;
     padding: 10px 20px;
-    background-color: rgb(50, 94, 88); /* Din önskade knappfärg */
+    background-color: rgb(50, 94, 88);
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    display: none; /* Visas när användaren interagerar */
+    display: none;
+    width: auto; /* Gör bredden automatisk beroende på innehållet */
+    max-width: 200px; /* Sätter en maximal bredd om du vill */
+    text-align: center; /* Centrerar texten */
 }
