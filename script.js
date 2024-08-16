@@ -122,7 +122,7 @@ function addObjectToUI(index) {
             </div>
         `;
         addedObjectsList.appendChild(listItem);
-        addedObjectsList.style.display = 'block';
+        addedObjectsList.style.display = 'block'; // Säkerställ att redigeringslistan alltid visas
     } else {
         console.error("Redigeringslistan hittades inte.");
     }
@@ -248,5 +248,6 @@ function clearFormData() {
 
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
+    document.getElementById('addedObjectsList').style.display = 'block'; // Säkerställ att redigeringslistan alltid visas
     updateSubmitButton();
 };
