@@ -56,6 +56,18 @@ function confirmPosition() {
 
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
 
+        addedObjects.push({
+            category: document.getElementById('categoryInput').value,
+            name: document.getElementById('nameInput').value,
+            url: document.getElementById('urlInput').value || "Ingen URL angiven",
+            info: document.getElementById('infoInput').value,
+            lat: currentLat,
+            lng: currentLng,
+            marker: lastMarker // Spara marker referensen för att kunna ta bort den senare
+        });
+
+        addObjectToUI(addedObjects.length - 1); // Lägg till objektet i UI:t
+
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';  // Knappen ska försvinna efter bekräftelse
 
@@ -69,51 +81,24 @@ function openInputForm() {
     document.getElementById('inputForm').style.display = 'block';
 }
 
-function addAnotherObject() {
-    var category = document.getElementById('categoryInput').value;
-    var name = document.getElementById('nameInput').value;
-    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
-    var info = document.getElementById('infoInput').value;
+function addObjectToUI(index) {
+    var objectData = addedObjects[index];
+    var addedObjectsList = document.getElementById('addedObjectsList');
+    var listItem = document.createElement('div');
+    listItem.className = 'object-tab';
+    listItem.innerHTML = `
+        <div class="object-header" onclick="toggleObjectDetails(this)">
+            <strong>${objectData.category}</strong>: ${objectData.name}
+        </div>
+        <div class="object-details" style="display: none;">
+            <p><strong>Namn:</strong> <input type="text" value="${objectData.name}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'name', this.value)"></p>
+            <p><strong>URL:</strong> <input type="text" value="${objectData.url}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'url', this.value)"></p>
+            <p><strong>Info:</strong> <textarea style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'info', this.value)">${objectData.info}</textarea></p>
+            <button type="button" onclick="deleteObject(${index}, this)">Ta bort objekt</button>
+        </div>
+    `;
 
-    if (name) {
-        var objectData = {
-            category: category,
-            name: name,
-            url: url,
-            info: info,
-            lat: currentLat,
-            lng: currentLng
-        };
-
-        addedObjects.push(objectData);
-
-        var addedObjectsList = document.getElementById('addedObjectsList');
-        var listItem = document.createElement('div');
-        listItem.className = 'object-tab';
-        listItem.innerHTML = `
-            <div class="object-header" onclick="toggleObjectDetails(this)">
-                <strong>${category}</strong>: ${name}
-            </div>
-            <div class="object-details" style="display: none;">
-                <p><strong>Namn:</strong> <input type="text" value="${name}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${addedObjects.length - 1}, 'name', this.value)"></p>
-                <p><strong>URL:</strong> <input type="text" value="${url}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${addedObjects.length - 1}, 'url', this.value)"></p>
-                <p><strong>Info:</strong> <textarea style="color: rgb(50, 94, 88);" onchange="updateObjectData(${addedObjects.length - 1}, 'info', this.value)">${info}</textarea></p>
-                <button type="button" onclick="deleteObject(${addedObjects.length - 1}, this)">Ta bort objekt</button>
-            </div>
-        `;
-
-        addedObjectsList.appendChild(listItem);
-
-        // Rensa inmatningsfälten
-        clearFormData();
-
-        // Visa startrutan igen för att välja en ny typ av objekt
-        closeInputForm();
-        lastMarker = null;
-        document.getElementById('startMessage').style.display = 'block';
-        centerMarkerContainer.style.display = 'none';
-        confirmButton.style.display = 'none';
-    }
+    addedObjectsList.appendChild(listItem);
 }
 
 function toggleObjectDetails(headerElement) {
@@ -137,9 +122,15 @@ function updateObjectData(index, field, value) {
 }
 
 function deleteObject(index, buttonElement) {
-    addedObjects.splice(index, 1);
     var objectTab = buttonElement.closest('.object-tab');
     objectTab.parentNode.removeChild(objectTab);
+
+    var object = addedObjects[index];
+    if (object.marker) {
+        map.removeLayer(object.marker); // Ta bort marker från kartan
+    }
+
+    addedObjects.splice(index, 1); // Ta bort objektet från arrayen
 }
 
 document.getElementById('suggestionForm').onsubmit = function(event) {
