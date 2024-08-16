@@ -171,25 +171,29 @@ body, html {
 
 .object-tab {
     margin-bottom: 10px;
-    border: 1px solid #ddd;
     border-radius: 5px;
-    background-color: #f9f9f9;
+    background-color: rgb(50, 94, 88); /* Samma gröna färg som knapparna */
+    color: white;
     overflow: hidden;
+    cursor: pointer;
 }
 
 .object-header {
     padding: 10px;
-    background-color: #e0e0e0;
+    background-color: rgb(50, 94, 88); /* Samma gröna färg */
     cursor: pointer;
+    border-radius: 5px;
+    text-align: left;
 }
 
 .object-header:hover {
-    background-color: #d0d0d0;
+    background-color: #3e7c75; /* En något mörkare nyans vid hover */
 }
 
 .object-details {
     padding: 10px;
     background-color: #f0f0f0;
+    display: none;
 }
 
 .object-details p {
@@ -203,4 +207,14 @@ body, html {
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
+}
+
+.object-details button {
+    background-color: #b22222;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-top: 10px;
 }
