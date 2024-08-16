@@ -26,13 +26,13 @@ function selectType(type, iconSrc) {
     document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
     centerMarker.src = iconSrc;
     centerMarkerContainer.style.display = 'block';
-    confirmButton.style.display = 'block'; 
+    confirmButton.style.display = 'block';
 }
 
 function confirmPosition() {
     var center = map.getCenter();
-    currentLat = center.lat.toString(); 
-    currentLng = center.lng.toString(); 
+    currentLat = center.lat.toString();
+    currentLng = center.lng.toString();
 
     if (currentLat && currentLng) {
         document.getElementById('latitudeInput').value = currentLat;
@@ -50,7 +50,7 @@ function confirmPosition() {
 
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
         centerMarkerContainer.style.display = 'none';
-        confirmButton.style.display = 'none'; 
+        confirmButton.style.display = 'none';
         openInputForm();
     } else {
         console.error("Kunde inte få tag på latitud och longitud.");
@@ -75,12 +75,14 @@ function addObject() {
             info: info,
             lat: currentLat,
             lng: currentLng,
-            marker: lastMarker 
+            marker: lastMarker
         };
 
-        addedObjects.push(currentObject); 
+        console.log("Current Object Created:", currentObject);
+
+        addedObjects.push(currentObject);
         addObjectToUI(addedObjects.length - 1);
-        currentObject = null; 
+        currentObject = null;
 
         updateSubmitButton();
 
@@ -94,7 +96,7 @@ function addObject() {
 function addAnotherObject() {
     lastMarker = null;
     centerMarkerContainer.style.display = 'block';
-    confirmButton.style.display = 'block'; 
+    confirmButton.style.display = 'block';
     clearFormData();
     document.getElementById('addObjectBtn').style.display = 'block';
     document.getElementById('addMoreBtn').style.display = 'none';
@@ -104,7 +106,7 @@ function addAnotherObject() {
 function addObjectToUI(index) {
     var objectData = addedObjects[index];
     var addedObjectsList = document.getElementById('addedObjectsList');
-    
+
     if (addedObjectsList) {
         var listItem = document.createElement('div');
         listItem.className = 'object-tab';
@@ -151,7 +153,7 @@ function deleteObject(index, buttonElement) {
         map.removeLayer(object.marker);
     }
 
-    addedObjects.splice(index, 1); 
+    addedObjects.splice(index, 1);
     updateSubmitButton();
 }
 
@@ -165,7 +167,7 @@ function updateSubmitButton() {
 }
 
 document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault();  
+    event.preventDefault();
 
     if (addedObjects.length === 0) {
         alert("För att skicka, lägg till ett objekt.");
@@ -190,7 +192,7 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
             }).then(response => {
                 return response.text();
             }).then(text => {
-                console.log(text); 
+                console.log(text);
             }).catch(error => {
                 console.error('Ett nätverksfel uppstod:', error);
             });
@@ -201,8 +203,8 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
 };
 
 function showThankYouMessage() {
-    closeInputForm();  
-    document.getElementById('thankYouMessage').style.display = 'block'; 
+    closeInputForm();
+    document.getElementById('thankYouMessage').style.display = 'block';
 }
 
 function closeInputForm() {
@@ -215,8 +217,8 @@ function cancelAndRemove() {
         lastMarker = null;
     }
 
-    currentObject = null; 
-    clearFormData(); 
+    currentObject = null;
+    clearFormData();
 
     closeInputForm();
     document.getElementById('startMessage').style.display = 'block';
@@ -225,7 +227,7 @@ function cancelAndRemove() {
 
 function addNewSuggestion() {
     closeThankYouMessage();
-    location.reload();  
+    location.reload();
 }
 
 function closeThankYouMessage() {
@@ -246,5 +248,5 @@ function clearFormData() {
 
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
-    updateSubmitButton(); 
+    updateSubmitButton();
 };
