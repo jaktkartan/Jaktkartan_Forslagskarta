@@ -355,25 +355,35 @@ function confirmPosition() {
             document.getElementById('startMessage').style.display = 'block';
         }
 
-        document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault();
+document.getElementById('suggestionForm').onsubmit = function(event) {
+    event.preventDefault();
 
-            var formData = new FormData(document.getElementById('suggestionForm'));
+    var formData = new FormData();
 
-            fetch(document.getElementById('suggestionForm').action, {
-                method: "POST",
-                body: formData,
-            }).then(response => {
-                if (response.ok) {
-                    closeInputForm();
-                    showThankYouMessage();
-                } else {
-                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
-                }
-            }).catch(error => {
-                alert('Ett nätverksfel uppstod: ' + error.message);
-            });
-        };
+    addedObjects.forEach(function(object, index) {
+        formData.append(`objects[${index}][category]`, object.category);
+        formData.append(`objects[${index}][name]`, object.name);
+        formData.append(`objects[${index}][url]`, object.url);
+        formData.append(`objects[${index}][info]`, object.info);
+        formData.append(`objects[${index}][lat]`, object.lat);
+        formData.append(`objects[${index}][lng]`, object.lng);
+    });
+
+    fetch(document.getElementById('suggestionForm').action, {
+        method: "POST",
+        body: formData,
+    }).then(response => {
+        if (response.ok) {
+            closeInputForm();
+            showThankYouMessage();
+        } else {
+            alert('Något gick fel när formuläret skickades. Försök igen senare.');
+        }
+    }).catch(error => {
+        alert('Ett nätverksfel uppstod: ' + error.message);
+    });
+};
+
 
         function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
