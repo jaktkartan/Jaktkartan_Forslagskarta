@@ -20,7 +20,22 @@
         <h3>Välkommen till Objektskartan!</h3>
         <p>Föreslå förändringar på Jaktkartan eller annonsera hos oss!</p>
         <div id="typeSelection">
-            <!-- Ditt innehåll här -->
+            <div class="option" onclick="selectType('Dagkort', 'bilder/jaktkort_ikon.png')">
+                <img src="bilder/jaktkort_ikon.png" alt="Dagkort">
+                <span>Dagkort för jakt</span>
+            </div>
+            <div class="option" onclick="selectType('Jaktskyttebana', 'bilder/jaktskyttebanor_ikon.png')">
+                <img src="bilder/jaktskyttebanor_ikon.png" alt="Jaktskyttebana">
+                <span>Jaktskyttebana</span>
+            </div>
+            <div class="option" onclick="selectType('Kurs', 'bilder/kurser_ikon.png')">
+                <img src="bilder/kurser_ikon.png" alt="Kurser">
+                <span>Kurs</span>
+            </div>
+            <div class="option" onclick="selectType('Mässa', 'bilder/massa_ikon.png')">
+                <img src="bilder/massa_ikon.png" alt="Mässa">
+                <span>Mässa</span>
+            </div>
         </div>
     </div>
 
@@ -36,7 +51,7 @@
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
-        <form id="suggestionForm">
+        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec" method="POST">
             <input type="hidden" name="typ" id="categoryInput">
             <input type="hidden" name="latitud" id="latitudeInput">
             <input type="hidden" name="longitud" id="longitudeInput">
@@ -46,6 +61,7 @@
             <button type="button" id="addObjectBtn" onclick="addObject()">Lägg till</button>
             <button type="button" id="addMoreBtn" onclick="addAnotherObject()" style="display: none;">Lägg till fler objekt</button>
             <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
+            <button type="submit" id="submitBtn" disabled>Skicka objekt</button>
         </form>
     </div>
 
