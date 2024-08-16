@@ -41,11 +41,6 @@ function confirmPosition() {
     var latitudeInput = document.getElementById('latitudeInput');
     var longitudeInput = document.getElementById('longitudeInput');
 
-    // Kontrollera om fälten är ifyllda
-    var name = document.getElementById('nameInput').value;
-    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
-    var info = document.getElementById('infoInput').value;
-
     if (latitudeInput && longitudeInput) {
         latitudeInput.value = currentLat;
         longitudeInput.value = currentLng;
@@ -62,19 +57,6 @@ function confirmPosition() {
 
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
 
-        // Skapa currentObject med de korrekta fälten
-        currentObject = {
-            category: document.getElementById('categoryInput').value,
-            name: name,
-            url: url,
-            info: info,
-            lat: currentLat,
-            lng: currentLng,
-            marker: lastMarker // Spara marker referensen för att kunna ta bort den senare
-        };
-
-        console.log("Current Object Created:", currentObject); // Logga currentObject
-
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';  // Knappen ska försvinna efter bekräftelse
 
@@ -87,20 +69,38 @@ function confirmPosition() {
 function openInputForm() {
     document.getElementById('inputForm').style.display = 'block';
 
-    // Fyll i formuläret med data från currentObject
-    if (currentObject) {
-        console.log("Fyller i formuläret med currentObject:", currentObject); // Logga när formuläret fylls
-        document.getElementById('nameInput').value = currentObject.name;
-        document.getElementById('urlInput').value = currentObject.url;
-        document.getElementById('infoInput').value = currentObject.info;
+    // Fyll i latitud och longitud fälten men inte andra fält än
+    if (currentLat && currentLng) {
+        document.getElementById('latitudeInput').value = currentLat;
+        document.getElementById('longitudeInput').value = currentLng;
     }
 }
 
 function addAnotherObject() {
-    if (currentObject) {
+    // Skapa currentObject först nu när formuläret är ifyllt
+    var name = document.getElementById('nameInput').value;
+    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+    var info = document.getElementById('infoInput').value;
+
+    if (name && currentLat && currentLng) {
+        currentObject = {
+            category: document.getElementById('categoryInput').value,
+            name: name,
+            url: url,
+            info: info,
+            lat: currentLat,
+            lng: currentLng,
+            marker: lastMarker // Spara marker referensen för att kunna ta bort den senare
+        };
+
+        console.log("Current Object Created:", currentObject); // Logga currentObject
+
         addedObjects.push(currentObject); // Lägg till det aktuella objektet till arrayen
         addObjectToUI(addedObjects.length - 1); // Lägg till objektet i UI:t
         currentObject = null; // Nollställ det aktuella objektet
+    } else {
+        alert("Vänligen fyll i namnet på objektet.");
+        return;
     }
     
     // Rensa inmatningsfälten för att förbereda för nästa objekt
