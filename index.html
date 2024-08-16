@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Objektskartan - Lägg till objekt</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Din ursprungliga CSS-stil */
         body, html {
             height: 100%;
             margin: 0;
-            font-family: Arial, sans-serif;
+            font-family: 'Roboto', sans-serif;
             overflow: hidden;
         }
         #map {
@@ -43,24 +43,14 @@
             border: 1px solid #ccc;
             border-radius: 5px;
         }
-        #inputForm button, #thankYouMessage button, #startMessage button {
+        #submitBtn, #addMoreBtn, #cancelBtn, #confirmButton, #thankYouMessage button, #startMessage button {
             margin-top: 10px;
             padding: 10px;
             width: 100%;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-        }
-        #submitBtn {
-            background-color: #4CAF50;
-            color: white;
-        }
-        #addMoreBtn {
-            background-color: #2196F3;
-            color: white;
-        }
-        #cancelBtn {
-            background-color: #f44336;
+            background-color: rgb(50, 94, 88);
             color: white;
         }
         #thankYouMessage a {
@@ -136,20 +126,6 @@
             left: 50%;
             transform: translate(-50%, -50%);
         }
-        #confirmButton {
-            position: fixed;
-            bottom: 50px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 5001;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            display: none;
-        }
         #addedObjectsList {
             margin-top: 10px;
             padding: 10px;
@@ -159,12 +135,33 @@
             max-height: 150px;
             overflow-y: auto;
         }
+
+        /* Panel för logga */
+        #topPanel {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            z-index: 2000;
+            text-align: center;
+            padding: 10px;
+            box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #logo {
+            max-width: 150px;
+            height: auto;
+        }
     </style>
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
 </head>
 <body>
     <div id="map"></div>
+
+    <div id="topPanel">
+        <img src="bilder/Jaktkartan_logga.png" alt="Jaktkartan Logga" id="logo">
+    </div>
 
     <!-- Startruta -->
     <div id="startMessage">
@@ -247,6 +244,10 @@
             document.getElementById('categoryInput').value = type;
             document.getElementById('formTitle').innerText = 'Lägg till ' + type;
             document.getElementById('startMessage').style.display = 'none';
+
+            // Uppdatera placeholders
+            document.getElementById('nameInput').placeholder = 'Namn på ' + type.toLowerCase();
+            document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
 
             centerMarker.src = iconSrc;
             centerMarkerContainer.style.display = 'block';
