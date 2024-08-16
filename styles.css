@@ -115,7 +115,9 @@ body, html {
 #cancelBtn {
     background-color: #b22222; /* Jordnära röd färg */
     color: white;
+    display: block; /* Se till att knappen alltid visas */
 }
+
 
 /* Specifik stil för bekräfta-knappen */
 #confirmButton {
