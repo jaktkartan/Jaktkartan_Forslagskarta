@@ -168,3 +168,39 @@ body, html {
     max-width: 200px; /* Sätter en maximal bredd om du vill */
     text-align: center; /* Centrerar texten */
 }
+
+.object-tab {
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    overflow: hidden;
+}
+
+.object-header {
+    padding: 10px;
+    background-color: #e0e0e0;
+    cursor: pointer;
+}
+
+.object-header:hover {
+    background-color: #d0d0d0;
+}
+
+.object-details {
+    padding: 10px;
+    background-color: #f0f0f0;
+}
+
+.object-details p {
+    margin: 10px 0;
+}
+
+.object-details input[type="text"],
+.object-details textarea {
+    width: 100%;
+    padding: 5px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
