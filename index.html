@@ -358,48 +358,49 @@
         }
 
         // Korrigerad onsubmit-funktion
-        document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault();  // Förhindra standard formulärinlämning
+document.getElementById('suggestionForm').onsubmit = function(event) {
+    event.preventDefault();  // Förhindra standard formulärinlämning
 
-            var category = document.getElementById('categoryInput').value;
-            var name = document.getElementById('nameInput').value;
-            var url = document.getElementById('urlInput').value || "Ingen URL angiven";
-            var info = document.getElementById('infoInput').value;
+    var category = document.getElementById('categoryInput').value;
+    var name = document.getElementById('nameInput').value;
+    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+    var info = document.getElementById('infoInput').value;
 
-            // Lägg till objektet till addedObjects-arrayen
-            addedObjects.push({
-                category: category,
-                name: name,
-                url: url,
-                info: info,
-                lat: currentLat,
-                lng: currentLng
-            });
+    // Lägg till objektet till addedObjects-arrayen
+    addedObjects.push({
+        category: category,
+        name: name,
+        url: url,
+        info: info,
+        lat: currentLat,
+        lng: currentLng
+    });
 
-            // Skicka varje objekt som ett separat e-postmeddelande
-            addedObjects.forEach(function(object) {
-                var formData = new FormData();
-                formData.append('Typ', object.category || 'Ingen typ angiven');
-                formData.append('Namn', object.name);
-                formData.append('URL', object.url);
-                formData.append('Info', object.info);
-                formData.append('Latitud', object.lat);
-                formData.append('Longitud', object.lng);
+    // Skicka varje objekt som ett separat e-postmeddelande
+    addedObjects.forEach(function(object) {
+        var formData = new FormData();
+        formData.append('typ', object.category || 'Ingen typ angiven');
+        formData.append('namn', object.name);
+        formData.append('url', object.url);
+        formData.append('info', object.info);
+        formData.append('latitud', object.lat);
+        formData.append('longitud', object.lng);
 
-                fetch(document.getElementById('suggestionForm').action, {
-                    method: "POST",
-                    body: formData,
-                }).then(response => {
-                    return response.text();
-                }).then(text => {
-                    console.log(text);  // Kontrollera svaret från servern
-                }).catch(error => {
-                    console.error('Ett nätverksfel uppstod:', error);
-                });
-            });
+        fetch(document.getElementById('suggestionForm').action, {
+            method: "POST",
+            body: formData,
+        }).then(response => {
+            return response.text();
+        }).then(text => {
+            console.log(text);  // Kontrollera svaret från servern
+        }).catch(error => {
+            console.error('Ett nätverksfel uppstod:', error);
+        });
+    });
 
-            showThankYouMessage();  // Visa tackmeddelandet
-        };
+    showThankYouMessage();  // Visa tackmeddelandet
+};
+
 
         function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
