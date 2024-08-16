@@ -362,59 +362,39 @@
 document.getElementById('suggestionForm').onsubmit = function(event) {
     event.preventDefault();  // Förhindra standard formulärinlämning
 
-    // Spara det sista inmatade objektet i addedObjects
-    var category = document.getElementById('categoryInput').value;
     var name = document.getElementById('nameInput').value;
     var url = document.getElementById('urlInput').value || "Ingen URL angiven";
     var info = document.getElementById('infoInput').value;
 
-    // Kontrollera om det finns ett namn, vilket är obligatoriskt
-    if (name) {
-        addedObjects.push({
-            category: category,
-            name: name,
-            url: url,
-            info: info,
-            lat: currentLat,
-            lng: currentLng
-        });
+    // Lägg till objektet till addedObjects-arrayen
+    addedObjects.push({
+        name: name,
+        url: url,
+        info: info
+    });
 
-        // Töm inmatningsfälten efter att objektet har lagts till
-        document.getElementById('nameInput').value = '';
-        document.getElementById('urlInput').value = '';
-        document.getElementById('infoInput').value = '';
-    }
-
-    // Skapa en sträng som innehåller alla tillagda objekt
+    // Skapa en sträng med unika namn för varje objekt
     var objectsString = "";
-    addedObjects.forEach(function(object) {
-        objectsString += `Typ: ${object.category}\n`;
-        objectsString += `Namn: ${object.name}\n`;
-        objectsString += `URL: ${object.url}\n`;
-        objectsString += `Info: ${object.info}\n`;
-        objectsString += `Latitud: ${object.lat}\n`;
-        objectsString += `Longitud: ${object.lng}\n\n`;
+    addedObjects.forEach(function(object, index) {
+        objectsString += `Typ_${index+1}: ${object.category || 'Ingen typ angiven'}\n`;
+        objectsString += `Namn_${index+1}: ${object.name}\n`;
+        objectsString += `URL_${index+1}: ${object.url}\n`;
+        objectsString += `Info_${index+1}: ${object.info}\n\n`;
     });
 
     // Placera strängen i det dolda fältet
     document.getElementById('objectsField').value = objectsString;
-
-    // Verifiera att det dolda fältet har fyllts korrekt (För felsökning, kan tas bort senare)
-    console.log("Dolt fält innehåll: ", document.getElementById('objectsField').value);
 
     // Skicka formuläret med fetch
     fetch(document.getElementById('suggestionForm').action, {
         method: "POST",
         body: new FormData(document.getElementById('suggestionForm')),
     }).then(response => {
-        if (response.ok) {
-            closeInputForm();  // Stäng inmatningsrutan
-            showThankYouMessage();  // Visa tackmeddelandet
-        } else {
-            alert('Något gick fel när formuläret skickades. Försök igen senare.');
-        }
+        return response.text();
+    }).then(text => {
+        console.log(text);  // Kontrollera svaret från servern
     }).catch(error => {
-        alert('Ett nätverksfel uppstod: ' + error.message);
+        console.error('Ett nätverksfel uppstod:', error);
     });
 };
 
