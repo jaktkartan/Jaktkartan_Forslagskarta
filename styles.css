@@ -178,6 +178,7 @@ body, html {
 
 .object-details p {
     margin: 10px 0;
+    color: rgb(50, 94, 88); /* Din gröna färg för etiketter som "Namn:", "URL:" etc. */
 }
 
 .object-details input[type="text"],
