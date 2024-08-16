@@ -49,7 +49,6 @@ body, html {
 }
 
 #inputForm {
-    width: 90%;
     max-height: 98%; /* Täcker upp till 98% av skärmens höjd */
     overflow-y: auto;
 }
