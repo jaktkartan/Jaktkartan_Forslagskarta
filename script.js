@@ -78,6 +78,13 @@ function confirmPosition() {
 
 function openInputForm() {
     document.getElementById('inputForm').style.display = 'block';
+
+    // Fyll i formuläret med data från currentObject
+    if (currentObject) {
+        document.getElementById('nameInput').value = currentObject.name;
+        document.getElementById('urlInput').value = currentObject.url;
+        document.getElementById('infoInput').value = currentObject.info;
+    }
 }
 
 function addAnotherObject() {
@@ -86,6 +93,9 @@ function addAnotherObject() {
         addObjectToUI(addedObjects.length - 1); // Lägg till objektet i UI:t
         currentObject = null; // Nollställ det aktuella objektet
     }
+    
+    // Rensa inmatningsfälten för att förbereda för nästa objekt
+    clearFormData();
     
     // Visa startrutan igen för att välja en ny typ av objekt
     closeInputForm();
