@@ -76,7 +76,7 @@ function openInputForm() {
     }
 }
 
-function addAnotherObject() {
+function addObject() {
     // Skapa currentObject först nu när formuläret är ifyllt
     var name = document.getElementById('nameInput').value;
     var url = document.getElementById('urlInput').value || "Ingen URL angiven";
@@ -98,6 +98,9 @@ function addAnotherObject() {
         addedObjects.push(currentObject); // Lägg till det aktuella objektet till arrayen
         addObjectToUI(addedObjects.length - 1); // Lägg till objektet i UI:t
         currentObject = null; // Nollställ det aktuella objektet
+
+        // Uppdatera knappen "Skicka objekt"
+        updateSubmitButton();
     } else {
         alert("Vänligen fyll i namnet på objektet.");
         return;
@@ -105,13 +108,6 @@ function addAnotherObject() {
     
     // Rensa inmatningsfälten för att förbereda för nästa objekt
     clearFormData();
-    
-    // Visa startrutan igen för att välja en ny typ av objekt
-    closeInputForm();
-    lastMarker = null;
-    document.getElementById('startMessage').style.display = 'block';
-    centerMarkerContainer.style.display = 'none';
-    confirmButton.style.display = 'none';
 }
 
 function addObjectToUI(index) {
@@ -164,10 +160,27 @@ function deleteObject(index, buttonElement) {
     }
 
     addedObjects.splice(index, 1); // Ta bort objektet från arrayen
+
+    // Uppdatera knappen "Skicka objekt"
+    updateSubmitButton();
+}
+
+function updateSubmitButton() {
+    var submitButton = document.getElementById('submitBtn');
+    if (addedObjects.length > 0) {
+        submitButton.disabled = false;
+    } else {
+        submitButton.disabled = true;
+    }
 }
 
 document.getElementById('suggestionForm').onsubmit = function(event) {
     event.preventDefault();  // Förhindra standard formulärinlämning
+
+    if (addedObjects.length === 0) {
+        alert("För att skicka, lägg till ett objekt.");
+        return;
+    }
 
     if (confirm("Är du säker på att du vill skicka objekten?")) {
         var suggestionForm = document.getElementById('suggestionForm');
@@ -243,4 +256,5 @@ function clearFormData() {
 
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
+    updateSubmitButton(); // Inaktivera knappen "Skicka objekt" vid start
 };
