@@ -49,10 +49,9 @@
     <button id="confirmButton" onclick="confirmPosition()">Placera</button>
 
     <!-- Inmatningsformulär -->
-<div id="inputForm">
-    <h3 id="formTitle">Lägg till objekt</h3>
-    <form id="suggestionForm">
-        <div id="inputFields">
+    <div id="inputForm">
+        <h3 id="formTitle">Lägg till objekt</h3>
+        <form id="suggestionForm">
             <input type="hidden" name="typ" id="categoryInput">
             <input type="hidden" name="latitud" id="latitudeInput">
             <input type="hidden" name="longitud" id="longitudeInput">
@@ -60,13 +59,12 @@
             <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
             <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
             <button type="button" id="addObjectBtn" onclick="addObject()">Lägg till</button>
-        </div>
-        <button type="button" id="addMoreBtn" onclick="addAnotherObject()" style="display: none;">Lägg till fler objekt</button>
-        <button type="submit" id="submitBtn" disabled>Skicka objekt</button>
-        <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
-    </form>
-</div>
+            <button type="button" id="addMoreBtn" onclick="addAnotherObject()" style="display: none;">Lägg till fler objekt</button>
+        </form>
+    </div>
 
+    <!-- Redigeringsfält för tillagda objekt -->
+    <div id="addedObjectsList"></div>
 
     <!-- Tackmeddelande -->
     <div id="thankYouMessage">
