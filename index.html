@@ -231,17 +231,21 @@
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
         <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycbzmn5TIZ0vfIrQ2akHqHpqwnrM5AryeW6Fg99qftnb-jHt7RZCeMnuwvHxnSLk0sL5J/exec" method="POST">
-            <input type="hidden" name="typ" id="categoryInput">
-            <input type="hidden" name="latitud" id="latitudeInput">
-            <input type="hidden" name="longitud" id="longitudeInput">
-            <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
-            <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
-            <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
-            <div id="addedObjectsList"></div>
-            <button type="button" id="addMoreBtn" onclick="addAnotherObject()">Lägg till fler objekt</button>
-            <button type="submit" id="submitBtn">Skicka alla objekt</button>
-            <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
-        </form>
+    <input type="hidden" name="typ" id="categoryInput">
+    <input type="hidden" name="latitud" id="latitudeInput">
+    <input type="hidden" name="longitud" id="longitudeInput">
+    <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
+    <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
+    <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+
+    <!-- Dolda fältet som innehåller all data om objekt -->
+    <input type="hidden" name="objects" id="objectsField">
+
+    <div id="addedObjectsList"></div>
+    <button type="button" id="addMoreBtn" onclick="addAnotherObject()">Lägg till fler objekt</button>
+    <button type="submit" id="submitBtn">Skicka alla objekt</button>
+    <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
+</form>
     </div>
 
     <!-- Tackmeddelande -->
