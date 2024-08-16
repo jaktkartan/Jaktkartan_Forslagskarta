@@ -377,13 +377,10 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
     // Placera strängen i det dolda fältet
     document.getElementById('objectsField').value = objectsString;
 
-    // Samla in formulärdata för att skicka med fetch
-    var formData = new FormData(document.getElementById('suggestionForm'));
-
-    // Använd fetch för att skicka formuläret
+    // Skicka formuläret med fetch
     fetch(document.getElementById('suggestionForm').action, {
         method: "POST",
-        body: formData,
+        body: new FormData(document.getElementById('suggestionForm')),
     }).then(response => {
         if (response.ok) {
             closeInputForm();  // Stäng inmatningsrutan
