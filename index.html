@@ -20,29 +20,6 @@
             left: 0;
             z-index: 1;
         }
-        #infoPanel {
-            position: absolute;
-            top: 10px;
-            right: 10px;
-            width: 300px;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 10px;
-            padding: 10px;
-            z-index: 1000;
-            max-height: calc(100% - 20px);
-            overflow-y: auto;
-        }
-        #infoPanel h3 {
-            margin-top: 0;
-        }
-        #objectList {
-            list-style-type: none;
-            padding: 0;
-        }
-        #objectList li {
-            margin: 5px 0;
-        }
         #inputForm, #thankYouMessage, #startMessage {
             display: none;
             position: fixed;
@@ -189,12 +166,6 @@
 <body>
     <div id="map"></div>
 
-    <!-- Informationspanel -->
-    <div id="infoPanel">
-        <h3>Föreslagna objekt</h3>
-        <ul id="objectList"></ul>
-    </div>
-
     <!-- Startruta -->
     <div id="startMessage">
         <h3>Välkommen till Objektskartan!</h3>
@@ -336,15 +307,71 @@
                 listItem.innerHTML = `<strong>${category}</strong>: ${name} - ${currentLat}, ${currentLng}`;
                 addedObjectsList.appendChild(listItem);
 
+                // Rensa inmatningsfälten
                 document.getElementById('nameInput').value = '';
                 document.getElementById('urlInput').value = '';
                 document.getElementById('infoInput').value = '';
 
+                // Visa startrutan igen för att välja en ny typ av objekt
                 closeInputForm();
                 lastMarker = null;
-                centerMarkerContainer.style.display = 'block';
-                confirmButton.style.display = 'block';
+                document.getElementById('startMessage').style.display = 'block';
+                centerMarkerContainer.style.display = 'none';
+                confirmButton.style.display = 'none';
             }
+        }
+
+        document.getElementById('suggestionForm').onsubmit = function(event) {
+            event.preventDefault();  // Förhindra standard formulärinlämning
+
+            var category = document.getElementById('categoryInput').value;
+            var name = document.getElementById('nameInput').value;
+            var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+            var info = document.getElementById('infoInput').value;
+
+            // Lägg till objektet till addedObjects-arrayen
+            addedObjects.push({
+                category: category,
+                name: name,
+                url: url,
+                info: info,
+                lat: currentLat,
+                lng: currentLng
+            });
+
+            // Skicka varje objekt
+            addedObjects.forEach(function(object) {
+                var formData = new FormData();
+                formData.append('typ', object.category || 'Ingen typ angiven');
+                formData.append('namn', object.name);
+                formData.append('url', object.url);
+                formData.append('info', object.info);
+                formData.append('latitud', object.lat);
+                formData.append('longitud', object.lng);
+
+                fetch(document.getElementById('suggestionForm').action, {
+                    method: "POST",
+                    body: formData,
+                }).then(response => {
+                    return response.text();
+                }).then(text => {
+                    console.log(text);  // Kontrollera svaret från servern
+                }).catch(error => {
+                    console.error('Ett nätverksfel uppstod:', error);
+                });
+            });
+
+            // Visa tackmeddelandet
+            showThankYouMessage();
+        };
+
+        function showThankYouMessage() {
+            closeInputForm();  // Stäng inmatningsrutan
+            document.getElementById('thankYouMessage').style.display = 'block'; // Visa tackmeddelandet
+        }
+
+        function closeInputForm() {
+            document.getElementById('inputForm').style.display = 'none';
         }
 
         function cancelAndRemove() {
@@ -357,71 +384,13 @@
             document.getElementById('startMessage').style.display = 'block';
         }
 
-        // Korrigerad onsubmit-funktion
-document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault();  // Förhindra standard formulärinlämning
-
-    var category = document.getElementById('categoryInput').value;
-    var name = document.getElementById('nameInput').value;
-    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
-    var info = document.getElementById('infoInput').value;
-
-    // Lägg till objektet till addedObjects-arrayen
-    addedObjects.push({
-        category: category,
-        name: name,
-        url: url,
-        info: info,
-        lat: currentLat,
-        lng: currentLng
-    });
-
-    // Skicka varje objekt som ett separat e-postmeddelande
-    addedObjects.forEach(function(object) {
-        var formData = new FormData();
-        formData.append('typ', object.category || 'Ingen typ angiven');
-        formData.append('namn', object.name);
-        formData.append('url', object.url);
-        formData.append('info', object.info);
-        formData.append('latitud', object.lat);
-        formData.append('longitud', object.lng);
-
-        fetch(document.getElementById('suggestionForm').action, {
-            method: "POST",
-            body: formData,
-        }).then(response => {
-            return response.text();
-        }).then(text => {
-            console.log(text);  // Kontrollera svaret från servern
-        }).catch(error => {
-            console.error('Ett nätverksfel uppstod:', error);
-        });
-    });
-
-    showThankYouMessage();  // Visa tackmeddelandet
-};
-
-
-        function openInputForm() {
-            document.getElementById('inputForm').style.display = 'block';
-        }
-
-        function closeInputForm() {
-            document.getElementById('inputForm').style.display = 'none';
-        }
-
-        function showThankYouMessage() {
-            closeInputForm();  // Stäng inmatningsrutan
-            document.getElementById('thankYouMessage').style.display = 'block'; // Visa tackmeddelandet
+        function addNewSuggestion() {
+            closeThankYouMessage();
+            location.reload();  // Laddar om sidan
         }
 
         function closeThankYouMessage() {
             document.getElementById('thankYouMessage').style.display = 'none';
-        }
-
-        function addNewSuggestion() {
-            closeThankYouMessage();
-            location.reload();  // Laddar om sidan
         }
 
         function goToJaktkartan() {
