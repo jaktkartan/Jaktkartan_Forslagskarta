@@ -359,37 +359,43 @@
             document.getElementById('startMessage').style.display = 'block';
         }
 
-        document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault();  // Förhindra standard formulärinlämning
+document.getElementById('suggestionForm').onsubmit = function(event) {
+    event.preventDefault();  // Förhindra standard formulärinlämning
 
-            var formData = new FormData(document.getElementById('suggestionForm'));
-            var objectsString = "";
+    // Skapa en sträng som innehåller alla tillagda objekt
+    var objectsString = "";
 
-            addedObjects.forEach(function(object) {
-                objectsString += `Typ: ${object.category}\n`;
-                objectsString += `Namn: ${object.name}\n`;
-                objectsString += `URL: ${object.url}\n`;
-                objectsString += `Info: ${object.info}\n`;
-                objectsString += `Latitud: ${object.lat}\n`;
-                objectsString += `Longitud: ${object.lng}\n\n`;
-            });
+    addedObjects.forEach(function(object) {
+        objectsString += `Typ: ${object.category}\n`;
+        objectsString += `Namn: ${object.name}\n`;
+        objectsString += `URL: ${object.url}\n`;
+        objectsString += `Info: ${object.info}\n`;
+        objectsString += `Latitud: ${object.lat}\n`;
+        objectsString += `Longitud: ${object.lng}\n\n`;
+    });
 
-            formData.append('objects', objectsString);
+    // Placera strängen i det dolda fältet
+    document.getElementById('objectsField').value = objectsString;
 
-            fetch(document.getElementById('suggestionForm').action, {
-                method: "POST",
-                body: formData,
-            }).then(response => {
-                if (response.ok) {
-                    closeInputForm();
-                    showThankYouMessage();
-                } else {
-                    alert('Något gick fel när formuläret skickades. Försök igen senare.');
-                }
-            }).catch(error => {
-                alert('Ett nätverksfel uppstod: ' + error.message);
-            });
-        };
+    // Samla in formulärdata för att skicka med fetch
+    var formData = new FormData(document.getElementById('suggestionForm'));
+
+    // Använd fetch för att skicka formuläret
+    fetch(document.getElementById('suggestionForm').action, {
+        method: "POST",
+        body: formData,
+    }).then(response => {
+        if (response.ok) {
+            closeInputForm();  // Stäng inmatningsrutan
+            showThankYouMessage();  // Visa tackmeddelandet
+        } else {
+            alert('Något gick fel när formuläret skickades. Försök igen senare.');
+        }
+    }).catch(error => {
+        alert('Ett nätverksfel uppstod: ' + error.message);
+    });
+};
+
 
         function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
