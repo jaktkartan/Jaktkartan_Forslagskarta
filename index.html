@@ -358,20 +358,16 @@ function confirmPosition() {
 document.getElementById('suggestionForm').onsubmit = function(event) {
     event.preventDefault();
 
-    var formData = new FormData();
-
-    addedObjects.forEach(function(object, index) {
-        formData.append(`objects[${index}][category]`, object.category);
-        formData.append(`objects[${index}][name]`, object.name);
-        formData.append(`objects[${index}][url]`, object.url);
-        formData.append(`objects[${index}][info]`, object.info);
-        formData.append(`objects[${index}][lat]`, object.lat);
-        formData.append(`objects[${index}][lng]`, object.lng);
-    });
+    var formData = {
+        objects: addedObjects
+    };
 
     fetch(document.getElementById('suggestionForm').action, {
         method: "POST",
-        body: formData,
+        body: JSON.stringify(formData),
+        headers: {
+            "Content-Type": "application/json"
+        }
     }).then(response => {
         if (response.ok) {
             closeInputForm();
@@ -383,6 +379,7 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
         alert('Ett nätverksfel uppstod: ' + error.message);
     });
 };
+
 
 
         function openInputForm() {
