@@ -87,9 +87,6 @@ function addAnotherObject() {
         currentObject = null; // Nollställ det aktuella objektet
     }
     
-    // Rensa inmatningsfälten för att förbereda för nästa objekt
-    clearFormData();
-    
     // Visa startrutan igen för att välja en ny typ av objekt
     closeInputForm();
     lastMarker = null;
