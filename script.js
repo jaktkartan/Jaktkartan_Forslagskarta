@@ -19,7 +19,8 @@ function selectType(type, iconSrc) {
     document.getElementById('formTitle').innerText = 'Lägg till ' + type;
     document.getElementById('startMessage').style.display = 'none';
 
-    // Uppdatera placeholders
+    clearFormData(); // Rensa formuläret när ett nytt objekt väljs
+
     document.getElementById('nameInput').placeholder = 'Namn på ' + type.toLowerCase();
     document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
 
@@ -89,9 +90,7 @@ function addAnotherObject() {
         addedObjectsList.appendChild(listItem);
 
         // Rensa inmatningsfälten
-        document.getElementById('nameInput').value = '';
-        document.getElementById('urlInput').value = '';
-        document.getElementById('infoInput').value = '';
+        clearFormData();
 
         // Visa startrutan igen för att välja en ny typ av objekt
         closeInputForm();
@@ -161,6 +160,8 @@ function cancelAndRemove() {
         lastMarker = null;
     }
 
+    clearFormData(); // Rensa formuläret när "Avbryt" klickas
+
     closeInputForm();
     document.getElementById('startMessage').style.display = 'block';
 }
@@ -178,6 +179,15 @@ function goToJaktkartan() {
     window.location.href = 'https://www.jaktkartan.se';
 }
 
+function clearFormData() {
+    document.getElementById('nameInput').value = '';
+    document.getElementById('urlInput').value = '';
+    document.getElementById('infoInput').value = '';
+    document.getElementById('latitudeInput').value = '';
+    document.getElementById('longitudeInput').value = '';
+}
+
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
 };
+
