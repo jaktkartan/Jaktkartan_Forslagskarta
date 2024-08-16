@@ -109,8 +109,9 @@ function addObject() {
         document.getElementById('addObjectBtn').style.display = 'none';
         document.getElementById('addMoreBtn').style.display = 'block';
 
-        // Behåll formuläret öppet för att visa att objektet lades till i redigeringsfältet
-        document.getElementById('inputForm').style.display = 'block';
+        // Kollapsa inmatningsformuläret efter att objektet har lagts till
+        document.getElementById('inputForm').style.maxHeight = '0';
+        document.getElementById('inputForm').style.overflow = 'hidden';
     } else {
         alert("Vänligen fyll i namnet på objektet.");
         return;
@@ -133,6 +134,11 @@ function addAnotherObject() {
     // Visa "Lägg till"-knappen igen och dölj "Lägg till fler objekt"-knappen
     document.getElementById('addObjectBtn').style.display = 'block';
     document.getElementById('addMoreBtn').style.display = 'none';
+
+    // Öppna inmatningsformuläret igen
+    document.getElementById('inputForm').style.maxHeight = '98%';
+    document.getElementById('inputForm').style.overflow = 'auto';
+    document.getElementById('inputForm').style.display = 'block';
 }
 
 function addObjectToUI(index) {
