@@ -348,27 +348,41 @@
             }
         }
 
-        document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault();  // Förhindra standard formulärinlämning
+document.getElementById('suggestionForm').onsubmit = function(event) {
+    event.preventDefault();  // Förhindra standard formulärinlämning
 
-            // Samla alla objekt i en sträng
-            var objectsString = "";
+    // Samla alla objekt i en sträng
+    var objectsString = "";
 
-            addedObjects.forEach(function(object) {
-                objectsString += `Typ: ${object.category}\n`;
-                objectsString += `Namn: ${object.name}\n`;
-                objectsString += `URL: ${object.url}\n`;
-                objectsString += `Info: ${object.info}\n`;
-                objectsString += `Latitud: ${object.lat}\n`;
-                objectsString += `Longitud: ${object.lng}\n\n`;
-            });
+    addedObjects.forEach(function(object) {
+        objectsString += `Typ: ${object.category}\n`;
+        objectsString += `Namn: ${object.name}\n`;
+        objectsString += `URL: ${object.url}\n`;
+        objectsString += `Info: ${object.info}\n`;
+        objectsString += `Latitud: ${object.lat}\n`;
+        objectsString += `Longitud: ${object.lng}\n\n`;
+    });
 
-            // Placera strängen i det dolda fältet
-            document.getElementById('objectsField').value = objectsString;
+    // Lägg till samlad data i det dolda fältet
+    document.getElementById('objectsField').value = objectsString;
 
-            // Skicka formuläret
-            event.target.submit();
-        };
+    var formData = new FormData(document.getElementById('suggestionForm'));
+
+    // Skicka formuläret med AJAX
+    fetch(document.getElementById('suggestionForm').action, {
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log(result); // Visa resultat i konsolen för att verifiera
+        showThankYouMessage(); // Visa tackmeddelande på sidan
+    })
+    .catch(error => {
+        console.error('Ett fel uppstod:', error);
+    });
+};
+
 
         function cancelAndRemove() {
             if (lastMarker) {
