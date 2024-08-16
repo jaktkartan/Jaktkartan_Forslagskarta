@@ -67,6 +67,8 @@ function confirmPosition() {
             marker: lastMarker // Spara marker referensen för att kunna ta bort den senare
         };
 
+        console.log("Current Object Created:", currentObject); // Logga currentObject
+
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';  // Knappen ska försvinna efter bekräftelse
 
@@ -81,6 +83,7 @@ function openInputForm() {
 
     // Fyll i formuläret med data från currentObject
     if (currentObject) {
+        console.log("Fyller i formuläret med currentObject:", currentObject); // Logga när formuläret fylls
         document.getElementById('nameInput').value = currentObject.name;
         document.getElementById('urlInput').value = currentObject.url;
         document.getElementById('infoInput').value = currentObject.info;
