@@ -20,6 +20,7 @@ function selectType(type, iconSrc) {
     document.getElementById('startMessage').style.display = 'none';
 
     clearFormData(); // Rensa formuläret när ett nytt objekt väljs
+    closeAllObjectDetails(); // Stäng alla flikar när ett nytt objekt väljs
 
     document.getElementById('nameInput').placeholder = 'Namn på ' + type.toLowerCase();
     document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
@@ -94,9 +95,9 @@ function addAnotherObject() {
                 <strong>${category}</strong>: ${name}
             </div>
             <div class="object-details" style="display: none;">
-                <p><strong>Namn:</strong> <input type="text" value="${name}" onchange="updateObjectData(${addedObjects.length - 1}, 'name', this.value)"></p>
-                <p><strong>URL:</strong> <input type="text" value="${url}" onchange="updateObjectData(${addedObjects.length - 1}, 'url', this.value)"></p>
-                <p><strong>Info:</strong> <textarea onchange="updateObjectData(${addedObjects.length - 1}, 'info', this.value)">${info}</textarea></p>
+                <p><strong>Namn:</strong> <input type="text" value="${name}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${addedObjects.length - 1}, 'name', this.value)"></p>
+                <p><strong>URL:</strong> <input type="text" value="${url}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${addedObjects.length - 1}, 'url', this.value)"></p>
+                <p><strong>Info:</strong> <textarea style="color: rgb(50, 94, 88);" onchange="updateObjectData(${addedObjects.length - 1}, 'info', this.value)">${info}</textarea></p>
                 <button type="button" onclick="deleteObject(${addedObjects.length - 1}, this)">Ta bort objekt</button>
             </div>
         `;
@@ -122,6 +123,13 @@ function toggleObjectDetails(headerElement) {
     } else {
         details.style.display = "none";
     }
+}
+
+function closeAllObjectDetails() {
+    var detailsElements = document.querySelectorAll('.object-details');
+    detailsElements.forEach(function(details) {
+        details.style.display = 'none';
+    });
 }
 
 function updateObjectData(index, field, value) {
