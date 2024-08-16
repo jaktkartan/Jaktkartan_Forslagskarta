@@ -356,29 +356,23 @@ function confirmPosition() {
         }
 
 document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault();
+    var objectsField = document.getElementById('objectsField');
+    var objectsString = "";
 
-    var formData = {
-        objects: addedObjects
-    };
-
-    fetch(document.getElementById('suggestionForm').action, {
-        method: "POST",
-        body: JSON.stringify(formData),
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }).then(response => {
-        if (response.ok) {
-            closeInputForm();
-            showThankYouMessage();
-        } else {
-            alert('Något gick fel när formuläret skickades. Försök igen senare.');
-        }
-    }).catch(error => {
-        alert('Ett nätverksfel uppstod: ' + error.message);
+    addedObjects.forEach(function(object, index) {
+        objectsString += `Typ: ${object.category}\n`;
+        objectsString += `Namn: ${object.name}\n`;
+        objectsString += `URL: ${object.url}\n`;
+        objectsString += `Info: ${object.info}\n`;
+        objectsString += `Latitud: ${object.lat}\n`;
+        objectsString += `Longitud: ${object.lng}\n\n`;
     });
+
+    objectsField.value = objectsString;
+
+    return true; // Tillåt formuläret att skickas som vanligt
 };
+
 
 
 
