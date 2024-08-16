@@ -12,6 +12,7 @@ var centerMarker = document.getElementById('centerMarker');
 var centerMarkerContainer = document.getElementById('centerMarkerContainer');
 var confirmButton = document.getElementById('confirmButton');
 var lastMarker = null;
+var currentObject = null; // Håller det aktuella objektet som inte är sparat än
 var addedObjects = [];
 
 function selectType(type, iconSrc) {
@@ -56,7 +57,7 @@ function confirmPosition() {
 
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
 
-        addedObjects.push({
+        currentObject = {
             category: document.getElementById('categoryInput').value,
             name: document.getElementById('nameInput').value,
             url: document.getElementById('urlInput').value || "Ingen URL angiven",
@@ -64,9 +65,7 @@ function confirmPosition() {
             lat: currentLat,
             lng: currentLng,
             marker: lastMarker // Spara marker referensen för att kunna ta bort den senare
-        });
-
-        addObjectToUI(addedObjects.length - 1); // Lägg till objektet i UI:t
+        };
 
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';  // Knappen ska försvinna efter bekräftelse
@@ -79,6 +78,24 @@ function confirmPosition() {
 
 function openInputForm() {
     document.getElementById('inputForm').style.display = 'block';
+}
+
+function addAnotherObject() {
+    if (currentObject) {
+        addedObjects.push(currentObject); // Lägg till det aktuella objektet till arrayen
+        addObjectToUI(addedObjects.length - 1); // Lägg till objektet i UI:t
+        currentObject = null; // Nollställ det aktuella objektet
+    }
+    
+    // Rensa inmatningsfälten för att förbereda för nästa objekt
+    clearFormData();
+    
+    // Visa startrutan igen för att välja en ny typ av objekt
+    closeInputForm();
+    lastMarker = null;
+    document.getElementById('startMessage').style.display = 'block';
+    centerMarkerContainer.style.display = 'none';
+    confirmButton.style.display = 'none';
 }
 
 function addObjectToUI(index) {
@@ -180,6 +197,7 @@ function cancelAndRemove() {
         lastMarker = null;
     }
 
+    currentObject = null; // Nollställ det aktuella objektet om det avbryts
     clearFormData(); // Rensa formuläret när "Avbryt" klickas
 
     closeInputForm();
