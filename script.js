@@ -102,25 +102,19 @@ function addObject() {
         // Uppdatera knappen "Skicka objekt"
         updateSubmitButton();
 
-        // Dölj och kollapsa inmatningsformuläret
-        collapseInputForm();
+        // Dölj inmatningsfälten och visa knappen för att lägga till fler objekt
+        document.getElementById('inputFields').style.display = 'none';
+        document.getElementById('addMoreBtn').style.display = 'block';
     } else {
         alert("Vänligen fyll i namnet på objektet.");
         return;
     }
 }
 
-function collapseInputForm() {
-    // Dölj formuläret
-    document.getElementById('inputForm').style.display = 'none';
-
-    // Visa en knapp för att lägga till fler objekt
-    document.getElementById('addMoreBtn').style.display = 'block';
-}
-
 function addAnotherObject() {
     // Återställ så att användaren kan lägga till en ny punkt
     document.getElementById('addMoreBtn').style.display = 'none';
+    document.getElementById('inputFields').style.display = 'block';
     document.getElementById('inputForm').style.display = 'none';
     document.getElementById('startMessage').style.display = 'block';
 
