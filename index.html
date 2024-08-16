@@ -349,12 +349,11 @@
         }
 
         document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault();  // Förhindra standard formulär inlämning
+            event.preventDefault();  // Förhindra standard formulärinlämning
 
-            // Skapa en tom sträng för att samla alla objekt
+            // Samla alla objekt i en sträng
             var objectsString = "";
 
-            // Gå igenom alla objekt och lägg till deras data i strängen
             addedObjects.forEach(function(object) {
                 objectsString += `Typ: ${object.category}\n`;
                 objectsString += `Namn: ${object.name}\n`;
@@ -364,7 +363,7 @@
                 objectsString += `Longitud: ${object.lng}\n\n`;
             });
 
-            // Lägg till den samlade strängen i ett dolt fält i formuläret
+            // Placera strängen i det dolda fältet
             document.getElementById('objectsField').value = objectsString;
 
             // Skicka formuläret
