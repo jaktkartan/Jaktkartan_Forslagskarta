@@ -362,6 +362,23 @@
 document.getElementById('suggestionForm').onsubmit = function(event) {
     event.preventDefault();  // Förhindra standard formulärinlämning
 
+    // Spara det sista objektet i addedObjects
+    var category = document.getElementById('categoryInput').value;
+    var name = document.getElementById('nameInput').value;
+    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+    var info = document.getElementById('infoInput').value;
+
+    if (name) {
+        addedObjects.push({
+            category: category,
+            name: name,
+            url: url,
+            info: info,
+            lat: currentLat,
+            lng: currentLng
+        });
+    }
+
     // Skapa en sträng som innehåller alla tillagda objekt
     var objectsString = "";
 
