@@ -359,52 +359,55 @@
             document.getElementById('startMessage').style.display = 'block';
         }
 
-        // Korrigerad onsubmit-funktion utan duplicering
-        document.getElementById('suggestionForm').onsubmit = function(event) {
-            event.preventDefault();  // Förhindra standard formulärinlämning
+document.getElementById('suggestionForm').onsubmit = function(event) {
+    event.preventDefault();  // Förhindra standard formulärinlämning
 
-            var category = document.getElementById('categoryInput').value;
-            var name = document.getElementById('nameInput').value;
-            var url = document.getElementById('urlInput').value || "Ingen URL angiven";
-            var info = document.getElementById('infoInput').value;
+    var category = document.getElementById('categoryInput').value;
+    var name = document.getElementById('nameInput').value;
+    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+    var info = document.getElementById('infoInput').value;
 
-            // Lägg till objektet till addedObjects-arrayen
-            addedObjects.push({
-                category: category,
-                name: name,
-                url: url,
-                info: info,
-                lat: currentLat,
-                lng: currentLng
-            });
+    // Lägg till objektet till addedObjects-arrayen
+    addedObjects.push({
+        category: category,
+        name: name,
+        url: url,
+        info: info,
+        lat: currentLat,
+        lng: currentLng
+    });
 
-            // Skapa en sträng med unika namn för varje objekt
-            var objectsString = "";
-            addedObjects.forEach(function(object, index) {
-                objectsString += `Typ_${index+1}: ${object.category || 'Ingen typ angiven'}\n`;
-                objectsString += `Namn_${index+1}: ${object.name}\n`;
-                objectsString += `URL_${index+1}: ${object.url}\n`;
-                objectsString += `Info_${index+1}: ${object.info}\n`;
-                objectsString += `Latitud_${index+1}: ${object.lat}\n`;
-                objectsString += `Longitud_${index+1}: ${object.lng}\n\n`;
-            });
+    console.log('Added objects:', addedObjects);  // Logga alla tillagda objekt
 
-            // Placera strängen i det dolda fältet
-            document.getElementById('objectsField').value = objectsString;
+    // Skapa en sträng med unika namn för varje objekt
+    var objectsString = "";
+    addedObjects.forEach(function(object, index) {
+        objectsString += `Typ_${index+1}: ${object.category || 'Ingen typ angiven'}\n`;
+        objectsString += `Namn_${index+1}: ${object.name}\n`;
+        objectsString += `URL_${index+1}: ${object.url}\n`;
+        objectsString += `Info_${index+1}: ${object.info}\n`;
+        objectsString += `Latitud_${index+1}: ${object.lat}\n`;
+        objectsString += `Longitud_${index+1}: ${object.lng}\n\n`;
+    });
 
-            // Skicka formuläret med fetch
-            fetch(document.getElementById('suggestionForm').action, {
-                method: "POST",
-                body: new FormData(document.getElementById('suggestionForm')),
-            }).then(response => {
-                return response.text();
-            }).then(text => {
-                console.log(text);  // Kontrollera svaret från servern
-                showThankYouMessage();  // Visa tackmeddelandet
-            }).catch(error => {
-                console.error('Ett nätverksfel uppstod:', error);
-            });
-        };
+    document.getElementById('objectsField').value = objectsString;
+
+    console.log('Hidden field content:', objectsString);  // Logga innehållet i det dolda fältet
+
+    // Skicka formuläret med fetch
+    fetch(document.getElementById('suggestionForm').action, {
+        method: "POST",
+        body: new FormData(document.getElementById('suggestionForm')),
+    }).then(response => {
+        return response.text();
+    }).then(text => {
+        console.log(text);  // Kontrollera svaret från servern
+        showThankYouMessage();  // Visa tackmeddelandet
+    }).catch(error => {
+        console.error('Ett nätverksfel uppstod:', error);
+    });
+};
+
 
         function openInputForm() {
             document.getElementById('inputForm').style.display = 'block';
