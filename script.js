@@ -102,7 +102,8 @@ function addObject() {
         // Uppdatera knappen "Skicka objekt"
         updateSubmitButton();
 
-        // Visa knappen för att lägga till fler objekt
+        // Dölj "Lägg till"-knappen och visa "Lägg till fler objekt"-knappen
+        document.getElementById('addObjectBtn').style.display = 'none';
         document.getElementById('addMoreBtn').style.display = 'block';
     } else {
         alert("Vänligen fyll i namnet på objektet.");
@@ -122,6 +123,10 @@ function addAnotherObject() {
 
     // Återställ formuläret för att lägga till ett nytt objekt
     clearFormData();
+
+    // Visa "Lägg till"-knappen igen och dölj "Lägg till fler objekt"-knappen
+    document.getElementById('addObjectBtn').style.display = 'block';
+    document.getElementById('addMoreBtn').style.display = 'none';
 }
 
 function addObjectToUI(index) {
