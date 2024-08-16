@@ -191,10 +191,10 @@ function deleteObject(index, buttonElement) {
 
 function updateSubmitButton() {
     var submitButton = document.getElementById('submitBtn');
-    if (addedObjects.length > 0) {
-        submitButton.disabled = false;
+    if (submitButton) {
+        submitButton.disabled = addedObjects.length === 0;
     } else {
-        submitButton.disabled = true;
+        console.error("Submit button not found");
     }
 }
 
