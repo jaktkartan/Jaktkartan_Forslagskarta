@@ -254,6 +254,8 @@
         }
 
         function confirmPosition() {
+            console.log("Placera-knappen klickades"); // För felsökning
+
             var center = map.getCenter();
             currentLat = center.lat.toString(); // Konvertera till sträng utan att avrunda
             currentLng = center.lng.toString(); // Konvertera till sträng utan att avrunda
@@ -284,6 +286,10 @@
             } else {
                 console.error("latitudeInput eller longitudeInput kunde inte hittas.");
             }
+        }
+
+        function openInputForm() {
+            document.getElementById('inputForm').style.display = 'block';
         }
 
         function addAnotherObject() {
