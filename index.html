@@ -421,7 +421,7 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
 
         function addNewSuggestion() {
             closeThankYouMessage();
-            document.getElementById('startMessage').style.display = 'block';
+            location.reload();  // Laddar om sidan
         }
 
         function goToJaktkartan() {
