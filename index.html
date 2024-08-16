@@ -55,18 +55,23 @@
             <input type="hidden" name="typ" id="categoryInput">
             <input type="hidden" name="latitud" id="latitudeInput">
             <input type="hidden" name="longitud" id="longitudeInput">
-            <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
-            <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
-            <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+            
+            <!-- Container för fält som kollapsas -->
+            <div id="inputContainer">
+                <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
+                <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
+                <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
+            </div>
+            
             <button type="button" id="addObjectBtn" onclick="addObject()">Lägg till</button>
             <button type="button" id="addMoreBtn" onclick="addAnotherObject()" style="display: none;">Lägg till fler objekt</button>
             <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
             <button type="submit" id="submitBtn" disabled>Skicka objekt</button>
         </form>
-    </div>
 
-    <!-- Redigeringsfält för tillagda objekt -->
-    <div id="addedObjectsList"></div>
+        <!-- Redigeringsfält för tillagda objekt -->
+        <div id="addedObjectsList"></div>
+    </div>
 
     <!-- Tackmeddelande -->
     <div id="thankYouMessage">
