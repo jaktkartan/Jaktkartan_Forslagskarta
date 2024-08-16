@@ -86,6 +86,9 @@ function addObject() {
 
         updateSubmitButton();
 
+        // Dölj formulärfälten genom att kollapsa containern
+        document.getElementById('inputContainer').style.display = 'none';
+
         document.getElementById('addObjectBtn').style.display = 'none';
         document.getElementById('addMoreBtn').style.display = 'block';
     } else {
@@ -98,9 +101,12 @@ function addAnotherObject() {
     centerMarkerContainer.style.display = 'block';
     confirmButton.style.display = 'block';
     clearFormData();
+
+    // Visa formulärfälten genom att expandera containern
+    document.getElementById('inputContainer').style.display = 'block';
+
     document.getElementById('addObjectBtn').style.display = 'block';
     document.getElementById('addMoreBtn').style.display = 'none';
-    document.getElementById('inputForm').style.display = 'none';
 }
 
 function addObjectToUI(index) {
