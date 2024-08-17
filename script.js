@@ -63,52 +63,55 @@ function openInputForm() {
 }
 
 function addObject() {
+    // Få fälten från formuläret
     var name = document.getElementById('nameInput').value;
-    var url = document.getElementById('urlInput').value || "Ingen URL angiven";
+    var url = document.getElementById('urlInput').value;
     var info = document.getElementById('infoInput').value;
 
-    if (name && currentLat && currentLng) {
-        currentObject = {
-            category: document.getElementById('categoryInput').value,
-            name: name,
-            url: url,
-            info: info,
-            lat: currentLat,
-            lng: currentLng,
-            marker: lastMarker
-        };
+    if (name.trim() === "") {
+        alert("Vänligen ange ett namn för objektet.");
+        return;
+    }
 
-        console.log("Current Object Created:", currentObject);
+    // Skapa ett nytt element för det tillagda objektet
+    var addedObjectsList = document.getElementById('addedObjectsList');
+    var newObject = document.createElement('div');
+    newObject.classList.add('object-tab');
+    
+    newObject.innerHTML = `
+        <div class="object-header">${name}</div>
+        <div class="object-details">
+            <p><strong>Namn:</strong> ${name}</p>
+            <p><strong>URL:</strong> ${url}</p>
+            <p><strong>Info:</strong> ${info}</p>
+            <button onclick="removeObject(this)">Ta bort</button>
+        </div>
+    `;
 
-        addedObjects.push(currentObject);
-        addObjectToUI(addedObjects.length - 1);
-        currentObject = null;
+    // Lägg till det nya objektet i listan
+    addedObjectsList.appendChild(newObject);
 
-        updateSubmitButton();
+    // Rensa fälten i formuläret
+    document.getElementById('nameInput').value = "";
+    document.getElementById('urlInput').value = "";
+    document.getElementById('infoInput').value = "";
 
-        // Dölj formulärfälten genom att kollapsa containern
-        document.getElementById('inputContainer').style.display = 'none';
+    // Visa "Skicka objekt"-knappen
+    document.getElementById('submitBtn').disabled = false;
+}
 
-        document.getElementById('addObjectBtn').style.display = 'none';
-        document.getElementById('addMoreBtn').style.display = 'block';
-    } else {
-        alert("Vänligen fyll i namnet på objektet.");
+function removeObject(button) {
+    // Ta bort objektet
+    var objectTab = button.parentNode.parentNode;
+    objectTab.remove();
+
+    // Kontrollera om det finns fler objekt i listan
+    var addedObjectsList = document.getElementById('addedObjectsList');
+    if (addedObjectsList.children.length === 0) {
+        // Om inga objekt finns kvar, dölja "Skicka objekt"-knappen
+        document.getElementById('submitBtn').disabled = true;
     }
 }
-
-function addAnotherObject() {
-    lastMarker = null;
-    centerMarkerContainer.style.display = 'block';
-    confirmButton.style.display = 'block';
-    clearFormData();
-
-    // Visa formulärfälten genom att expandera containern
-    document.getElementById('inputContainer').style.display = 'block';
-
-    document.getElementById('addObjectBtn').style.display = 'block';
-    document.getElementById('addMoreBtn').style.display = 'none';
-}
-
 function addObjectToUI(index) {
     var objectData = addedObjects[index];
     var addedObjectsList = document.getElementById('addedObjectsList');
