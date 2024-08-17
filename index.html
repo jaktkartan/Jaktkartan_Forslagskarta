@@ -53,7 +53,7 @@
     <!-- Inmatningsformulär -->
     <div id="inputForm">
         <h3 id="formTitle">Lägg till objekt</h3>
-        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec" method="POST">
+        <form id="suggestionForm" action="#" method="POST">
             <input type="hidden" name="typ" id="categoryInput">
             <input type="hidden" name="latitud" id="latitudeInput">
             <input type="hidden" name="longitud" id="longitudeInput">
@@ -66,9 +66,9 @@
             </div>
             
             <button type="button" id="addObjectBtn" onclick="addObject()">Lägg till</button>
-            <button type="button" id="addMoreBtn" onclick="addAnotherObject()" style="display: none;">Lägg till fler objekt</button>
+            <button type="button" id="addMoreBtn" onclick="showInputFields()" style="display: none;">Lägg till fler objekt</button>
             <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
-            <button type="submit" id="submitBtn" disabled>Skicka objekt</button>
+            <button type="submit" id="submitBtn" disabled style="display: none;">Skicka objekt</button>
         </form>
 
         <!-- Redigeringsfält för tillagda objekt -->
