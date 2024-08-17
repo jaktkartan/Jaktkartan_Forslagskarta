@@ -96,8 +96,8 @@ function addObject() {
     document.getElementById('urlInput').value = "";
     document.getElementById('infoInput').value = "";
 
-    // Visa "Skicka objekt"-knappen
-    document.getElementById('submitBtn').disabled = false;
+    // Uppdatera "Skicka objekt"-knappen
+    updateSubmitButton();
 }
 
 function removeObject(button) {
@@ -105,35 +105,19 @@ function removeObject(button) {
     var objectTab = button.parentNode.parentNode;
     objectTab.remove();
 
-    // Kontrollera om det finns fler objekt i listan
-    var addedObjectsList = document.getElementById('addedObjectsList');
-    if (addedObjectsList.children.length === 0) {
-        // Om inga objekt finns kvar, dölja "Skicka objekt"-knappen
-        document.getElementById('submitBtn').disabled = true;
-    }
+    // Uppdatera "Skicka objekt"-knappen
+    updateSubmitButton();
 }
-function addObjectToUI(index) {
-    var objectData = addedObjects[index];
+
+function updateSubmitButton() {
+    var submitButton = document.getElementById('submitBtn');
     var addedObjectsList = document.getElementById('addedObjectsList');
 
-    if (addedObjectsList) {
-        var listItem = document.createElement('div');
-        listItem.className = 'object-tab';
-        listItem.innerHTML = `
-            <div class="object-header" onclick="toggleObjectDetails(this)">
-                <strong>${objectData.category}</strong>: ${objectData.name}
-            </div>
-            <div class="object-details" style="display: none;">
-                <p><strong>Namn:</strong> <input type="text" value="${objectData.name}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'name', this.value)"></p>
-                <p><strong>URL:</strong> <input type="text" value="${objectData.url}" style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'url', this.value)"></p>
-                <p><strong>Info:</strong> <textarea style="color: rgb(50, 94, 88);" onchange="updateObjectData(${index}, 'info', this.value)">${objectData.info}</textarea></p>
-                <button type="button" onclick="deleteObject(${index}, this)">Ta bort objekt</button>
-            </div>
-        `;
-        addedObjectsList.appendChild(listItem);
-        addedObjectsList.style.display = 'block'; // Säkerställ att redigeringslistan alltid visas
+    // Aktivera knappen om det finns minst ett objekt i listan, annars inaktivera
+    if (addedObjectsList.children.length > 0) {
+        submitButton.disabled = false;
     } else {
-        console.error("Redigeringslistan hittades inte.");
+        submitButton.disabled = true;
     }
 }
 
@@ -149,104 +133,6 @@ function closeAllObjectDetails() {
     });
 }
 
-function updateObjectData(index, field, value) {
-    addedObjects[index][field] = value;
-}
-
-function deleteObject(index, buttonElement) {
-    var objectTab = buttonElement.closest('.object-tab');
-    objectTab.parentNode.removeChild(objectTab);
-
-    var object = addedObjects[index];
-    if (object.marker) {
-        map.removeLayer(object.marker);
-    }
-
-    addedObjects.splice(index, 1);
-    updateSubmitButton();
-}
-
-function updateSubmitButton() {
-    var submitButton = document.getElementById('submitBtn');
-    if (submitButton) {
-        submitButton.disabled = addedObjects.length === 0;
-    } else {
-        console.error("Submit-knappen hittades inte.");
-    }
-}
-
-document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault();
-
-    if (addedObjects.length === 0) {
-        alert("För att skicka, lägg till ett objekt.");
-        return;
-    }
-
-    if (confirm("Är du säker på att du vill skicka objekten?")) {
-        var suggestionForm = document.getElementById('suggestionForm');
-
-        addedObjects.forEach(function(object) {
-            var formData = new FormData();
-            formData.append('typ', object.category || 'Ingen typ angiven');
-            formData.append('namn', object.name);
-            formData.append('url', object.url);
-            formData.append('info', object.info);
-            formData.append('latitud', object.lat);
-            formData.append('longitud', object.lng);
-
-            fetch(suggestionForm.action, {
-                method: "POST",
-                body: formData,
-            }).then(response => {
-                return response.text();
-            }).then(text => {
-                console.log(text);
-            }).catch(error => {
-                console.error('Ett nätverksfel uppstod:', error);
-            });
-        });
-
-        showThankYouMessage();
-    }
-};
-
-function showThankYouMessage() {
-    closeInputForm();
-    document.getElementById('thankYouMessage').style.display = 'block';
-}
-
-function closeInputForm() {
-    document.getElementById('inputForm').style.display = 'none';
-}
-
-function cancelAndRemove() {
-    if (lastMarker) {
-        map.removeLayer(lastMarker);
-        lastMarker = null;
-    }
-
-    currentObject = null;
-    clearFormData();
-
-    closeInputForm();
-    document.getElementById('startMessage').style.display = 'block';
-    document.getElementById('cancelBtn').style.display = 'none';
-}
-
-function addNewSuggestion() {
-    closeThankYouMessage();
-    location.reload();
-}
-
-function closeThankYouMessage() {
-    document.getElementById('thankYouMessage').style.display = 'none';
-}
-
-function goToJaktkartan() {
-    window.location.href = 'https://www.jaktkartan.se';
-}
-
 function clearFormData() {
     document.getElementById('nameInput').value = '';
     document.getElementById('urlInput').value = '';
@@ -254,6 +140,16 @@ function clearFormData() {
     document.getElementById('latitudeInput').value = '';
     document.getElementById('longitudeInput').value = '';
 }
+
+document.getElementById('suggestionForm').onsubmit = function(event) {
+    if (document.getElementById('submitBtn').disabled) {
+        event.preventDefault();
+        alert("Lägg till minst ett objekt innan du skickar.");
+    } else {
+        alert("Formuläret skickas...");
+        // Här kan du lägga till mer logik för vad som händer när formuläret skickas
+    }
+};
 
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
