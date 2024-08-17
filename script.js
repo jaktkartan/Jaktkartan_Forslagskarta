@@ -24,6 +24,7 @@ function selectType(type, iconSrc) {
     centerMarker.src = iconSrc;
     centerMarkerContainer.style.display = 'block';
     confirmButton.style.display = 'block';
+    document.getElementById('cancelBtn').style.display = 'block';  // Visa "Avbryt"-knappen
 }
 
 function confirmPosition() {
@@ -41,7 +42,6 @@ function confirmPosition() {
             iconAnchor: [15, 15],
         });
 
-        // Skapa en ny markör och spara den i lastMarker
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
@@ -89,6 +89,9 @@ function addObject() {
     document.getElementById('addMoreBtn').style.display = 'block';
     document.getElementById('submitBtn').style.display = 'block';
 
+    // Dölj "Avbryt"-knappen när objektet läggs till
+    document.getElementById('cancelBtn').style.display = 'none';
+
     updateSubmitButton();
 }
 
@@ -125,7 +128,7 @@ function showInputFields() {
 }
 
 function cancelAndRemove() {
-    // Ta bort senaste marker från kartan
+    // Ta bort senaste markör från kartan
     if (lastMarker) {
         map.removeLayer(lastMarker);
         lastMarker = null;
