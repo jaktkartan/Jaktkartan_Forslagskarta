@@ -103,7 +103,8 @@ function removeObject(button) {
 
 function toggleObjectDetails(headerElement) {
     var details = headerElement.nextElementSibling;
-    details.style.display = details.style.display === "none" ? "block" : "none";
+    // Toggla visningen av detaljerna
+    details.style.display = details.style.display === "none" || details.style.display === "" ? "block" : "none";
 }
 
 function updateObjectData(inputElement, field) {
