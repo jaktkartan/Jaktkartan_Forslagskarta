@@ -12,7 +12,6 @@ var centerMarker = document.getElementById('centerMarker');
 var centerMarkerContainer = document.getElementById('centerMarkerContainer');
 var confirmButton = document.getElementById('confirmButton');
 var lastMarker = null;
-var markers = []; // Lista för att hålla reda på alla markörer
 
 function selectType(type, iconSrc) {
     clearFormData();
@@ -42,8 +41,8 @@ function confirmPosition() {
             iconAnchor: [15, 15],
         });
 
+        // Skapa en ny markör och spara den i lastMarker
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
-        markers.push(lastMarker); // Lägg till markören i listan
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
         openInputForm();
@@ -126,16 +125,10 @@ function showInputFields() {
 }
 
 function cancelAndRemove() {
-    // Ta bort senaste marker från kartan och listan över markörer
-    if (markers.length > 0) {
-        var lastAddedMarker = markers.pop();
-        map.removeLayer(lastAddedMarker);
-    }
-
-    // Ta bort senaste objekt från redigeringslistan
-    var addedObjectsList = document.getElementById('addedObjectsList');
-    if (addedObjectsList.lastChild) {
-        addedObjectsList.removeChild(addedObjectsList.lastChild);
+    // Ta bort senaste marker från kartan
+    if (lastMarker) {
+        map.removeLayer(lastMarker);
+        lastMarker = null;
     }
 
     // Återställ formulär och visa startvyn
