@@ -12,11 +12,8 @@ var centerMarker = document.getElementById('centerMarker');
 var centerMarkerContainer = document.getElementById('centerMarkerContainer');
 var confirmButton = document.getElementById('confirmButton');
 var lastMarker = null;
-var currentObject = null; // Håller det aktuella objektet som inte är sparat än
-var addedObjects = [];
 
 function selectType(type, iconSrc) {
-    // Rensa formuläret och visa startmeddelandet
     clearFormData();
     closeAllObjectDetails();
     document.getElementById('categoryInput').value = type;
@@ -63,7 +60,6 @@ function openInputForm() {
 }
 
 function addObject() {
-    // Få fälten från formuläret
     var name = document.getElementById('nameInput').value;
     var url = document.getElementById('urlInput').value;
     var info = document.getElementById('infoInput').value;
@@ -73,7 +69,6 @@ function addObject() {
         return;
     }
 
-    // Skapa ett nytt element för det tillagda objektet
     var addedObjectsList = document.getElementById('addedObjectsList');
     var newObject = document.createElement('div');
     newObject.classList.add('object-tab');
@@ -88,42 +83,43 @@ function addObject() {
         </div>
     `;
 
-    // Lägg till det nya objektet i listan
     addedObjectsList.appendChild(newObject);
 
-    // Rensa fälten i formuläret
     document.getElementById('nameInput').value = "";
     document.getElementById('urlInput').value = "";
     document.getElementById('infoInput').value = "";
 
-    // Uppdatera "Skicka objekt"-knappen
+    // Dölj formulärfälten efter att objektet har lagts till
+    document.getElementById('inputContainer').style.display = 'none';
+    document.getElementById('addObjectBtn').style.display = 'none';
+    document.getElementById('addMoreBtn').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'block';
+
     updateSubmitButton();
 }
 
 function removeObject(button) {
-    // Ta bort objektet
     var objectTab = button.parentNode.parentNode;
     objectTab.remove();
-
-    // Uppdatera "Skicka objekt"-knappen
     updateSubmitButton();
+}
+
+function showInputFields() {
+    document.getElementById('inputContainer').style.display = 'block';
+    document.getElementById('addObjectBtn').style.display = 'block';
+    document.getElementById('addMoreBtn').style.display = 'none';
 }
 
 function updateSubmitButton() {
     var submitButton = document.getElementById('submitBtn');
     var addedObjectsList = document.getElementById('addedObjectsList');
 
-    // Aktivera knappen om det finns minst ett objekt i listan, annars inaktivera
     if (addedObjectsList.children.length > 0) {
         submitButton.disabled = false;
     } else {
         submitButton.disabled = true;
+        submitButton.style.display = 'none';
     }
-}
-
-function toggleObjectDetails(headerElement) {
-    var details = headerElement.nextElementSibling;
-    details.style.display = details.style.display === "none" ? "block" : "none";
 }
 
 function closeAllObjectDetails() {
@@ -145,14 +141,11 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
     if (document.getElementById('submitBtn').disabled) {
         event.preventDefault();
         alert("Lägg till minst ett objekt innan du skickar.");
-    } else {
-        alert("Formuläret skickas...");
-        // Här kan du lägga till mer logik för vad som händer när formuläret skickas
     }
 };
 
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
-    document.getElementById('addedObjectsList').style.display = 'block'; // Säkerställ att redigeringslistan alltid visas
+    document.getElementById('addedObjectsList').style.display = 'block';
     updateSubmitButton();
 };
