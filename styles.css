@@ -118,6 +118,7 @@ body, html {
     display: block; /* Se till att knappen alltid visas */
 }
 
+
 /* Specifik stil för bekräfta-knappen */
 #confirmButton {
     position: fixed;
@@ -153,6 +154,7 @@ body, html {
 #inputContainer {
     display: block; /* Bör vara synlig när man redigerar */
 }
+
 
 /* Objektflikar */
 .object-tab {
