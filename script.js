@@ -127,6 +127,27 @@ function showInputFields() {
     confirmButton.style.display = 'none';
 }
 
+function cancelAndRemove() {
+    // Ta bort senaste marker från kartan
+    if (lastMarker) {
+        map.removeLayer(lastMarker);
+        lastMarker = null;
+    }
+
+    // Ta bort senaste objekt från redigeringslistan
+    var addedObjectsList = document.getElementById('addedObjectsList');
+    if (addedObjectsList.lastChild) {
+        addedObjectsList.removeChild(addedObjectsList.lastChild);
+    }
+
+    // Återställ formulär och visa startvyn
+    clearFormData();
+    document.getElementById('inputForm').style.display = 'none';
+    document.getElementById('startMessage').style.display = 'block';
+    centerMarkerContainer.style.display = 'none';
+    confirmButton.style.display = 'none';
+}
+
 function updateSubmitButton() {
     var submitButton = document.getElementById('submitBtn');
     var addedObjectsList = document.getElementById('addedObjectsList');
