@@ -74,22 +74,19 @@ function addObject() {
     newObject.classList.add('object-tab');
     
     newObject.innerHTML = `
-        <div class="object-header">${name}</div>
+        <div class="object-header" onclick="toggleObjectDetails(this)">
+            ${name}
+        </div>
         <div class="object-details">
-            <p><strong>Namn:</strong> ${name}</p>
-            <p><strong>URL:</strong> ${url}</p>
-            <p><strong>Info:</strong> ${info}</p>
+            <p><strong>Namn:</strong> <input type="text" value="${name}" oninput="updateObjectData(this, 'name')"></p>
+            <p><strong>URL:</strong> <input type="text" value="${url}" oninput="updateObjectData(this, 'url')"></p>
+            <p><strong>Info:</strong> <textarea oninput="updateObjectData(this, 'info')">${info}</textarea></p>
             <button onclick="removeObject(this)">Ta bort</button>
         </div>
     `;
 
     addedObjectsList.appendChild(newObject);
 
-    document.getElementById('nameInput').value = "";
-    document.getElementById('urlInput').value = "";
-    document.getElementById('infoInput').value = "";
-
-    // Dölj formulärfälten efter att objektet har lagts till
     document.getElementById('inputContainer').style.display = 'none';
     document.getElementById('addObjectBtn').style.display = 'none';
     document.getElementById('addMoreBtn').style.display = 'block';
@@ -104,10 +101,30 @@ function removeObject(button) {
     updateSubmitButton();
 }
 
+function toggleObjectDetails(headerElement) {
+    var details = headerElement.nextElementSibling;
+    details.style.display = details.style.display === "none" ? "block" : "none";
+}
+
+function updateObjectData(inputElement, field) {
+    var objectHeader = inputElement.closest('.object-tab').querySelector('.object-header');
+    var newValue = inputElement.value;
+    if (field === 'name') {
+        objectHeader.textContent = newValue;
+    }
+    // Uppdatera andra fält vid behov
+}
+
 function showInputFields() {
     document.getElementById('inputContainer').style.display = 'block';
     document.getElementById('addObjectBtn').style.display = 'block';
     document.getElementById('addMoreBtn').style.display = 'none';
+
+    // Visa startmeddelandet och dölja det aktuella formuläret
+    document.getElementById('inputForm').style.display = 'none';
+    document.getElementById('startMessage').style.display = 'block';
+    centerMarkerContainer.style.display = 'none';
+    confirmButton.style.display = 'none';
 }
 
 function updateSubmitButton() {
