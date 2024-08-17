@@ -12,6 +12,7 @@ var centerMarker = document.getElementById('centerMarker');
 var centerMarkerContainer = document.getElementById('centerMarkerContainer');
 var confirmButton = document.getElementById('confirmButton');
 var lastMarker = null;
+var markers = []; // Lista för att hålla reda på alla markörer
 
 function selectType(type, iconSrc) {
     clearFormData();
@@ -41,11 +42,8 @@ function confirmPosition() {
             iconAnchor: [15, 15],
         });
 
-        if (lastMarker) {
-            map.removeLayer(lastMarker);
-        }
-
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+        markers.push(lastMarker); // Lägg till markören i listan
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
         openInputForm();
@@ -103,7 +101,6 @@ function removeObject(button) {
 
 function toggleObjectDetails(headerElement) {
     var details = headerElement.nextElementSibling;
-    // Toggla visningen av detaljerna
     details.style.display = details.style.display === "none" || details.style.display === "" ? "block" : "none";
 }
 
@@ -129,10 +126,10 @@ function showInputFields() {
 }
 
 function cancelAndRemove() {
-    // Ta bort senaste marker från kartan
-    if (lastMarker) {
-        map.removeLayer(lastMarker);
-        lastMarker = null;
+    // Ta bort senaste marker från kartan och listan över markörer
+    if (markers.length > 0) {
+        var lastAddedMarker = markers.pop();
+        map.removeLayer(lastAddedMarker);
     }
 
     // Ta bort senaste objekt från redigeringslistan
