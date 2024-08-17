@@ -46,26 +46,24 @@ body, html {
     z-index: 10000; /* Högre z-index för att ligga överst */
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
+    width: 95%; /* Default till 95% för mobil */
+    max-width: 600px; /* Maxbredd för datorer */
 }
 
-#inputForm {
-    max-height: 98%; /* Täcker upp till 98% av skärmens höjd */
-    overflow-y: auto;
-}
-
-#inputForm h3, #thankYouMessage h3, #startMessage h3 {
-    margin-top: 0;
-}
-
-#thankYouMessage a {
-    color: #007BFF;
-    text-decoration: none;
-}
-
+/* Specifika dimensioner för startmeddelandet */
 #startMessage {
     background-color: rgba(255, 255, 255, 0.9);
     padding: 20px;
     border-radius: 10px;
+    width: 80%;
+    max-width: 600px;
+}
+
+/* Anpassningar för större skärmar */
+@media (min-width: 768px) {
+    #inputForm, #startMessage {
+        width: 35%; /* 35% för större skärmar */
+    }
 }
 
 /* Typvalsruta */
@@ -118,7 +116,6 @@ body, html {
     display: block; /* Se till att knappen alltid visas */
 }
 
-
 /* Specifik stil för bekräfta-knappen */
 #confirmButton {
     position: fixed;
@@ -154,7 +151,6 @@ body, html {
 #inputContainer {
     display: block; /* Bör vara synlig när man redigerar */
 }
-
 
 /* Objektflikar */
 .object-tab {
