@@ -89,6 +89,11 @@ button {
     text-align: center;
 }
 
+#addedObjectsList {
+    margin-top: 20px; /* Lägg till en marginal ovanför listan över redigerade objekt */
+}
+
+
 /* Specifik stil för avbrytknappen */
 #cancelBtn {
     background-color: #b22222;
