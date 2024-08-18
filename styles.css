@@ -33,9 +33,9 @@ body, html {
     height: auto;
 }
 
-/* Huvudmenyn och undermenyer */
-#mainSelection, .subMenu {
-    display: none;
+/* Menyer */
+#mainSelection, .subMenu, #inputForm, #thankYouMessage {
+    display: none; /* Dölja alla element vid start */
     position: fixed;
     top: 50%;
     left: 50%;
@@ -46,15 +46,11 @@ body, html {
     z-index: 10000;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
-    width: 80%; /* Ta upp en stor del av skärmen */
-    max-width: 500px; /* Maxbredd för större skärmar */
+    width: 80%;
+    max-width: 500px;
 }
 
-.subMenu h3 {
-    margin-top: 0;
-}
-
-#mainSelection h3 {
+.subMenu h3, #mainSelection h3 {
     margin-top: 0;
 }
 
@@ -80,32 +76,22 @@ body, html {
     margin-bottom: 5px;
 }
 
-/* Input och textområden */
-#inputForm input, #inputForm textarea {
-    width: 100%;
-    margin: 5px 0;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-}
-
-/* Knappar: Submit, Lägg till fler objekt, Avbryt, Bekräfta */
-#submitBtn, #addObjectBtn, #addMoreBtn, #cancelBtn, #confirmButton, #thankYouMessage button, #startMessage button {
+/* Stilsättning för knappar */
+button {
     margin-top: 10px;
     padding: 10px;
     width: 100%;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    background-color: rgb(50, 94, 88); /* Din gröna knappfärg */
+    background-color: rgb(50, 94, 88);
     color: white;
+    text-align: center;
 }
 
 /* Specifik stil för avbrytknappen */
 #cancelBtn {
-    background-color: #b22222; /* Jordnära röd färg */
-    color: white;
-    display: block; /* Se till att knappen alltid visas */
+    background-color: #b22222;
 }
 
 /* Specifik stil för bekräfta-knappen */
@@ -116,20 +102,13 @@ body, html {
     transform: translateX(-50%);
     z-index: 2001;
     padding: 10px 20px;
-    background-color: rgb(50, 94, 88);
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    display: none;
-    width: auto; /* Gör bredden automatisk beroende på innehållet */
-    max-width: 200px; /* Sätter en maximal bredd om du vill */
-    text-align: center; /* Centrerar texten */
+    width: auto;
+    max-width: 200px;
 }
 
 /* Lista över tillagda objekt */
 #addedObjectsList {
-    display: block; /* Alltid synlig */
+    display: block;
     margin-top: 10px;
     padding: 10px;
     background-color: #f9f9f9;
@@ -144,7 +123,7 @@ body, html {
 .object-tab {
     margin-bottom: 10px;
     border-radius: 5px;
-    background-color: rgb(50, 94, 88); /* Samma gröna färg som knapparna */
+    background-color: rgb(50, 94, 88);
     color: white;
     overflow: hidden;
     cursor: pointer;
@@ -159,7 +138,7 @@ body, html {
 }
 
 .object-header:hover {
-    background-color: #3e7c75; /* En något mörkare nyans vid hover */
+    background-color: #3e7c75;
 }
 
 .object-details {
@@ -170,7 +149,7 @@ body, html {
 
 .object-details p {
     margin: 10px 0;
-    color: rgb(50, 94, 88); /* Din gröna färg för etiketter som "Namn:", "URL:" etc. */
+    color: rgb(50, 94, 88);
 }
 
 .object-details input[type="text"],
@@ -180,7 +159,7 @@ body, html {
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    color: rgb(50, 94, 88); /* Din gröna färg för redigeringstext */
+    color: rgb(50, 94, 88);
 }
 
 /* Ta bort knapp i objektflikar */
