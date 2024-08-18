@@ -137,26 +137,22 @@ button {
     color: white;
     overflow: hidden;
     cursor: pointer;
-    display: flex; /* Flex för att justera innehållet horisontellt */
-    align-items: center;
+    display: block; /* Ändrad från flex till block */
+    padding: 10px;
 }
 
 /* Flikraden som innehåller text och ikon */
 .object-header {
-    padding: 10px;
-    background-color: rgb(50, 94, 88);
-    cursor: pointer;
-    border-radius: 5px;
-    text-align: left;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px; /* Lägger till marginal för avstånd */
 }
 
 .object-header img {
-    width: 30px; /* Mindre ikonstorlek */
+    width: 30px;
     height: 30px;
-    margin-left: 10px; /* Utrymme mellan text och ikon */
+    margin-left: 10px;
 }
 
 .object-header:hover {
@@ -166,9 +162,9 @@ button {
 /* Innehållet i objektfliken (dold tills användaren klickar för att visa) */
 .object-details {
     padding: 10px;
-    background-color: #f0f0f0;
-    display: none; /* Dölj tills fliken klickas på */
-    clear: both;
+    background-color: #f9f9f9; /* Ändrad bakgrundsfärg */
+    display: none;
+    border-radius: 5px;
 }
 
 /* Styling för text i fliken */
