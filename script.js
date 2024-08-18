@@ -222,9 +222,12 @@ function cancelAndRemove() {
     // Kollapsa inmatningsfälten
     collapseInputContainer();
 
-    // Visa "Lägg till fler objekt"-knappen och dölj "Avbryt"-knappen
-    document.getElementById('addMoreBtn').style.display = 'block';
+    // Dölj både "Lägg till" och "Avbryt"-knapparna
+    document.getElementById('addObjectBtn').style.display = 'none';
     document.getElementById('cancelBtn').style.display = 'none';
+
+    // Visa "Lägg till fler objekt"-knappen
+    document.getElementById('addMoreBtn').style.display = 'block';
 }
 
 function updateSubmitButton() {
