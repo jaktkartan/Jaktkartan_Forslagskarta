@@ -258,3 +258,24 @@ body, html {
     left: 50%;
     transform: translate(-50%, -50%);
 }
+
+/* Miniatyrikon för typval och redigeringsfält */
+.mini-icon {
+    width: 20px;
+    height: 20px;
+    margin-right: 8px;
+    vertical-align: middle;
+}
+
+/* Specifik stil för objektflikar */
+.object-tab .object-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.object-tab .object-header img {
+    width: 20px;
+    height: 20px;
+    margin-left: 8px;
+}
