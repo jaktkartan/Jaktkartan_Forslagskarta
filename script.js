@@ -137,7 +137,7 @@ function showInputFields() {
     var inputContainer = document.getElementById('inputContainer');
     var addObjectBtn = document.getElementById('addObjectBtn');
     var addMoreBtn = document.getElementById('addMoreBtn');
-    var startMessage = document.getElementById('startMessage');
+    var startMessage = document.getElementById('mainSelection');  // Uppdatera här för att matcha din HTML
 
     console.log("inputContainer:", inputContainer);
     console.log("addObjectBtn:", addObjectBtn);
@@ -154,13 +154,14 @@ function showInputFields() {
         } else if (currentMenu === 'advertise') {
             document.getElementById('advertiseMenu').style.display = 'block';
         }
-        startMessage.style.display = 'none';
+        startMessage.style.display = 'none';  // Dölj huvudmenyn när inputfält visas
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
     } else {
         console.error("One or more elements are not found in the DOM.");
     }
 }
+
 
 function updateObjectData(index, field, value) {
     addedObjects[index][field] = value;
