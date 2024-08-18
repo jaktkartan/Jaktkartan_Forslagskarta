@@ -121,7 +121,6 @@ function addObject() {
 
     addedObjectsList.appendChild(newObject);
 
-    // Dölj formulärfälten och visa knappen för att lägga till fler objekt
     document.getElementById('inputContainer').style.display = 'none';
     document.getElementById('addObjectBtn').style.display = 'none';
     document.getElementById('addMoreBtn').style.display = 'block';
@@ -133,11 +132,10 @@ function addObject() {
 }
 
 function showInputFields() {
-    document.getElementById('inputContainer').style.display = 'block'; // Se till att fälten visas
-    document.getElementById('addObjectBtn').style.display = 'block'; // Visa knappen för att lägga till objekt
-    document.getElementById('addMoreBtn').style.display = 'none'; // Dölj knappen för att lägga till fler objekt
+    document.getElementById('inputContainer').style.display = 'block';
+    document.getElementById('addObjectBtn').style.display = 'block';
+    document.getElementById('addMoreBtn').style.display = 'none';
 
-    // Återgå till den relevanta menyn beroende på vad användaren tidigare valde
     if (currentMenu === 'newObject') {
         document.getElementById('newObjectMenu').style.display = 'block';
     } else if (currentMenu === 'advertise') {
@@ -163,16 +161,6 @@ function removeObject(index, button) {
 function toggleObjectDetails(headerElement) {
     var details = headerElement.nextElementSibling;
     details.style.display = details.style.display === "none" || details.style.display === "" ? "block" : "none";
-}
-
-function showRelevantMenu() {
-    document.getElementById('inputForm').style.display = 'none';
-    if (currentMenu === 'newObject') {
-        document.getElementById('newObjectMenu').style.display = 'block';
-    } else if (currentMenu === 'advertise') {
-        document.getElementById('advertiseMenu').style.display = 'block';
-    }
-    document.getElementById('addMoreBtn').style.display = 'none';
 }
 
 function cancelAndRemove() {
