@@ -121,6 +121,7 @@ function addObject() {
 
     addedObjectsList.appendChild(newObject);
 
+    // Dölj formulärfälten och visa knappen för att lägga till fler objekt
     document.getElementById('inputContainer').style.display = 'none';
     document.getElementById('addObjectBtn').style.display = 'none';
     document.getElementById('addMoreBtn').style.display = 'block';
@@ -129,6 +130,18 @@ function addObject() {
     document.getElementById('cancelBtn').style.display = 'none';
 
     updateSubmitButton();
+}
+
+function showInputFields() {
+    document.getElementById('inputContainer').style.display = 'block'; // Se till att fälten visas
+    document.getElementById('addObjectBtn').style.display = 'block'; // Visa knappen för att lägga till objekt
+    document.getElementById('addMoreBtn').style.display = 'none'; // Dölj knappen för att lägga till fler objekt
+
+    // Dölj startmeddelandet och visa formuläret igen
+    document.getElementById('inputForm').style.display = 'block';
+    document.getElementById('startMessage').style.display = 'none';
+    centerMarkerContainer.style.display = 'none';
+    confirmButton.style.display = 'none';
 }
 
 function updateObjectData(index, field, value) {
