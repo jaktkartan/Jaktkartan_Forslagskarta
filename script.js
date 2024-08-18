@@ -137,14 +137,14 @@ function showInputFields() {
     var inputContainer = document.getElementById('inputContainer');
     var addObjectBtn = document.getElementById('addObjectBtn');
     var addMoreBtn = document.getElementById('addMoreBtn');
-    var startMessage = document.getElementById('mainSelection');  // Uppdatera här för att matcha din HTML
+    var mainSelection = document.getElementById('mainSelection');  // Startrutan
 
     console.log("inputContainer:", inputContainer);
     console.log("addObjectBtn:", addObjectBtn);
     console.log("addMoreBtn:", addMoreBtn);
-    console.log("startMessage:", startMessage);
+    console.log("mainSelection:", mainSelection);
 
-    if (inputContainer && addObjectBtn && addMoreBtn && startMessage) {
+    if (inputContainer && addObjectBtn && addMoreBtn && mainSelection) {
         inputContainer.style.display = 'block';
         addObjectBtn.style.display = 'block';
         addMoreBtn.style.display = 'none';
@@ -154,7 +154,7 @@ function showInputFields() {
         } else if (currentMenu === 'advertise') {
             document.getElementById('advertiseMenu').style.display = 'block';
         }
-        startMessage.style.display = 'none';  // Dölj huvudmenyn när inputfält visas
+        mainSelection.style.display = 'none';  // Dölj huvudmenyn när inputfält visas
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
     } else {
