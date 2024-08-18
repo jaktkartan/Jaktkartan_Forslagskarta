@@ -194,9 +194,13 @@ function toggleObjectDetails(detailsElement) {
     // Öppna det valda objektet om det inte redan var öppet
     if (!isOpen) {
         detailsElement.style.display = "block";
-        detailsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        
+        // Skrolla så att headern (rubriken och bilden) syns
+        var headerElement = detailsElement.previousElementSibling;
+        headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
+
 
 function cancelAndRemove() {
     if (lastMarker) {
