@@ -214,14 +214,9 @@ function cancelAndRemove() {
 
     collapseInputContainer(); // Kollapsa inmatningsfälten
 
-    // Visa objektsalternativen för att välja ett nytt objekt
-    document.getElementById('newObjectMenu').style.display = 'block';
-
-    document.getElementById('addObjectBtn').style.display = 'none';
-    document.getElementById('submitBtn').style.display = 'block';
+    // Visa "Lägg till fler objekt"-knappen
+    document.getElementById('addMoreBtn').style.display = 'block';
     document.getElementById('cancelBtn').style.display = 'none';
-
-    updateSubmitButton();
 }
 
 function updateSubmitButton() {
