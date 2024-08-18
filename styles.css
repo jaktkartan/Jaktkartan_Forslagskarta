@@ -157,6 +157,7 @@ button {
     width: 30px; /* Mindre ikonstorlek */
     height: 30px;
     margin-left: 10px; /* Utrymme mellan text och ikon */
+    pointer-events: none; /* Förhindra att ikonen blockerar klickhändelser */
 }
 
 .object-header:hover {
