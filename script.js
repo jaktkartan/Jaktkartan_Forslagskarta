@@ -12,7 +12,8 @@ var centerMarker = document.getElementById('centerMarker');
 var centerMarkerContainer = document.getElementById('centerMarkerContainer');
 var confirmButton = document.getElementById('confirmButton');
 var lastMarker = null;
-var selectedIconSrc = ''; // För att lagra den valda ikonen
+var selectedIconSrc = ''; // För att lagra den valda ikonens källa
+var addedObjects = []; // Array för att lagra alla objekt
 
 function selectType(type, iconSrc) {
     clearFormData();
@@ -74,6 +75,17 @@ function addObject() {
         return;
     }
 
+    // Lägg till objektet i arrayen
+    addedObjects.push({
+        name: name,
+        url: url,
+        info: info,
+        lat: currentLat,
+        lng: currentLng,
+        category: document.getElementById('categoryInput').value,
+        icon: selectedIconSrc
+    });
+
     var addedObjectsList = document.getElementById('addedObjectsList');
     var newObject = document.createElement('div');
     newObject.classList.add('object-tab');
@@ -84,10 +96,10 @@ function addObject() {
             <img src="${selectedIconSrc}" alt="${name}">
         </div>
         <div class="object-details">
-            <p><strong>Namn:</strong> <input type="text" value="${name}" oninput="updateObjectData(this, 'name')"></p>
-            <p><strong>URL:</strong> <input type="text" value="${url}" oninput="updateObjectData(this, 'url')"></p>
-            <p><strong>Info:</strong> <textarea oninput="updateObjectData(this, 'info')">${info}</textarea></p>
-            <button onclick="removeObject(this)">Ta bort</button>
+            <p><strong>Namn:</strong> <input type="text" value="${name}" oninput="updateObjectData(${addedObjects.length - 1}, 'name', this.value)"></p>
+            <p><strong>URL:</strong> <input type="text" value="${url}" oninput="updateObjectData(${addedObjects.length - 1}, 'url', this.value)"></p>
+            <p><strong>Info:</strong> <textarea oninput="updateObjectData(${addedObjects.length - 1}, 'info', this.value)">${info}</textarea></p>
+            <button onclick="removeObject(${addedObjects.length - 1}, this)">Ta bort</button>
         </div>
     `;
 
@@ -104,8 +116,14 @@ function addObject() {
     updateSubmitButton();
 }
 
-function removeObject(button) {
-    var objectTab = button.parentNode.parentNode;
+function updateObjectData(index, field, value) {
+    addedObjects[index][field] = value;
+}
+
+function removeObject(index, button) {
+    addedObjects.splice(index, 1); // Ta bort objekt från arrayen
+
+    var objectTab = button.closest('.object-tab');
     objectTab.remove();
     updateSubmitButton();
 }
@@ -113,15 +131,6 @@ function removeObject(button) {
 function toggleObjectDetails(headerElement) {
     var details = headerElement.nextElementSibling;
     details.style.display = details.style.display === "none" || details.style.display === "" ? "block" : "none";
-}
-
-function updateObjectData(inputElement, field) {
-    var objectHeader = inputElement.closest('.object-tab').querySelector('.object-header span');
-    var newValue = inputElement.value;
-    if (field === 'name') {
-        objectHeader.textContent = newValue;
-    }
-    // Uppdatera andra fält vid behov
 }
 
 function showInputFields() {
@@ -187,22 +196,31 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
     }
 
     if (confirm("Är du säker på att du vill skicka objekten?")) {
-        // Skicka formuläret via fetch istället för att göra en vanlig form submission
-        var formData = new FormData(this);
+        // Loopa genom alla objekt och skicka dem en i taget
+        addedObjects.forEach(function(object) {
+            var formData = new FormData();
+            formData.append('typ', object.category);
+            formData.append('namn', object.name);
+            formData.append('url', object.url);
+            formData.append('info', object.info);
+            formData.append('latitud', object.lat);
+            formData.append('longitud', object.lng);
 
-        fetch(this.action, {
-            method: "POST",
-            body: formData,
-        }).then(response => {
-            if (response.ok) {
-                showThankYouMessage();  // Visa tackmeddelandet
-            } else {
-                alert("Något gick fel, försök igen senare.");
-            }
-        }).catch(error => {
-            console.error("Ett nätverksfel uppstod:", error);
-            alert("Ett nätverksfel uppstod, försök igen senare.");
+            fetch(document.getElementById('suggestionForm').action, {
+                method: "POST",
+                body: formData,
+            }).then(response => {
+                if (response.ok) {
+                    console.log("Objekt skickades: ", object.name);
+                } else {
+                    console.error("Fel vid skickning av objekt: ", object.name);
+                }
+            }).catch(error => {
+                console.error("Nätverksfel vid skickning av objekt: ", object.name, error);
+            });
         });
+
+        showThankYouMessage();
     }
 };
 
