@@ -114,14 +114,16 @@ function addObject() {
         <div class="object-details">
             <p><strong>Namn:</strong> <input type="text" value="${name}" oninput="updateObjectData(${addedObjects.length - 1}, 'name', this.value)"></p>
             <p><strong>URL:</strong> <input type="text" value="${url}" oninput="updateObjectData(${addedObjects.length - 1}, 'url', this.value)"></p>
-            <p><strong>Info:</strong> <textarea oninput="updateObjectData(${addedObjects.length - 1}, 'info', this.value)">${info}</textarea></p>
+            <p><strong>Info:</strong> <textarea oninput="updateObjectData(${addedObjects.length - 1}, 'info', this.value)"></textarea></p>
             <button onclick="removeObject(${addedObjects.length - 1}, this)">Ta bort</button>
         </div>
     `;
 
     // Gör hela fliken klickbar för att expandera
-    newObject.onclick = function() {
-        toggleObjectDetails(newObject.querySelector('.object-details'));
+    newObject.onclick = function(event) {
+        if (!['INPUT', 'TEXTAREA', 'BUTTON'].includes(event.target.tagName)) {
+            toggleObjectDetails(newObject.querySelector('.object-details'));
+        }
     };
 
     addedObjectsList.appendChild(newObject);
