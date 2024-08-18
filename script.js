@@ -149,19 +149,20 @@ function showInputFields() {
         addObjectBtn.style.display = 'block';
         addMoreBtn.style.display = 'none';
 
+        // Gå tillbaka till rätt meny beroende på tidigare val
         if (currentMenu === 'newObject') {
             document.getElementById('newObjectMenu').style.display = 'block';
         } else if (currentMenu === 'advertise') {
             document.getElementById('advertiseMenu').style.display = 'block';
         }
         mainSelection.style.display = 'none';  // Dölj huvudmenyn när inputfält visas
+        document.getElementById('inputForm').style.display = 'none';
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
     } else {
         console.error("One or more elements are not found in the DOM.");
     }
 }
-
 
 function updateObjectData(index, field, value) {
     addedObjects[index][field] = value;
