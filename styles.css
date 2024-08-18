@@ -142,10 +142,9 @@ button:hover {
     overflow: hidden;
     cursor: pointer;
     display: flex; /* Flex för att justera innehållet horisontellt */
-    flex-direction: row; /* Justera så att innehållet är horisontellt orienterat */
+    align-items: center;
     justify-content: space-between;
-    align-items: center; /* Centrera innehållet vertikalt */
-    padding: 10px; /* Mindre padding för att minska höjden */
+    padding: 5px 10px; /* Mindre padding för att minska höjden */
 }
 
 .object-tab:hover {
@@ -169,6 +168,8 @@ button:hover {
     padding: 10px;
     background-color: #f0f0f0;
     display: none;
+    margin-top: 10px;
+    border-radius: 5px; /* Lägg till rundade hörn för detaljerna */
 }
 
 .object-details p {
