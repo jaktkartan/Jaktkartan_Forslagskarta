@@ -132,18 +132,34 @@ function addObject() {
 }
 
 function showInputFields() {
-    document.getElementById('inputContainer').style.display = 'block';
-    document.getElementById('addObjectBtn').style.display = 'block';
-    document.getElementById('addMoreBtn').style.display = 'none';
+    console.log("Trying to show input fields...");
 
-    if (currentMenu === 'newObject') {
-        document.getElementById('newObjectMenu').style.display = 'block';
-    } else if (currentMenu === 'advertise') {
-        document.getElementById('advertiseMenu').style.display = 'block';
+    var inputContainer = document.getElementById('inputContainer');
+    var addObjectBtn = document.getElementById('addObjectBtn');
+    var addMoreBtn = document.getElementById('addMoreBtn');
+
+    // Log to see if any of these elements are null
+    console.log("inputContainer:", inputContainer);
+    console.log("addObjectBtn:", addObjectBtn);
+    console.log("addMoreBtn:", addMoreBtn);
+
+    // Ensure these elements exist before trying to modify their styles
+    if (inputContainer && addObjectBtn && addMoreBtn) {
+        inputContainer.style.display = 'block';
+        addObjectBtn.style.display = 'block';
+        addMoreBtn.style.display = 'none';
+
+        if (currentMenu === 'newObject') {
+            document.getElementById('newObjectMenu').style.display = 'block';
+        } else if (currentMenu === 'advertise') {
+            document.getElementById('advertiseMenu').style.display = 'block';
+        }
+        document.getElementById('startMessage').style.display = 'none';
+        centerMarkerContainer.style.display = 'none';
+        confirmButton.style.display = 'none';
+    } else {
+        console.error("One or more elements are not found in the DOM.");
     }
-    document.getElementById('startMessage').style.display = 'none';
-    centerMarkerContainer.style.display = 'none';
-    confirmButton.style.display = 'none';
 }
 
 function updateObjectData(index, field, value) {
@@ -160,7 +176,9 @@ function removeObject(index, button) {
 
 function toggleObjectDetails(headerElement) {
     var details = headerElement.nextElementSibling;
-    details.style.display = details.style.display === "none" || details.style.display === "" ? "block" : "none";
+    if (details) {
+        details.style.display = details.style.display === "none" || details.style.display === "" ? "block" : "none";
+    }
 }
 
 function cancelAndRemove() {
