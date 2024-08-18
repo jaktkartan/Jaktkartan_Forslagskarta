@@ -17,20 +17,17 @@
         <img src="bilder/Jaktkartan_logga.png" alt="Jaktkartan Logga" id="logo">
     </div>
 
-    <!-- Startskärm -->
+    <!-- Startruta -->
     <div id="mainSelection">
         <h3>Välkommen till Objektskartan!</h3>
-        <p>Välj ett alternativ för att fortsätta:</p>
-        <div id="categorySelection">
-            <button onclick="showNewObjectMenu()">Föreslå nytt objekt</button>
-            <button onclick="suggestEdit()">Föreslå ändring i befintligt objekt</button>
-            <button onclick="showAdvertiseMenu()">Annonsera, just nu helt gratis!</button>
-        </div>
+        <button onclick="showNewObjectMenu()">Föreslå nytt objekt</button>
+        <button onclick="suggestEdit()">Föreslå ändring i befintligt objekt</button>
+        <button onclick="showAdvertiseMenu()">Annonsera, just nu helt gratis!</button>
     </div>
 
-    <!-- Nytt objekt meny -->
+    <!-- Meny för nya objekt -->
     <div id="newObjectMenu" class="subMenu">
-        <h3>Föreslå nytt objekt</h3>
+        <h3>Föreslå nya objekt</h3>
         <div id="typeSelection">
             <div class="option" onclick="selectType('Dagkort', 'bilder/jaktkort_ikon.png')">
                 <img src="bilder/jaktkort_ikon.png" alt="Dagkort">
@@ -47,7 +44,7 @@
         </div>
     </div>
 
-    <!-- Annonsera meny -->
+    <!-- Meny för annonsering -->
     <div id="advertiseMenu" class="subMenu">
         <h3>Annonsera hos Jaktkartan</h3>
         <p>Just nu, helt gratis!</p>
@@ -70,10 +67,10 @@
 
     <!-- Inmatningsformulär -->
     <div id="inputForm">
-<h3 id="formTitle">
-    <img src="" id="formIcon" class="mini-icon" alt="Ikon"> <!-- Miniatyrikon här -->
-    Lägg till objekt
-</h3>
+        <h3 id="formTitle">
+            <img src="" id="formIcon" class="mini-icon" alt="Ikon"> <!-- Miniatyrikon här -->
+            Lägg till objekt
+        </h3>
 
         <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec" method="POST">
             <input type="hidden" name="typ" id="categoryInput">
@@ -88,7 +85,7 @@
             </div>
             
             <button type="button" id="addObjectBtn" onclick="addObject()">Lägg till</button>
-            <button type="button" id="addMoreBtn" onclick="showRelevantMenu()" style="display: none;">Lägg till fler objekt</button>
+            <button type="button" id="addMoreBtn" onclick="showInputFields()" style="display: none;">Lägg till fler objekt</button>
             <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
         </form>
 
