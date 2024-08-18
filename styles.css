@@ -33,8 +33,8 @@ body, html {
     height: auto;
 }
 
-/* Inmatningsformulär, Tackmeddelande och Startruta */
-#inputForm, #thankYouMessage, #startMessage {
+/* Huvudmenyn och undermenyer */
+#mainSelection, .subMenu {
     display: none;
     position: fixed;
     top: 50%;
@@ -43,27 +43,19 @@ body, html {
     background-color: white;
     border: 2px solid #444;
     padding: 20px;
-    z-index: 10000; /* Högre z-index för att ligga överst */
+    z-index: 10000;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
-    width: 95%; /* Default till 95% för mobil */
-    max-width: 600px; /* Maxbredd för datorer */
+    width: 80%; /* Ta upp en stor del av skärmen */
+    max-width: 500px; /* Maxbredd för större skärmar */
 }
 
-/* Specifika dimensioner för startmeddelandet */
-#startMessage {
-    background-color: rgba(255, 255, 255, 0.9);
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
+.subMenu h3 {
+    margin-top: 0;
 }
 
-/* Anpassningar för större skärmar */
-@media (min-width: 768px) {
-    #inputForm, #startMessage {
-        width: 35%; /* 35% för större skärmar */
-    }
+#mainSelection h3 {
+    margin-top: 0;
 }
 
 /* Typvalsruta */
@@ -146,10 +138,6 @@ body, html {
     max-height: 150px;
     overflow-y: auto;
     margin-bottom: 20px;
-}
-
-#inputContainer {
-    display: block; /* Bör vara synlig när man redigerar */
 }
 
 /* Objektflikar */
@@ -257,25 +245,4 @@ body, html {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-}
-
-/* Miniatyrikon för typval och redigeringsfält */
-.mini-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 8px;
-    vertical-align: middle;
-}
-
-/* Specifik stil för objektflikar */
-.object-tab .object-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-}
-
-.object-tab .object-header img {
-    width: 20px;
-    height: 20px;
-    margin-left: 8px;
 }
