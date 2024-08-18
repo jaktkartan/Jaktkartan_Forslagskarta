@@ -137,8 +137,12 @@ function showInputFields() {
     document.getElementById('addObjectBtn').style.display = 'block'; // Visa knappen för att lägga till objekt
     document.getElementById('addMoreBtn').style.display = 'none'; // Dölj knappen för att lägga till fler objekt
 
-    // Dölj startmeddelandet och visa formuläret igen
-    document.getElementById('inputForm').style.display = 'block';
+    // Återgå till den relevanta menyn beroende på vad användaren tidigare valde
+    if (currentMenu === 'newObject') {
+        document.getElementById('newObjectMenu').style.display = 'block';
+    } else if (currentMenu === 'advertise') {
+        document.getElementById('advertiseMenu').style.display = 'block';
+    }
     document.getElementById('startMessage').style.display = 'none';
     centerMarkerContainer.style.display = 'none';
     confirmButton.style.display = 'none';
