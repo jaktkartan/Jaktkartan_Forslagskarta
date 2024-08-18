@@ -185,8 +185,12 @@ function removeObject(index, button) {
 }
 
 function toggleObjectDetails(detailsElement) {
+    // Stäng alla andra objekt
+    closeAllObjectDetails();
+    
+    // Visa det valda objektet
     if (detailsElement) {
-        detailsElement.style.display = detailsElement.style.display === "none" || detailsElement.style.display === "" ? "block" : "none";
+        detailsElement.style.display = "block";
     }
 }
 
