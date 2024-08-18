@@ -185,19 +185,15 @@ function removeObject(index, button) {
 }
 
 function toggleObjectDetails(detailsElement) {
-    // Kolla om objektet redan är öppet
-    var isOpen = detailsElement.style.display === "block";
-    
-    // Stäng alla objekt först
-    closeAllObjectDetails();
-    
-    // Öppna det valda objektet om det inte redan var öppet
-    if (!isOpen) {
-        detailsElement.style.display = "block";
+    // Ändra bara det valda objektets synlighet
+    if (detailsElement) {
+        detailsElement.style.display = detailsElement.style.display === "none" || detailsElement.style.display === "" ? "block" : "none";
         
-        // Skrolla så att headern (rubriken och bilden) syns
-        var headerElement = detailsElement.previousElementSibling;
-        headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        // Skrolla så att headern (rubriken och bilden) syns när objektet öppnas
+        if (detailsElement.style.display === "block") {
+            var headerElement = detailsElement.previousElementSibling;
+            headerElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
     }
 }
 
