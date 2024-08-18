@@ -179,11 +179,31 @@ function clearFormData() {
 }
 
 document.getElementById('suggestionForm').onsubmit = function(event) {
+    event.preventDefault();
+
     if (document.getElementById('submitBtn').disabled) {
-        event.preventDefault();
         alert("Lägg till minst ett objekt innan du skickar.");
+        return;
+    }
+
+    if (confirm("Är du säker på att du vill skicka objekten?")) {
+        this.submit();  // Skicka formuläret
+        showThankYouMessage();  // Visa tackmeddelandet
     }
 };
+
+function showThankYouMessage() {
+    document.getElementById('inputForm').style.display = 'none';
+    document.getElementById('thankYouMessage').style.display = 'block';
+}
+
+function addNewSuggestion() {
+    location.reload();  // Ladda om sidan för att börja om
+}
+
+function goToJaktkartan() {
+    window.location.href = 'https://www.jaktkartan.se';
+}
 
 window.onload = function() {
     document.getElementById('startMessage').style.display = 'block';
