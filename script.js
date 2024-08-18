@@ -220,15 +220,19 @@ function cancelAndRemove() {
     document.getElementById('formTitle').innerText = 'Lägg till objekt';
     document.getElementById('formIcon').src = ''; // Ta bort ikonen om det finns en
 
+    // Dölj hela formuläret och inmatningsfälten
     document.getElementById('inputForm').style.display = 'none'; // Dölj hela formuläret
     document.getElementById('inputContainer').style.display = 'none'; // Dölj inmatningsfälten
     document.getElementById('addObjectBtn').style.display = 'none'; // Dölj "Lägg till" knappen
+
+    // Visa relevanta knappar
     document.getElementById('addMoreBtn').style.display = 'block'; // Visa "Lägg till fler objekt" knappen
     document.getElementById('submitBtn').style.display = 'block'; // Visa "Skicka objekt" knappen
     document.getElementById('cancelBtn').style.display = 'none'; // Dölj "Avbryt" knappen
 
     updateSubmitButton(); // Uppdatera statusen på submit-knappen
 }
+
 
 function updateSubmitButton() {
     var submitButton = document.getElementById('submitBtn');
