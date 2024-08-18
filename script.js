@@ -16,17 +16,20 @@ var selectedIconSrc = '';
 var addedObjects = [];
 var currentMenu = '';
 var markers = []; // Ny array för att hålla koll på alla markörer
+var isCourseMode = false; // Flagg för att markera om kursläge är aktiverat
 
 function showNewObjectMenu() {
     hideAllMenus();
     document.getElementById('newObjectMenu').style.display = 'block';
     currentMenu = 'newObject';
+    isCourseMode = false; // Återställ kursläget
 }
 
 function showAdvertiseMenu() {
     hideAllMenus();
     document.getElementById('advertiseMenu').style.display = 'block';
     currentMenu = 'advertise';
+    isCourseMode = true; // Aktivera kursläget
 }
 
 function suggestEdit() {
@@ -154,9 +157,13 @@ function addObject() {
 }
 
 function showInputFields() {
-    // Visa objektsalternativen för att välja ett nytt objekt
-    hideAllMenus();
-    document.getElementById('newObjectMenu').style.display = 'block';
+    // Om kursläge är aktiverat, hoppa direkt till kursalternativet
+    if (isCourseMode) {
+        selectType('Kurs', 'bilder/kurser_ikon.png');
+    } else {
+        hideAllMenus();
+        document.getElementById('newObjectMenu').style.display = 'block';
+    }
 }
 
 function collapseInputContainer() {
