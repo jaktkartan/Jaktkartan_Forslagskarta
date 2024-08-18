@@ -140,8 +140,9 @@ button {
     color: white;
     overflow: hidden;
     cursor: pointer;
-    display: flex; /* Flex för att justera innehållet horisontellt */
-    align-items: center;
+    display: flex; 
+    flex-direction: column; /* Lägger elementen i en kolumn */
+    align-items: stretch; /* Låter elementen fylla hela bredden */
 }
 
 /* Flikraden som innehåller text och ikon */
@@ -160,7 +161,6 @@ button {
     width: 30px; /* Mindre ikonstorlek */
     height: 30px;
     margin-left: 10px; /* Utrymme mellan text och ikon */
-    pointer-events: none; /* Förhindra att ikonen blockerar klickhändelser */
 }
 
 .object-header:hover {
@@ -183,12 +183,13 @@ button {
 /* Inputfält och textområden i objektfliken */
 .object-details input[type="text"],
 .object-details textarea {
-    width: 100%;
+    width: calc(100% - 20px); /* Ger en liten marginal till höger */
     padding: 5px;
     margin-top: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: rgb(50, 94, 88);
+    display: block; /* Lägger varje fält på sin egen rad */
 }
 
 /* Ta bort knapp i objektflikar */
