@@ -129,6 +129,28 @@ button {
     margin-bottom: 20px;
 }
 
+/* Kollapsa och expandera animation */
+@keyframes slideUp {
+    from { height: var(--start-height); opacity: 1; }
+    to { height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; }
+}
+
+@keyframes slideDown {
+    from { height: 0; opacity: 0; padding-top: 0; padding-bottom: 0; }
+    to { height: var(--start-height); opacity: 1; }
+}
+
+.slide-up {
+    animation: slideUp 0.5s forwards;
+    overflow: hidden;
+}
+
+.slide-down {
+    animation: slideDown 0.5s forwards;
+    overflow: hidden;
+}
+
+
 /* Objektflikar */
 .object-tab {
     margin-bottom: 10px;
