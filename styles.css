@@ -89,8 +89,12 @@ button {
     text-align: center;
 }
 
-#addedObjectsList {
-    margin-top: 20px; /* Lägg till en marginal ovanför listan över redigerade objekt */
+#inputForm h3 {
+    margin-top: 20px; /* Lägg till marginal ovanför alla h3-element i formuläret */
+}
+
+#editTitle {
+    margin-top: 20px; /* Specifik marginal för rubriken "Redigera objekt:" */
 }
 
 
