@@ -89,10 +89,6 @@ button {
     text-align: center;
 }
 
-button:hover {
-    background-color: #3e7c75; /* Förändrar bakgrundsfärgen vid hover */
-}
-
 /* Specifik stil för avbrytknappen */
 #cancelBtn {
     background-color: #b22222;
@@ -113,7 +109,7 @@ button:hover {
 
 /* Input och textområden */
 #inputForm input, #inputForm textarea {
-    width: calc(100% - 20px); /* Justerar marginal så att fälten inte når helt till höger */
+    width: calc(100% - 20px); /* Sätter bredden till 100% med marginal */
     margin: 5px 0;
     padding: 10px;
     border: 1px solid #ccc;
@@ -141,52 +137,58 @@ button:hover {
     color: white;
     overflow: hidden;
     cursor: pointer;
-    display: flex; /* Flex för att justera innehållet horisontellt */
+    display: flex; /* Ändrat till flex för att justera innehållet horisontellt */
     align-items: center;
     justify-content: space-between;
     padding: 5px 10px; /* Mindre padding för att minska höjden */
 }
 
+/* Hover-effekt för hela object-tab */
 .object-tab:hover {
     background-color: #3e7c75; /* Förändrar bakgrundsfärgen vid hover */
 }
 
+/* Flikraden som innehåller text och ikon */
 .object-header {
     display: flex;
     justify-content: space-between;
-    align-items: center; /* Centrera innehållet vertikalt */
+    align-items: center;
     width: 100%;
 }
 
 .object-header img {
-    width: 30px; /* Mindre ikonstorlek */
+    width: 30px;
     height: 30px;
-    margin-left: 10px; /* Utrymme mellan text och ikon */
+    margin-left: 10px;
 }
 
+/* Innehållet i objektfliken (dold tills användaren klickar för att visa) */
 .object-details {
     padding: 10px;
-    background-color: #f0f0f0;
+    background-color: #f9f9f9; /* Ändrad bakgrundsfärg */
     display: none;
-    margin-top: 10px;
-    border-radius: 5px; /* Lägg till rundade hörn för detaljerna */
+    border-radius: 5px;
 }
 
+/* Styling för text i fliken */
 .object-details p {
     margin: 10px 0;
     color: rgb(50, 94, 88);
 }
 
+/* Justering av inputfält och textområden i objektfliken */
 .object-details input[type="text"],
 .object-details textarea {
-    width: calc(100% - 20px); /* Justerar marginal så att fälten inte når helt till höger */
-    padding: 5px;
-    margin-top: 5px;
+    width: calc(100% - 20px); /* Sätter bredden till 100% med marginal */
+    padding: 10px;
+    margin: 5px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: rgb(50, 94, 88);
+    display: block; /* Placera varje fält på en egen rad */
 }
 
+/* Ta bort knapp i objektflikar */
 .object-details button {
     background-color: #b22222;
     color: white;
