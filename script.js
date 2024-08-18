@@ -17,13 +17,13 @@ var addedObjects = []; // Array för att lagra alla objekt
 var currentMenu = ''; // För att hålla koll på vilken meny användaren är i
 
 function showNewObjectMenu() {
-    document.getElementById('mainSelection').style.display = 'none';
+    hideAllMenus(); // Dölj alla menyer först
     document.getElementById('newObjectMenu').style.display = 'block';
     currentMenu = 'newObject';
 }
 
 function showAdvertiseMenu() {
-    document.getElementById('mainSelection').style.display = 'none';
+    hideAllMenus(); // Dölj alla menyer först
     document.getElementById('advertiseMenu').style.display = 'block';
     currentMenu = 'advertise';
 }
@@ -45,7 +45,7 @@ function selectType(type, iconSrc) {
         formIcon.src = iconSrc; // Sätt ikonen i formulärets rubrik om elementet finns
     }
 
-    document.getElementById(currentMenu === 'newObject' ? 'newObjectMenu' : 'advertiseMenu').style.display = 'none';
+    hideAllMenus(); // Dölj alla menyer
     document.getElementById('nameInput').placeholder = 'Namn på ' + type.toLowerCase();
     document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
     centerMarker.src = iconSrc;
@@ -171,7 +171,11 @@ function cancelAndRemove() {
     // Återställ formulär och visa startvyn
     clearFormData();
     document.getElementById('inputForm').style.display = 'none';
-    document.getElementById(currentMenu === 'newObject' ? 'newObjectMenu' : 'advertiseMenu').style.display = 'block';
+    if (currentMenu === 'newObject') {
+        document.getElementById('newObjectMenu').style.display = 'block';
+    } else if (currentMenu === 'advertise') {
+        document.getElementById('advertiseMenu').style.display = 'block';
+    }
     centerMarkerContainer.style.display = 'none';
     confirmButton.style.display = 'none';
 }
@@ -201,6 +205,12 @@ function clearFormData() {
     document.getElementById('infoInput').value = '';
     document.getElementById('latitudeInput').value = '';
     document.getElementById('longitudeInput').value = '';
+}
+
+function hideAllMenus() {
+    document.getElementById('mainSelection').style.display = 'none';
+    document.getElementById('newObjectMenu').style.display = 'none';
+    document.getElementById('advertiseMenu').style.display = 'none';
 }
 
 document.getElementById('suggestionForm').onsubmit = function(event) {
@@ -254,6 +264,7 @@ function goToJaktkartan() {
 }
 
 window.onload = function() {
-    document.getElementById('mainSelection').style.display = 'block';
+    hideAllMenus(); // Dölj alla menyer vid start
+    document.getElementById('mainSelection').style.display = 'block'; // Visa huvudmenyn
     updateSubmitButton();
 };
