@@ -137,8 +137,13 @@ button {
     color: white;
     overflow: hidden;
     cursor: pointer;
-    display: block; /* Ändrad från flex till block */
+    display: block;
     padding: 10px;
+}
+
+/* Lägg till hovringseffekt här */
+.object-tab:hover {
+    background-color: #3e7c75; /* Hover-effekt */
 }
 
 /* Flikraden som innehåller text och ikon */
@@ -146,7 +151,7 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px; /* Lägger till marginal för avstånd */
+    margin-bottom: 10px;
 }
 
 .object-header img {
@@ -155,14 +160,10 @@ button {
     margin-left: 10px;
 }
 
-.object-header:hover {
-    background-color: #3e7c75; /* Hover-effekt */
-}
-
 /* Innehållet i objektfliken (dold tills användaren klickar för att visa) */
 .object-details {
     padding: 10px;
-    background-color: #f9f9f9; /* Ändrad bakgrundsfärg */
+    background-color: #f9f9f9;
     display: none;
     border-radius: 5px;
 }
@@ -176,13 +177,13 @@ button {
 /* Justering av inputfält och textområden i objektfliken */
 .object-details input[type="text"],
 .object-details textarea {
-    width: calc(100% - 20px); /* Sätter bredden till 100% med marginal */
+    width: calc(100% - 20px);
     padding: 10px;
     margin: 5px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: rgb(50, 94, 88);
-    display: block; /* Placera varje fält på en egen rad */
+    display: block;
 }
 
 /* Ta bort knapp i objektflikar */
