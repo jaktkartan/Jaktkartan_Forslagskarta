@@ -217,6 +217,10 @@ function cancelAndRemove() {
 
     clearFormData(); // Rensa inmatningsfälten
 
+    // Återställ rubriken till en generell text
+    document.getElementById('formTitle').innerText = 'Lägg till objekt';
+    document.getElementById('formIcon').src = ''; // Ta bort ikonen om det finns en
+
     document.getElementById('inputContainer').style.display = 'none'; // Dölj inmatningsfälten
     document.getElementById('addObjectBtn').style.display = 'none'; // Dölj "Lägg till" knappen
     document.getElementById('addMoreBtn').style.display = 'block'; // Visa "Lägg till fler objekt" knappen
@@ -225,6 +229,7 @@ function cancelAndRemove() {
 
     updateSubmitButton(); // Uppdatera statusen på submit-knappen
 }
+
 
 function updateSubmitButton() {
     var submitButton = document.getElementById('submitBtn');
