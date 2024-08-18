@@ -107,7 +107,7 @@ function addObject() {
     newObject.classList.add('object-tab');
     
     newObject.innerHTML = `
-        <div class="object-header" onclick="toggleObjectDetails(this)">
+        <div class="object-header">
             <span>${name}</span>
             <img src="${selectedIconSrc}" alt="${name}">
         </div>
@@ -118,6 +118,11 @@ function addObject() {
             <button onclick="removeObject(${addedObjects.length - 1}, this)">Ta bort</button>
         </div>
     `;
+
+    // Gör hela fliken klickbar för att expandera
+    newObject.onclick = function() {
+        toggleObjectDetails(newObject.querySelector('.object-details'));
+    };
 
     addedObjectsList.appendChild(newObject);
 
@@ -177,14 +182,11 @@ function removeObject(index, button) {
     updateSubmitButton();
 }
 
-function toggleObjectDetails(headerElement) {
-    var details = headerElement.nextElementSibling;
-    if (details) {
-        details.style.display = details.style.display === "none" || details.style.display === "" ? "block" : "none";
+function toggleObjectDetails(detailsElement) {
+    if (detailsElement) {
+        detailsElement.style.display = detailsElement.style.display === "none" || detailsElement.style.display === "" ? "block" : "none";
     }
 }
-
-
 
 function cancelAndRemove() {
     if (lastMarker) {
