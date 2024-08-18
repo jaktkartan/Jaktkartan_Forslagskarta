@@ -212,9 +212,10 @@ function cancelAndRemove() {
     document.getElementById('formTitle').innerText = 'Lägg till objekt';
     document.getElementById('formIcon').src = ''; // Ta bort ikonen om det finns en
 
-    collapseInputContainer(); // Kollapsa inmatningsfälten
+    // Kollapsa inmatningsfälten
+    collapseInputContainer();
 
-    // Visa "Lägg till fler objekt"-knappen
+    // Visa "Lägg till fler objekt"-knappen och dölj "Avbryt"-knappen
     document.getElementById('addMoreBtn').style.display = 'block';
     document.getElementById('cancelBtn').style.display = 'none';
 }
