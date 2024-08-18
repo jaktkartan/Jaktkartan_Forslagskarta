@@ -130,7 +130,30 @@ function addObject() {
 
     addedObjectsList.appendChild(newObject);
 
-    // Dölj inputContainer med en slide-up effekt
+    // Kollapsa inmatningsfälten
+    collapseInputContainer();
+
+    // Visa "Lägg till fler objekt"-knappen
+    document.getElementById('addMoreBtn').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'block';
+    document.getElementById('addObjectBtn').style.display = 'none';
+    document.getElementById('cancelBtn').style.display = 'none';
+
+    updateSubmitButton();
+}
+
+function showInputFields() {
+    // Visa objektsalternativen för att välja ett nytt objekt
+    document.getElementById('newObjectMenu').style.display = 'block';
+
+    hideAllMenus(); // Dölj alla menyer innan vi visar input fälten
+    document.getElementById('inputContainer').style.display = 'block'; // Visa inmatningsfälten
+    document.getElementById('inputForm').style.display = 'block'; // Visa inmatningsformuläret
+    document.getElementById('addObjectBtn').style.display = 'block'; // Visa "Lägg till" knappen
+    document.getElementById('addMoreBtn').style.display = 'none'; // Dölj "Lägg till fler objekt" knappen
+}
+
+function collapseInputContainer() {
     var inputContainer = document.getElementById('inputContainer');
     var startHeight = inputContainer.scrollHeight + "px";
     inputContainer.style.setProperty('--start-height', startHeight);
@@ -140,40 +163,6 @@ function addObject() {
         inputContainer.style.display = 'none';
         inputContainer.classList.remove('slide-up');
     }, { once: true });
-
-    document.getElementById('addObjectBtn').style.display = 'none';
-    document.getElementById('addMoreBtn').style.display = 'block';
-    document.getElementById('submitBtn').style.display = 'block';
-
-    document.getElementById('cancelBtn').style.display = 'none';
-
-    updateSubmitButton();
-}
-
-function showInputFields() {
-    var inputContainer = document.getElementById('inputContainer');
-    
-    // Visa inputContainer med en slide-down effekt
-    inputContainer.style.display = 'block';
-    var startHeight = inputContainer.scrollHeight + "px";
-    inputContainer.style.setProperty('--start-height', startHeight);
-    inputContainer.classList.add('slide-down');
-
-    inputContainer.addEventListener('animationend', function() {
-        inputContainer.classList.remove('slide-down');
-    }, { once: true });
-
-    document.getElementById('addObjectBtn').style.display = 'block';
-    document.getElementById('addMoreBtn').style.display = 'none';
-
-    if (currentMenu === 'newObject') {
-        document.getElementById('newObjectMenu').style.display = 'block';
-    } else if (currentMenu === 'advertise') {
-        document.getElementById('advertiseMenu').style.display = 'block';
-    }
-    document.getElementById('inputForm').style.display = 'block';
-    centerMarkerContainer.style.display = 'none';
-    confirmButton.style.display = 'none';
 }
 
 function updateObjectData(index, field, value) {
@@ -223,19 +212,12 @@ function cancelAndRemove() {
     document.getElementById('formTitle').innerText = 'Lägg till objekt';
     document.getElementById('formIcon').src = ''; // Ta bort ikonen om det finns en
 
-    // Dölj inputContainer med en slide-up effekt
-    var inputContainer = document.getElementById('inputContainer');
-    var startHeight = inputContainer.scrollHeight + "px";
-    inputContainer.style.setProperty('--start-height', startHeight);
-    inputContainer.classList.add('slide-up');
+    collapseInputContainer(); // Kollapsa inmatningsfälten
 
-    inputContainer.addEventListener('animationend', function() {
-        inputContainer.style.display = 'none';
-        inputContainer.classList.remove('slide-up');
-    }, { once: true });
+    // Visa objektsalternativen för att välja ett nytt objekt
+    document.getElementById('newObjectMenu').style.display = 'block';
 
     document.getElementById('addObjectBtn').style.display = 'none';
-    document.getElementById('addMoreBtn').style.display = 'block';
     document.getElementById('submitBtn').style.display = 'block';
     document.getElementById('cancelBtn').style.display = 'none';
 
