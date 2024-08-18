@@ -208,9 +208,16 @@ function cancelAndRemove() {
 
     clearFormData(); // Rensa inmatningsfälten
 
-    // Återställ rubriken till en generell text
-    document.getElementById('formTitle').innerText = 'Lägg till objekt';
-    document.getElementById('formIcon').src = ''; // Ta bort ikonen om det finns en
+    // Kontrollera om elementet med id 'formTitle' och 'formIcon' existerar innan du ändrar dem
+    var formTitle = document.getElementById('formTitle');
+    var formIcon = document.getElementById('formIcon');
+
+    if (formTitle) {
+        formTitle.innerText = 'Lägg till objekt'; // Återställ rubriken till en generell text
+    }
+    if (formIcon) {
+        formIcon.src = ''; // Ta bort ikonen om det finns en
+    }
 
     // Kollapsa inmatningsfälten
     collapseInputContainer();
