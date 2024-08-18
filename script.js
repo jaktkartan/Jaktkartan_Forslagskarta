@@ -183,6 +183,7 @@ function toggleObjectDetails(headerElement) {
     }
 }
 
+
 function cancelAndRemove() {
     if (lastMarker) {
         map.removeLayer(lastMarker);
