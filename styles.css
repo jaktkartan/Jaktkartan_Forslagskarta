@@ -140,9 +140,9 @@ button {
     color: white;
     overflow: hidden;
     cursor: pointer;
-    display: flex; 
-    flex-direction: column; /* Lägger elementen i en kolumn */
-    align-items: stretch; /* Låter elementen fylla hela bredden */
+    display: flex;
+    flex-direction: column;
+    align-items: stretch; /* Låter elementen sträcka sig över hela fliken */
 }
 
 /* Flikraden som innehåller text och ikon */
@@ -183,13 +183,14 @@ button {
 /* Inputfält och textområden i objektfliken */
 .object-details input[type="text"],
 .object-details textarea {
-    width: calc(100% - 20px); /* Ger en liten marginal till höger */
+    width: 95%; /* Sätter bredden till 95% för att skapa marginaler */
     padding: 5px;
     margin-top: 5px;
+    margin-right: 5px; /* Marginal till höger */
     border: 1px solid #ccc;
     border-radius: 5px;
     color: rgb(50, 94, 88);
-    display: block; /* Lägger varje fält på sin egen rad */
+    display: block;
 }
 
 /* Ta bort knapp i objektflikar */
