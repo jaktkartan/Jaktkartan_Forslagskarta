@@ -12,10 +12,12 @@ var centerMarker = document.getElementById('centerMarker');
 var centerMarkerContainer = document.getElementById('centerMarkerContainer');
 var confirmButton = document.getElementById('confirmButton');
 var lastMarker = null;
+var selectedIconSrc = ''; // För att lagra den valda ikonen
 
 function selectType(type, iconSrc) {
     clearFormData();
     closeAllObjectDetails();
+    selectedIconSrc = iconSrc; // Spara den valda ikonens källa
     document.getElementById('categoryInput').value = type;
     document.getElementById('formTitle').innerText = 'Lägg till ' + type;
     document.getElementById('startMessage').style.display = 'none';
@@ -72,7 +74,8 @@ function addObject() {
     
     newObject.innerHTML = `
         <div class="object-header" onclick="toggleObjectDetails(this)">
-            ${name}
+            <span>${name}</span>
+            <img src="${selectedIconSrc}" alt="${name}">
         </div>
         <div class="object-details">
             <p><strong>Namn:</strong> <input type="text" value="${name}" oninput="updateObjectData(this, 'name')"></p>
@@ -107,7 +110,7 @@ function toggleObjectDetails(headerElement) {
 }
 
 function updateObjectData(inputElement, field) {
-    var objectHeader = inputElement.closest('.object-tab').querySelector('.object-header');
+    var objectHeader = inputElement.closest('.object-tab').querySelector('.object-header span');
     var newValue = inputElement.value;
     if (field === 'name') {
         objectHeader.textContent = newValue;
