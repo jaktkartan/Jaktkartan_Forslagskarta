@@ -47,7 +47,7 @@ body, html {
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
     border-radius: 10px;
     width: 80%;
-    max-width: 500px; /* Bra för att begränsa storleken på större skärmar */
+    max-width: 500px;
 }
 
 .subMenu h3, #mainSelection h3, #inputForm h3 {
@@ -107,16 +107,14 @@ button {
     display: none; /* Dölj knappen tills användaren gjort ett val */
 }
 
-/* Inputfält och textområden i objektfliken */
-.object-details input[type="text"],
-.object-details textarea {
-    width: calc(100% - 10px); /* Minskar bredden för att ge utrymme till höger */
-    padding: 5px;
-    margin-top: 5px;
-    margin-right: 5px; /* Lägger till marginal till höger */
+/* Input och textområden */
+#inputForm input, #inputForm textarea {
+    width: calc(100% - 10px); /* Sätter bredden till 100% med en liten marginal */
+    margin: 5px 0;
+    padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    color: rgb(50, 94, 88);
+    display: block; /* Placera varje fält på en egen rad */
 }
 
 /* Lista över tillagda objekt */
@@ -140,9 +138,8 @@ button {
     color: white;
     overflow: hidden;
     cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch; /* Låter elementen sträcka sig över hela fliken */
+    display: flex; /* Gör fliken flexibel för att placera ikonen och texten bredvid varandra */
+    align-items: center; /* Centrerar ikonen och texten vertikalt */
 }
 
 /* Flikraden som innehåller text och ikon */
@@ -152,19 +149,19 @@ button {
     cursor: pointer;
     border-radius: 5px;
     text-align: left;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    display: flex; /* Flexbox för att placera texten och ikonen på samma rad */
+    justify-content: space-between; /* Lägger utrymme mellan texten och ikonen */
+    align-items: center; /* Centrerar innehållet vertikalt */
 }
 
 .object-header img {
-    width: 30px; /* Mindre ikonstorlek */
+    width: 30px; /* Sätter en mindre storlek på ikonen */
     height: 30px;
-    margin-left: 10px; /* Utrymme mellan text och ikon */
+    margin-left: 10px; /* Lägger lite utrymme mellan texten och ikonen */
 }
 
 .object-header:hover {
-    background-color: #3e7c75; /* Hover-effekt */
+    background-color: #3e7c75; /* Förändrar bakgrundsfärgen vid hover */
 }
 
 /* Innehållet i objektfliken (dold tills användaren klickar för att visa) */
@@ -172,6 +169,7 @@ button {
     padding: 10px;
     background-color: #f0f0f0;
     display: none; /* Dölj tills fliken klickas på */
+    clear: both;
 }
 
 /* Styling för text i fliken */
@@ -183,14 +181,13 @@ button {
 /* Inputfält och textområden i objektfliken */
 .object-details input[type="text"],
 .object-details textarea {
-    width: 95%; /* Sätter bredden till 95% för att skapa marginaler */
-    padding: 5px;
-    margin-top: 5px;
-    margin-right: 5px; /* Marginal till höger */
+    width: calc(100% - 10px); /* Sätter bredden till 100% med marginal */
+    padding: 10px;
+    margin: 5px 0;
     border: 1px solid #ccc;
     border-radius: 5px;
     color: rgb(50, 94, 88);
-    display: block;
+    display: block; /* Placera varje fält på en egen rad */
 }
 
 /* Ta bort knapp i objektflikar */
