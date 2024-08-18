@@ -137,15 +137,8 @@ button {
     color: white;
     overflow: hidden;
     cursor: pointer;
-    display: flex; /* Ändrat till flex för att justera innehållet horisontellt */
-    align-items: center;
-    justify-content: space-between;
-    padding: 5px 10px; /* Mindre padding för att minska höjden */
-}
-
-/* Hover-effekt för hela object-tab */
-.object-tab:hover {
-    background-color: #3e7c75; /* Förändrar bakgrundsfärgen vid hover */
+    display: block; /* Ändrad från flex till block */
+    padding: 10px;
 }
 
 /* Flikraden som innehåller text och ikon */
@@ -153,13 +146,17 @@ button {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
+    margin-bottom: 10px; /* Lägger till marginal för avstånd */
 }
 
 .object-header img {
     width: 30px;
     height: 30px;
     margin-left: 10px;
+}
+
+.object-header:hover {
+    background-color: #3e7c75; /* Hover-effekt */
 }
 
 /* Innehållet i objektfliken (dold tills användaren klickar för att visa) */
