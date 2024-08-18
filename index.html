@@ -24,19 +24,19 @@
         <div id="typeSelection">
             <div class="option" onclick="selectType('Dagkort', 'bilder/jaktkort_ikon.png')">
                 <img src="bilder/jaktkort_ikon.png" alt="Dagkort">
-                <span><img src="bilder/jaktkort_ikon.png" alt="Dagkort" class="mini-icon"> Dagkort för jakt</span>
+                <span>Dagkort för jakt</span>
             </div>
             <div class="option" onclick="selectType('Jaktskyttebana', 'bilder/jaktskyttebanor_ikon.png')">
                 <img src="bilder/jaktskyttebanor_ikon.png" alt="Jaktskyttebana">
-                <span><img src="bilder/jaktskyttebanor_ikon.png" alt="Jaktskyttebana" class="mini-icon"> Jaktskyttebana</span>
+                <span>Jaktskyttebana</span>
             </div>
             <div class="option" onclick="selectType('Kurs', 'bilder/kurser_ikon.png')">
                 <img src="bilder/kurser_ikon.png" alt="Kurser">
-                <span><img src="bilder/kurser_ikon.png" alt="Kurser" class="mini-icon"> Kurs</span>
+                <span>Kurs</span>
             </div>
             <div class="option" onclick="selectType('Mässa', 'bilder/massa_ikon.png')">
                 <img src="bilder/massa_ikon.png" alt="Mässa">
-                <span><img src="bilder/massa_ikon.png" alt="Mässa" class="mini-icon"> Mässa</span>
+                <span>Mässa</span>
             </div>
         </div>
     </div>
@@ -52,8 +52,11 @@
 
     <!-- Inmatningsformulär -->
     <div id="inputForm">
-        <h3 id="formTitle">Lägg till objekt</h3>
-        <form id="suggestionForm" action="https://example.com/submit" method="POST">
+        <h3 id="formTitle">
+            <img src="" id="formIcon" class="mini-icon" alt="Ikon"> <!-- Miniatyrikon här -->
+            Lägg till objekt
+        </h3>
+        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec" method="POST">
             <input type="hidden" name="typ" id="categoryInput">
             <input type="hidden" name="latitud" id="latitudeInput">
             <input type="hidden" name="longitud" id="longitudeInput">
@@ -77,7 +80,7 @@
         <div id="addedObjectsList"></div>
 
         <!-- Skicka objekt-knappen -->
-        <button type="submit" id="submitBtn" disabled>Skicka objekt</button>
+        <button type="submit" id="submitBtn" form="suggestionForm" disabled>Skicka objekt</button>
     </div>
 
     <!-- Tackmeddelande -->
