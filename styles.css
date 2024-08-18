@@ -107,13 +107,16 @@ button {
     display: none; /* Dölj knappen tills användaren gjort ett val */
 }
 
-/* Input och textområden */
-#inputForm input, #inputForm textarea {
-    width: 100%;
-    margin: 5px 0;
-    padding: 10px;
+/* Inputfält och textområden i objektfliken */
+.object-details input[type="text"],
+.object-details textarea {
+    width: calc(100% - 10px); /* Minskar bredden för att ge utrymme till höger */
+    padding: 5px;
+    margin-top: 5px;
+    margin-right: 5px; /* Lägger till marginal till höger */
     border: 1px solid #ccc;
     border-radius: 5px;
+    color: rgb(50, 94, 88);
 }
 
 /* Lista över tillagda objekt */
