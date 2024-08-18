@@ -95,7 +95,7 @@ function addObject() {
     addedObjects.push({
         name: name,
         url: url,
-        info: info,
+        info: info, // Sparar info korrekt
         lat: currentLat,
         lng: currentLng,
         category: document.getElementById('categoryInput').value,
@@ -114,7 +114,7 @@ function addObject() {
         <div class="object-details">
             <p><strong>Namn:</strong> <input type="text" value="${name}" oninput="updateObjectData(${addedObjects.length - 1}, 'name', this.value)"></p>
             <p><strong>URL:</strong> <input type="text" value="${url}" oninput="updateObjectData(${addedObjects.length - 1}, 'url', this.value)"></p>
-            <p><strong>Info:</strong> <textarea oninput="updateObjectData(${addedObjects.length - 1}, 'info', this.value)"></textarea></p>
+            <p><strong>Info:</strong> <textarea oninput="updateObjectData(${addedObjects.length - 1}, 'info', this.value)">${info}</textarea></p>
             <button onclick="removeObject(${addedObjects.length - 1}, this)">Ta bort</button>
         </div>
     `;
@@ -256,7 +256,7 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
             formData.append('typ', object.category);
             formData.append('namn', object.name);
             formData.append('url', object.url);
-            formData.append('info', object.info);
+            formData.append('info', object.info); // Inkluderar korrekt info
             formData.append('latitud', object.lat);
             formData.append('longitud', object.lng);
 
