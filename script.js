@@ -210,19 +210,20 @@ function toggleObjectDetails(detailsElement) {
 
 function cancelAndRemove() {
     if (lastMarker) {
-        map.removeLayer(lastMarker);
+        map.removeLayer(lastMarker); // Ta bort den senaste markören
+        markers.pop(); // Ta bort markören från markers arrayen
         lastMarker = null;
     }
 
-    clearFormData();
-    document.getElementById('inputForm').style.display = 'none';
-    if (currentMenu === 'newObject') {
-        document.getElementById('newObjectMenu').style.display = 'block';
-    } else if (currentMenu === 'advertise') {
-        document.getElementById('advertiseMenu').style.display = 'block';
-    }
-    centerMarkerContainer.style.display = 'none';
-    confirmButton.style.display = 'none';
+    clearFormData(); // Rensa inmatningsfälten
+
+    document.getElementById('inputContainer').style.display = 'none'; // Dölj inmatningsfälten
+    document.getElementById('addObjectBtn').style.display = 'none'; // Dölj "Lägg till" knappen
+    document.getElementById('addMoreBtn').style.display = 'block'; // Visa "Lägg till fler objekt" knappen
+    document.getElementById('submitBtn').style.display = 'block'; // Visa "Skicka objekt" knappen
+    document.getElementById('cancelBtn').style.display = 'none'; // Dölj "Avbryt" knappen
+
+    updateSubmitButton(); // Uppdatera statusen på submit-knappen
 }
 
 function updateSubmitButton() {
