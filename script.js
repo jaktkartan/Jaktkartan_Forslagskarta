@@ -49,7 +49,7 @@ function selectType(type, iconSrc) {
     document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
     centerMarker.src = iconSrc;
     centerMarkerContainer.style.display = 'block';
-    confirmButton.style.display = 'block';
+    confirmButton.style.display = 'block';  // Visa knappen när användaren har valt en objektstyp
     document.getElementById('cancelBtn').style.display = 'block';
 }
 
