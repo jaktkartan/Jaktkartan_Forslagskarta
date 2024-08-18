@@ -187,8 +187,22 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
     }
 
     if (confirm("Är du säker på att du vill skicka objekten?")) {
-        this.submit();  // Skicka formuläret
-        showThankYouMessage();  // Visa tackmeddelandet
+        // Skicka formuläret via fetch istället för att göra en vanlig form submission
+        var formData = new FormData(this);
+
+        fetch(this.action, {
+            method: "POST",
+            body: formData,
+        }).then(response => {
+            if (response.ok) {
+                showThankYouMessage();  // Visa tackmeddelandet
+            } else {
+                alert("Något gick fel, försök igen senare.");
+            }
+        }).catch(error => {
+            console.error("Ett nätverksfel uppstod:", error);
+            alert("Ett nätverksfel uppstod, försök igen senare.");
+        });
     }
 };
 
