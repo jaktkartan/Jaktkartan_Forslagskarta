@@ -131,6 +131,7 @@ function addObject() {
     updateSubmitButton();
 }
 
+
 function showInputFields() {
     console.log("Trying to show input fields...");
 
