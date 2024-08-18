@@ -144,13 +144,8 @@ function addObject() {
 
 function showInputFields() {
     // Visa objektsalternativen för att välja ett nytt objekt
+    hideAllMenus();
     document.getElementById('newObjectMenu').style.display = 'block';
-
-    hideAllMenus(); // Dölj alla menyer innan vi visar input fälten
-    document.getElementById('inputContainer').style.display = 'block'; // Visa inmatningsfälten
-    document.getElementById('inputForm').style.display = 'block'; // Visa inmatningsformuläret
-    document.getElementById('addObjectBtn').style.display = 'block'; // Visa "Lägg till" knappen
-    document.getElementById('addMoreBtn').style.display = 'none'; // Dölj "Lägg till fler objekt" knappen
 }
 
 function collapseInputContainer() {
