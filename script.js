@@ -137,14 +137,14 @@ function showInputFields() {
     var inputContainer = document.getElementById('inputContainer');
     var addObjectBtn = document.getElementById('addObjectBtn');
     var addMoreBtn = document.getElementById('addMoreBtn');
+    var startMessage = document.getElementById('startMessage');
 
-    // Log to see if any of these elements are null
     console.log("inputContainer:", inputContainer);
     console.log("addObjectBtn:", addObjectBtn);
     console.log("addMoreBtn:", addMoreBtn);
+    console.log("startMessage:", startMessage);
 
-    // Ensure these elements exist before trying to modify their styles
-    if (inputContainer && addObjectBtn && addMoreBtn) {
+    if (inputContainer && addObjectBtn && addMoreBtn && startMessage) {
         inputContainer.style.display = 'block';
         addObjectBtn.style.display = 'block';
         addMoreBtn.style.display = 'none';
@@ -154,7 +154,7 @@ function showInputFields() {
         } else if (currentMenu === 'advertise') {
             document.getElementById('advertiseMenu').style.display = 'block';
         }
-        document.getElementById('startMessage').style.display = 'none';
+        startMessage.style.display = 'none';
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
     } else {
