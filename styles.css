@@ -109,12 +109,11 @@ button {
 
 /* Input och textområden */
 #inputForm input, #inputForm textarea {
-    width: calc(100% - 10px); /* Sätter bredden till 100% med en liten marginal */
+    width: calc(100% - 20px); /* Sätter bredden till 100% med marginal */
     margin: 5px 0;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    display: block; /* Placera varje fält på en egen rad */
 }
 
 /* Lista över tillagda objekt */
@@ -138,8 +137,8 @@ button {
     color: white;
     overflow: hidden;
     cursor: pointer;
-    display: flex; /* Gör fliken flexibel för att placera ikonen och texten bredvid varandra */
-    align-items: center; /* Centrerar ikonen och texten vertikalt */
+    display: flex; /* Flex för att justera innehållet horisontellt */
+    align-items: center;
 }
 
 /* Flikraden som innehåller text och ikon */
@@ -149,19 +148,19 @@ button {
     cursor: pointer;
     border-radius: 5px;
     text-align: left;
-    display: flex; /* Flexbox för att placera texten och ikonen på samma rad */
-    justify-content: space-between; /* Lägger utrymme mellan texten och ikonen */
-    align-items: center; /* Centrerar innehållet vertikalt */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .object-header img {
-    width: 30px; /* Sätter en mindre storlek på ikonen */
+    width: 30px; /* Mindre ikonstorlek */
     height: 30px;
-    margin-left: 10px; /* Lägger lite utrymme mellan texten och ikonen */
+    margin-left: 10px; /* Utrymme mellan text och ikon */
 }
 
 .object-header:hover {
-    background-color: #3e7c75; /* Förändrar bakgrundsfärgen vid hover */
+    background-color: #3e7c75; /* Hover-effekt */
 }
 
 /* Innehållet i objektfliken (dold tills användaren klickar för att visa) */
@@ -178,10 +177,10 @@ button {
     color: rgb(50, 94, 88);
 }
 
-/* Inputfält och textområden i objektfliken */
+/* Justering av inputfält och textområden i objektfliken */
 .object-details input[type="text"],
 .object-details textarea {
-    width: calc(100% - 10px); /* Sätter bredden till 100% med marginal */
+    width: calc(100% - 20px); /* Sätter bredden till 100% med marginal */
     padding: 10px;
     margin: 5px 0;
     border: 1px solid #ccc;
