@@ -137,31 +137,46 @@ button {
     color: white;
     overflow: hidden;
     cursor: pointer;
+    display: flex; /* Gör fliken flexibel för att placera ikonen och texten bredvid varandra */
+    align-items: center; /* Centrerar ikonen och texten vertikalt */
 }
 
+/* Flikraden som innehåller text och ikon */
 .object-header {
     padding: 10px;
     background-color: rgb(50, 94, 88);
     cursor: pointer;
     border-radius: 5px;
     text-align: left;
+    display: flex; /* Flexbox för att placera texten och ikonen på samma rad */
+    justify-content: space-between; /* Lägger utrymme mellan texten och ikonen */
+    align-items: center; /* Centrerar innehållet vertikalt */
+}
+
+.object-header img {
+    width: 30px; /* Sätter en mindre storlek på ikonen */
+    height: 30px;
+    margin-left: 10px; /* Lägger lite utrymme mellan texten och ikonen */
 }
 
 .object-header:hover {
-    background-color: #3e7c75;
+    background-color: #3e7c75; /* Förändrar bakgrundsfärgen vid hover */
 }
 
+/* Innehållet i objektfliken (dold tills användaren klickar för att visa) */
 .object-details {
     padding: 10px;
     background-color: #f0f0f0;
-    display: none;
+    display: none; /* Dölj tills fliken klickas på */
 }
 
+/* Styling för text i fliken */
 .object-details p {
     margin: 10px 0;
     color: rgb(50, 94, 88);
 }
 
+/* Inputfält och textområden i objektfliken */
 .object-details input[type="text"],
 .object-details textarea {
     width: 100%;
@@ -171,6 +186,7 @@ button {
     border-radius: 5px;
     color: rgb(50, 94, 88);
 }
+
 
 /* Ta bort knapp i objektflikar */
 .object-details button {
