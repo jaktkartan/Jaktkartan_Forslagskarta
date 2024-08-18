@@ -130,7 +130,17 @@ function addObject() {
 
     addedObjectsList.appendChild(newObject);
 
-    document.getElementById('inputContainer').style.display = 'none';
+    // Dölj inputContainer med en slide-up effekt
+    var inputContainer = document.getElementById('inputContainer');
+    var startHeight = inputContainer.scrollHeight + "px";
+    inputContainer.style.setProperty('--start-height', startHeight);
+    inputContainer.classList.add('slide-up');
+
+    inputContainer.addEventListener('animationend', function() {
+        inputContainer.style.display = 'none';
+        inputContainer.classList.remove('slide-up');
+    }, { once: true });
+
     document.getElementById('addObjectBtn').style.display = 'none';
     document.getElementById('addMoreBtn').style.display = 'block';
     document.getElementById('submitBtn').style.display = 'block';
@@ -141,36 +151,29 @@ function addObject() {
 }
 
 function showInputFields() {
-    console.log("Trying to show input fields...");
-
     var inputContainer = document.getElementById('inputContainer');
-    var addObjectBtn = document.getElementById('addObjectBtn');
-    var addMoreBtn = document.getElementById('addMoreBtn');
-    var mainSelection = document.getElementById('mainSelection');  // Startrutan
+    
+    // Visa inputContainer med en slide-down effekt
+    inputContainer.style.display = 'block';
+    var startHeight = inputContainer.scrollHeight + "px";
+    inputContainer.style.setProperty('--start-height', startHeight);
+    inputContainer.classList.add('slide-down');
 
-    console.log("inputContainer:", inputContainer);
-    console.log("addObjectBtn:", addObjectBtn);
-    console.log("addMoreBtn:", addMoreBtn);
-    console.log("mainSelection:", mainSelection);
+    inputContainer.addEventListener('animationend', function() {
+        inputContainer.classList.remove('slide-down');
+    }, { once: true });
 
-    if (inputContainer && addObjectBtn && addMoreBtn && mainSelection) {
-        inputContainer.style.display = 'block';
-        addObjectBtn.style.display = 'block';
-        addMoreBtn.style.display = 'none';
+    document.getElementById('addObjectBtn').style.display = 'block';
+    document.getElementById('addMoreBtn').style.display = 'none';
 
-        // Gå tillbaka till rätt meny beroende på tidigare val
-        if (currentMenu === 'newObject') {
-            document.getElementById('newObjectMenu').style.display = 'block';
-        } else if (currentMenu === 'advertise') {
-            document.getElementById('advertiseMenu').style.display = 'block';
-        }
-        mainSelection.style.display = 'none';  // Dölj huvudmenyn när inputfält visas
-        document.getElementById('inputForm').style.display = 'none';
-        centerMarkerContainer.style.display = 'none';
-        confirmButton.style.display = 'none';
-    } else {
-        console.error("One or more elements are not found in the DOM.");
+    if (currentMenu === 'newObject') {
+        document.getElementById('newObjectMenu').style.display = 'block';
+    } else if (currentMenu === 'advertise') {
+        document.getElementById('advertiseMenu').style.display = 'block';
     }
+    document.getElementById('inputForm').style.display = 'block';
+    centerMarkerContainer.style.display = 'none';
+    confirmButton.style.display = 'none';
 }
 
 function updateObjectData(index, field, value) {
@@ -220,19 +223,24 @@ function cancelAndRemove() {
     document.getElementById('formTitle').innerText = 'Lägg till objekt';
     document.getElementById('formIcon').src = ''; // Ta bort ikonen om det finns en
 
-    // Dölj hela formuläret och inmatningsfälten
-    document.getElementById('inputForm').style.display = 'none'; // Dölj hela formuläret
-    document.getElementById('inputContainer').style.display = 'none'; // Dölj inmatningsfälten
-    document.getElementById('addObjectBtn').style.display = 'none'; // Dölj "Lägg till" knappen
+    // Dölj inputContainer med en slide-up effekt
+    var inputContainer = document.getElementById('inputContainer');
+    var startHeight = inputContainer.scrollHeight + "px";
+    inputContainer.style.setProperty('--start-height', startHeight);
+    inputContainer.classList.add('slide-up');
 
-    // Visa relevanta knappar
-    document.getElementById('addMoreBtn').style.display = 'block'; // Visa "Lägg till fler objekt" knappen
-    document.getElementById('submitBtn').style.display = 'block'; // Visa "Skicka objekt" knappen
-    document.getElementById('cancelBtn').style.display = 'none'; // Dölj "Avbryt" knappen
+    inputContainer.addEventListener('animationend', function() {
+        inputContainer.style.display = 'none';
+        inputContainer.classList.remove('slide-up');
+    }, { once: true });
 
-    updateSubmitButton(); // Uppdatera statusen på submit-knappen
+    document.getElementById('addObjectBtn').style.display = 'none';
+    document.getElementById('addMoreBtn').style.display = 'block';
+    document.getElementById('submitBtn').style.display = 'block';
+    document.getElementById('cancelBtn').style.display = 'none';
+
+    updateSubmitButton();
 }
-
 
 function updateSubmitButton() {
     var submitButton = document.getElementById('submitBtn');
