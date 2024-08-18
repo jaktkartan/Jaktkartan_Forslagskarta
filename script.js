@@ -219,7 +219,7 @@ function cancelAndRemove() {
     var formIcon = document.getElementById('formIcon');
 
     if (formTitle) {
-        formTitle.innerText = 'Lägg till objekt'; // Återställ rubriken till en generell text
+        formTitle.innerText = 'Lägg till menyn'; // Uppdatera rubriken till "Lägg till menyn"
     }
     if (formIcon) {
         formIcon.src = ''; // Ta bort ikonen om det finns en
