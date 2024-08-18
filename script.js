@@ -135,6 +135,12 @@ function addObject() {
 
     addedObjectsList.appendChild(newObject);
 
+    // Ändra titeln till "Lägg till menyn"
+    var formTitle = document.getElementById('formTitle');
+    if (formTitle) {
+        formTitle.innerText = 'Lägg till menyn';
+    }
+
     // Kollapsa inmatningsfälten
     collapseInputContainer();
 
