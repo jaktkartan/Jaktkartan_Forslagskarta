@@ -20,7 +20,12 @@ function selectType(type, iconSrc) {
     selectedIconSrc = iconSrc; // Spara den valda ikonens källa
     document.getElementById('categoryInput').value = type;
     document.getElementById('formTitle').innerText = 'Lägg till ' + type;
-    document.getElementById('formIcon').src = iconSrc; // Sätt ikonen i formulärets rubrik
+    
+    var formIcon = document.getElementById('formIcon'); // Hämta formIcon-elementet
+    if (formIcon) {
+        formIcon.src = iconSrc; // Sätt ikonen i formulärets rubrik om elementet finns
+    }
+
     document.getElementById('startMessage').style.display = 'none';
     document.getElementById('nameInput').placeholder = 'Namn på ' + type.toLowerCase();
     document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
