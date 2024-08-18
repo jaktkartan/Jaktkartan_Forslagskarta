@@ -12,46 +12,45 @@ var centerMarker = document.getElementById('centerMarker');
 var centerMarkerContainer = document.getElementById('centerMarkerContainer');
 var confirmButton = document.getElementById('confirmButton');
 var lastMarker = null;
-var selectedIconSrc = ''; // För att lagra den valda ikonens källa
-var addedObjects = []; // Array för att lagra alla objekt
-var currentMenu = ''; // För att hålla koll på vilken meny användaren är i
+var selectedIconSrc = '';
+var addedObjects = [];
+var currentMenu = '';
 
 function showNewObjectMenu() {
-    hideAllMenus(); // Dölj alla menyer först
+    hideAllMenus();
     document.getElementById('newObjectMenu').style.display = 'block';
     currentMenu = 'newObject';
 }
 
 function showAdvertiseMenu() {
-    hideAllMenus(); // Dölj alla menyer först
+    hideAllMenus();
     document.getElementById('advertiseMenu').style.display = 'block';
     currentMenu = 'advertise';
 }
 
 function suggestEdit() {
-    // Här kan du lägga till logik för att hantera "Föreslå ändring i befintligt objekt".
     alert("Funktion för att föreslå ändring är inte implementerad ännu.");
 }
 
 function selectType(type, iconSrc) {
     clearFormData();
     closeAllObjectDetails();
-    selectedIconSrc = iconSrc; // Spara den valda ikonens källa
+    selectedIconSrc = iconSrc;
     document.getElementById('categoryInput').value = type;
     document.getElementById('formTitle').innerText = 'Lägg till ' + type;
     
-    var formIcon = document.getElementById('formIcon'); // Hämta formIcon-elementet
+    var formIcon = document.getElementById('formIcon');
     if (formIcon) {
-        formIcon.src = iconSrc; // Sätt ikonen i formulärets rubrik om elementet finns
+        formIcon.src = iconSrc;
     }
 
-    hideAllMenus(); // Dölj alla menyer
+    hideAllMenus();
     document.getElementById('nameInput').placeholder = 'Namn på ' + type.toLowerCase();
     document.getElementById('urlInput').placeholder = type + ' hemsida/facebook';
     centerMarker.src = iconSrc;
     centerMarkerContainer.style.display = 'block';
     confirmButton.style.display = 'block';
-    document.getElementById('cancelBtn').style.display = 'block';  // Visa "Avbryt"-knappen
+    document.getElementById('cancelBtn').style.display = 'block';
 }
 
 function confirmPosition() {
@@ -93,7 +92,6 @@ function addObject() {
         return;
     }
 
-    // Lägg till objektet i arrayen
     addedObjects.push({
         name: name,
         url: url,
@@ -128,7 +126,6 @@ function addObject() {
     document.getElementById('addMoreBtn').style.display = 'block';
     document.getElementById('submitBtn').style.display = 'block';
 
-    // Dölj "Avbryt"-knappen när objektet läggs till
     document.getElementById('cancelBtn').style.display = 'none';
 
     updateSubmitButton();
@@ -139,7 +136,7 @@ function updateObjectData(index, field, value) {
 }
 
 function removeObject(index, button) {
-    addedObjects.splice(index, 1); // Ta bort objekt från arrayen
+    addedObjects.splice(index, 1);
 
     var objectTab = button.closest('.object-tab');
     objectTab.remove();
@@ -162,13 +159,11 @@ function showRelevantMenu() {
 }
 
 function cancelAndRemove() {
-    // Ta bort senaste markör från kartan
     if (lastMarker) {
         map.removeLayer(lastMarker);
         lastMarker = null;
     }
 
-    // Återställ formulär och visa startvyn
     clearFormData();
     document.getElementById('inputForm').style.display = 'none';
     if (currentMenu === 'newObject') {
@@ -211,6 +206,8 @@ function hideAllMenus() {
     document.getElementById('mainSelection').style.display = 'none';
     document.getElementById('newObjectMenu').style.display = 'none';
     document.getElementById('advertiseMenu').style.display = 'none';
+    document.getElementById('inputForm').style.display = 'none';
+    document.getElementById('thankYouMessage').style.display = 'none';
 }
 
 document.getElementById('suggestionForm').onsubmit = function(event) {
@@ -222,7 +219,6 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
     }
 
     if (confirm("Är du säker på att du vill skicka objekten?")) {
-        // Loopa genom alla objekt och skicka dem en i taget
         addedObjects.forEach(function(object) {
             var formData = new FormData();
             formData.append('typ', object.category);
@@ -251,12 +247,12 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
 };
 
 function showThankYouMessage() {
-    document.getElementById('inputForm').style.display = 'none';
+    hideAllMenus();
     document.getElementById('thankYouMessage').style.display = 'block';
 }
 
 function addNewSuggestion() {
-    location.reload();  // Ladda om sidan för att börja om
+    location.reload();
 }
 
 function goToJaktkartan() {
@@ -264,7 +260,7 @@ function goToJaktkartan() {
 }
 
 window.onload = function() {
-    hideAllMenus(); // Dölj alla menyer vid start
-    document.getElementById('mainSelection').style.display = 'block'; // Visa huvudmenyn
+    hideAllMenus();
+    document.getElementById('mainSelection').style.display = 'block';
     updateSubmitButton();
 };
