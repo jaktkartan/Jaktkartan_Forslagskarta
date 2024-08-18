@@ -185,12 +185,16 @@ function removeObject(index, button) {
 }
 
 function toggleObjectDetails(detailsElement) {
-    // Stäng alla andra objekt
+    // Kolla om objektet redan är öppet
+    var isOpen = detailsElement.style.display === "block";
+    
+    // Stäng alla objekt först
     closeAllObjectDetails();
     
-    // Visa det valda objektet
-    if (detailsElement) {
+    // Öppna det valda objektet om det inte redan var öppet
+    if (!isOpen) {
         detailsElement.style.display = "block";
+        detailsElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
     }
 }
 
