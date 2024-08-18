@@ -207,14 +207,6 @@ function toggleObjectDetails(detailsElement) {
     }
 }
 
-
-function cancelAndRemove() {
-    if (lastMarker) {
-        map.removeLayer(lastMarker); // Ta bort den senaste markören
-        markers.pop(); // Ta bort markören från markers arrayen
-        lastMarker = null;
-    }
-
 function cancelAndRemove() {
     if (lastMarker) {
         map.removeLayer(lastMarker); // Ta bort den senaste markören
@@ -237,8 +229,6 @@ function cancelAndRemove() {
 
     updateSubmitButton(); // Uppdatera statusen på submit-knappen
 }
-
-
 
 function updateSubmitButton() {
     var submitButton = document.getElementById('submitBtn');
