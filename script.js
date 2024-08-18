@@ -215,12 +215,20 @@ function cancelAndRemove() {
         lastMarker = null;
     }
 
+function cancelAndRemove() {
+    if (lastMarker) {
+        map.removeLayer(lastMarker); // Ta bort den senaste markören
+        markers.pop(); // Ta bort markören från markers arrayen
+        lastMarker = null;
+    }
+
     clearFormData(); // Rensa inmatningsfälten
 
     // Återställ rubriken till en generell text
     document.getElementById('formTitle').innerText = 'Lägg till objekt';
     document.getElementById('formIcon').src = ''; // Ta bort ikonen om det finns en
 
+    document.getElementById('inputForm').style.display = 'none'; // Dölj hela formuläret
     document.getElementById('inputContainer').style.display = 'none'; // Dölj inmatningsfälten
     document.getElementById('addObjectBtn').style.display = 'none'; // Dölj "Lägg till" knappen
     document.getElementById('addMoreBtn').style.display = 'block'; // Visa "Lägg till fler objekt" knappen
@@ -229,6 +237,7 @@ function cancelAndRemove() {
 
     updateSubmitButton(); // Uppdatera statusen på submit-knappen
 }
+
 
 
 function updateSubmitButton() {
