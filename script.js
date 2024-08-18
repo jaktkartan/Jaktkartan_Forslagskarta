@@ -15,6 +15,7 @@ var lastMarker = null;
 var selectedIconSrc = '';
 var addedObjects = [];
 var currentMenu = '';
+var markers = []; // Ny array för att hålla koll på alla markörer
 
 function showNewObjectMenu() {
     hideAllMenus();
@@ -69,6 +70,7 @@ function confirmPosition() {
         });
 
         lastMarker = L.marker([currentLat, currentLng], { icon: icon }).addTo(map);
+        markers.push(lastMarker); // Lägg till markören i markers arrayen
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
         openInputForm();
@@ -95,7 +97,7 @@ function addObject() {
     addedObjects.push({
         name: name,
         url: url,
-        info: info, // Sparar info korrekt
+        info: info,
         lat: currentLat,
         lng: currentLng,
         category: document.getElementById('categoryInput').value,
@@ -138,7 +140,6 @@ function addObject() {
     updateSubmitButton();
 }
 
-
 function showInputFields() {
     console.log("Trying to show input fields...");
 
@@ -177,10 +178,19 @@ function updateObjectData(index, field, value) {
 }
 
 function removeObject(index, button) {
+    // Ta bort markören från kartan
+    if (markers[index]) {
+        map.removeLayer(markers[index]);
+        markers.splice(index, 1); // Ta bort markören från markers arrayen
+    }
+
+    // Ta bort objektet från addedObjects arrayen
     addedObjects.splice(index, 1);
 
+    // Ta bort objektet från DOM
     var objectTab = button.closest('.object-tab');
     objectTab.remove();
+
     updateSubmitButton();
 }
 
@@ -264,7 +274,7 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
             formData.append('typ', object.category);
             formData.append('namn', object.name);
             formData.append('url', object.url);
-            formData.append('info', object.info); // Inkluderar korrekt info
+            formData.append('info', object.info);
             formData.append('latitud', object.lat);
             formData.append('longitud', object.lng);
 
