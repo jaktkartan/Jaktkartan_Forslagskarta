@@ -73,6 +73,8 @@ function confirmPosition() {
         markers.push(lastMarker); // Lägg till markören i markers arrayen
         centerMarkerContainer.style.display = 'none';
         confirmButton.style.display = 'none';
+        
+        // Visa inmatningsfälten igen efter att ett nytt objekt har placerats
         openInputForm();
     } else {
         console.error("Kunde inte få tag på latitud och longitud.");
@@ -80,8 +82,11 @@ function confirmPosition() {
 }
 
 function openInputForm() {
+    document.getElementById('inputContainer').style.display = 'block';
     document.getElementById('inputForm').style.display = 'block';
+    document.getElementById('addObjectBtn').style.display = 'block';
     document.getElementById('cancelBtn').style.display = 'block';
+    document.getElementById('addMoreBtn').style.display = 'none';
 }
 
 function addObject() {
