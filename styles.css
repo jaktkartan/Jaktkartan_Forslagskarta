@@ -16,6 +16,10 @@ body, html {
     z-index: 1;
 }
 
+/* Dölj zoomknapparna. */
+.leaflet-control-zoom {
+    display: none;
+}
 /* Top-panel och logotyp */
 #topPanel {
     position: fixed;
