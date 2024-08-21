@@ -25,88 +25,9 @@
         <button onclick="loadGeoJSONData()">Föreslå ändringar i befintligt objekt (kommer snart)</button>
     </div>
 
-    <!-- Meny för nya objekt -->
-    <div id="newObjectMenu" class="subMenu">
-        <h3>Föreslå nya objekt</h3>
-        <div id="typeSelection">
-            <div class="option" onclick="selectType('Dagkort', 'bilder/jaktkort_ikon.png')">
-                <img src="bilder/jaktkort_ikon.png" alt="Dagkort">
-                <span>Dagkort för jakt</span>
-            </div>
-            <div class="option" onclick="selectType('Jaktskyttebana', 'bilder/jaktskyttebanor_ikon.png')">
-                <img src="bilder/jaktskyttebanor_ikon.png" alt="Jaktskyttebana">
-                <span>Jaktskyttebana</span>
-            </div>
-            <div class="option" onclick="selectType('Mässa', 'bilder/massa_ikon.png')">
-                <img src="bilder/massa_ikon.png" alt="Mässa">
-                <span>Mässa</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Meny för annonsering -->
-    <div id="advertiseMenu" class="subMenu">
-        <h3>Annonsera hos Jaktkartan</h3>
-        <p>Just nu, helt gratis!</p>
-        <div id="typeSelection">
-            <div class="option" onclick="selectType('Kurs', 'bilder/kurser_ikon.png')">
-                <img src="bilder/kurser_ikon.png" alt="Kurser">
-                <span>Kurs</span>
-            </div>
-        </div>
-    </div>
-
-    <!-- Ikon som fixeras i mitten av skärmen med sikte -->
-    <div id="centerMarkerContainer">
-        <div class="crosshair"></div>
-        <img id="centerMarker" src="" alt="Markeringsikon">
-    </div>
-
-    <!-- Bekräftelseknapp -->
-    <button id="confirmButton" onclick="confirmPosition()">Placera</button>
-
-    <!-- Inmatningsformulär -->
-    <div id="inputForm">
-        <h3 id="formTitle">
-            <img src="" id="formIcon" class="mini-icon" alt="Ikon"> <!-- Miniatyrikon här -->
-            Lägg till objekt
-        </h3>
-
-        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec" method="POST">
-            <input type="hidden" name="typ" id="categoryInput">
-            <input type="hidden" name="latitud" id="latitudeInput">
-            <input type="hidden" name="longitud" id="longitudeInput">
-            
-            <!-- Container för fält som kollapsas -->
-            <div id="inputContainer">
-                <input type="text" name="namn" id="nameInput" placeholder="Namn på objektet" required>
-                <input type="text" name="url" id="urlInput" placeholder="Objektets hemsida/facebook">
-                <textarea name="info" id="infoInput" rows="3" placeholder="Övrig information"></textarea>
-            </div>
-            
-            <button type="button" id="addObjectBtn" onclick="addObject()">Lägg till</button>
-            <button type="button" id="addMoreBtn" onclick="showInputFields()" style="display: none;">Lägg till fler objekt</button>
-            <button type="button" id="cancelBtn" onclick="cancelAndRemove()">Avbryt</button>
-        </form>
-
-        <!-- Redigera objekt-rubrik -->
-        <h3>Redigera objekt:</h3>
-
-        <!-- Redigeringsfält för tillagda objekt -->
-        <div id="addedObjectsList"></div>
-
-        <!-- Skicka objekt-knappen -->
-        <button type="submit" id="submitBtn" form="suggestionForm" disabled>Skicka objekt</button>
-    </div>
-
-    <!-- Tackmeddelande -->
-    <div id="thankYouMessage">
-        <h3>Tack!</h3>
-        <p>Tack för att du vill förbättra <a href="https://www.jaktkartan.se" target="_blank">Jaktkartan.se</a></p>
-        <button onclick="addNewSuggestion()">Lägg till nytt förslag</button>
-        <button onclick="goToJaktkartan()">Till Jaktkartan.se</button>
-    </div>
-
+    <!-- Inkludera skript -->
+    <script src="map.js"></script>
+    <script src="geojson.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
