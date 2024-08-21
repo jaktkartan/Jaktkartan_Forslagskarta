@@ -259,40 +259,51 @@ function hideAllMenus() {
     document.getElementById('thankYouMessage').style.display = 'none';
 }
 
-document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault();
+window.onload = function() {
+    var suggestionForm = document.getElementById('suggestionForm');
+    if (suggestionForm) {
+        suggestionForm.onsubmit = function(event) {
+            event.preventDefault();
 
-    if (document.getElementById('submitBtn').disabled) {
-        alert("Lägg till minst ett objekt innan du skickar.");
-        return;
+            if (document.getElementById('submitBtn').disabled) {
+                alert("Lägg till minst ett objekt innan du skickar.");
+                return;
+            }
+
+            if (confirm("Är du säker på att du vill skicka objekten?")) {
+                addedObjects.forEach(function(object) {
+                    var formData = new FormData();
+                    formData.append('typ', object.category);
+                    formData.append('namn', object.name);
+                    formData.append('url', object.url);
+                    formData.append('info', object.info);
+                    formData.append('latitud', object.lat);
+                    formData.append('longitud', object.lng);
+
+                    fetch(document.getElementById('suggestionForm').action, {
+                        method: "POST",
+                        body: formData,
+                    }).then(response => {
+                        if (response.ok) {
+                            console.log("Objekt skickades: ", object.name);
+                        } else {
+                            console.error("Fel vid skickning av objekt: ", object.name);
+                        }
+                    }).catch(error => {
+                        console.error("Nätverksfel vid skickning av objekt: ", object.name, error);
+                    });
+                });
+
+                showThankYouMessage();
+            }
+        };
+    } else {
+        console.error("Formuläret 'suggestionForm' hittades inte.");
     }
 
-    if (confirm("Är du säker på att du vill skicka objekten?")) {
-        addedObjects.forEach(function(object) {
-            var formData = new FormData();
-            formData.append('typ', object.category);
-            formData.append('namn', object.name);
-            formData.append('url', object.url);
-            formData.append('info', object.info);
-            formData.append('latitud', object.lat);
-            formData.append('longitud', object.lng);
-
-            fetch(document.getElementById('suggestionForm').action, {
-                method: "POST",
-                body: formData,
-            }).then(response => {
-                if (response.ok) {
-                    console.log("Objekt skickades: ", object.name);
-                } else {
-                    console.error("Fel vid skickning av objekt: ", object.name);
-                }
-            }).catch(error => {
-                console.error("Nätverksfel vid skickning av objekt: ", object.name, error);
-            });
-        });
-
-        showThankYouMessage();
-    }
+    hideAllMenus();
+    document.getElementById('mainSelection').style.display = 'block';
+    updateSubmitButton();
 };
 
 function showThankYouMessage() {
@@ -307,9 +318,3 @@ function addNewSuggestion() {
 function goToJaktkartan() {
     window.location.href = 'https://www.jaktkartan.se';
 }
-
-window.onload = function() {
-    hideAllMenus();
-    document.getElementById('mainSelection').style.display = 'block';
-    updateSubmitButton();
-};
