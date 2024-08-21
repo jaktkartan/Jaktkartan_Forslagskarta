@@ -1,6 +1,9 @@
 // Foresla_edits.js
 
 function handleSuggestChanges() {
+    // Dölj startrutan
+    document.getElementById('mainSelection').style.display = 'none';
+
     // Definiera de GeoJSON-filer som ska laddas in
     const geojsonFiles = {
         'Mässor': ['https://raw.githubusercontent.com/jaktkartan/jaktkartan/main/bottom_panel/Upptack/geojsonfiler/Massor.geojson'],
@@ -56,10 +59,69 @@ function handleSuggestChanges() {
                             }));
                         });
 
+                        // Lägg till en popup med attribut och ett formulär för att föreslå ändringar
+                        marker.on('click', function() {
+                            openEditForm(feature.properties);
+                        });
+
                         return marker;
                     }
                 }).addTo(map);  // 'map' antas vara den globala Leaflet-kartan definierad i din script.js
             })
             .catch(error => console.error('Fel vid laddning av GeoJSON-fil:', error));
     }
+}
+
+function openEditForm(properties) {
+    // Rensa eventuell tidigare inmatning i formuläret
+    const formContainer = document.getElementById('editFormContainer');
+    formContainer.innerHTML = '';
+
+    // Skapa ett formulär med befintliga attribut som textfält
+    for (let key in properties) {
+        const label = document.createElement('label');
+        label.textContent = key;
+        const input = document.createElement('input');
+        input.type = 'text';
+        input.name = key;
+        input.value = properties[key]; // Fyll fältet med befintligt värde
+
+        // Lägg till etikett och inmatningsfält till formuläret
+        formContainer.appendChild(label);
+        formContainer.appendChild(input);
+    }
+
+    // Lägg till en knapp för att skicka in ändringsförslag
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Föreslå ändringar';
+    submitButton.onclick = function() {
+        submitEditSuggestions(properties);
+    };
+
+    formContainer.appendChild(submitButton);
+
+    // Visa formuläret
+    formContainer.style.display = 'block';
+}
+
+function submitEditSuggestions(originalProperties) {
+    const formContainer = document.getElementById('editFormContainer');
+    const inputs = formContainer.getElementsByTagName('input');
+    let suggestions = {};
+
+    // Samla in alla ändringsförslag från formuläret
+    for (let input of inputs) {
+        const key = input.name;
+        const newValue = input.value;
+
+        if (newValue !== originalProperties[key]) {
+            suggestions[key] = newValue;
+        }
+    }
+
+    console.log('Föreslagna ändringar:', suggestions);
+
+    // Här kan du lägga till kod för att skicka ändringsförslagen till en server eller spara dem lokalt.
+    alert('Dina ändringsförslag har registrerats.');
+    formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
 }
