@@ -11,26 +11,26 @@ function handleSuggestChanges() {
     // Definiera ikoner och fallback-stilar för varje kategori
     const icons = {
         'Mässor': {
-            iconUrl: 'https://github.com/jaktkartan/jaktkartan/blob/main/bilder/upptack/ikoner/ikon_massor.png?raw=true',
+            iconUrl: 'https://raw.githubusercontent.com/jaktkartan/jaktkartan/main/bilder/upptack/ikoner/ikon_massor.png',
             iconSize: [40, 40],
             fallbackStyle: {
-                fallbackIconUrl: 'https://github.com/jaktkartan/jaktkartan/blob/main/bilder/upptack/ikoner/punkt_massor.png?raw=true',
+                fallbackIconUrl: 'https://raw.githubusercontent.com/jaktkartan/jaktkartan/main/bilder/upptack/ikoner/punkt_massor.png',
                 fallbackIconSize: [15, 15]
             }
         },
         'Jaktkort': {
-            iconUrl: 'https://github.com/jaktkartan/jaktkartan/blob/main/bilder/upptack/ikoner/ikon_jaktkort.png?raw=true',
+            iconUrl: 'https://raw.githubusercontent.com/jaktkartan/jaktkartan/main/bilder/upptack/ikoner/ikon_jaktkort.png',
             iconSize: [40, 40],
             fallbackStyle: {
-                fallbackIconUrl: 'https://github.com/jaktkartan/jaktkartan/blob/main/bilder/upptack/ikoner/punkt_jaktkort.png?raw=true',
+                fallbackIconUrl: 'https://raw.githubusercontent.com/jaktkartan/jaktkartan/main/bilder/upptack/ikoner/punkt_jaktkort.png',
                 fallbackIconSize: [15, 15]
             }
         },
         'Jaktskyttebanor': {
-            iconUrl: 'https://github.com/jaktkartan/jaktkartan/blob/main/bilder/upptack/ikoner/ikon_jaktskyttebanor.png?raw=true',
+            iconUrl: 'https://raw.githubusercontent.com/jaktkartan/jaktkartan/main/bilder/upptack/ikoner/ikon_jaktskyttebanor.png',
             iconSize: [40, 40],
             fallbackStyle: {
-                fallbackIconUrl: 'https://github.com/jaktkartan/jaktkartan/blob/main/bilder/upptack/ikoner/punkt_jaktskyttebanor.png?raw=true',
+                fallbackIconUrl: 'https://raw.githubusercontent.com/jaktkartan/jaktkartan/main/bilder/upptack/ikoner/punkt_jaktskyttebanor.png',
                 fallbackIconSize: [15, 15]
             }
         }
