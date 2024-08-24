@@ -154,9 +154,11 @@ function submitEditSuggestions(originalProperties) {
         suggestions: suggestions
     };
 
-    fetch(editScriptUrl, {  // Använder den globala variabeln från index.html
+    console.log('Payload:', payload); // Lägg till denna rad för att logga vad som skickas
+
+    fetch(editScriptUrl, {
         method: 'POST',
-        mode: 'no-cors', // Observera att vi använder no-cors eftersom vi inte förväntar oss ett svar från Google Apps Script.
+        mode: 'no-cors',
         headers: {
             'Content-Type': 'application/json'
         },
