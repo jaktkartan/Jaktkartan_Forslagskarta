@@ -189,8 +189,25 @@ function submitEditSuggestions(originalProperties) {
         }
     }
 
+    // Skapa en kopia av originalProperties utan icke-serialiserbara objekt
+    const cleanOriginalProperties = {};
+
+    for (let key in originalProperties) {
+        if (originalProperties.hasOwnProperty(key) && typeof originalProperties[key] !== 'object') {
+            cleanOriginalProperties[key] = originalProperties[key];
+        } else if (originalProperties[key] && typeof originalProperties[key] === 'object') {
+            // Serialisera bara om det är ett enkelt objekt eller null
+            try {
+                JSON.stringify(originalProperties[key]);
+                cleanOriginalProperties[key] = originalProperties[key];
+            } catch (e) {
+                console.warn(`Skipping non-serializable property: ${key}`);
+            }
+        }
+    }
+
     // Fyll i de dolda fälten i formuläret
-    document.getElementById('originalDataInput').value = JSON.stringify(originalProperties);
+    document.getElementById('originalDataInput').value = JSON.stringify(cleanOriginalProperties);
     document.getElementById('suggestionsDataInput').value = JSON.stringify(suggestions);
 
     // Skicka formuläret utan omdirigering
