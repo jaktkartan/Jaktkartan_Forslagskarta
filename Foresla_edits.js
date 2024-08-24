@@ -77,23 +77,33 @@ function openEditForm(properties) {
     const formContainer = document.getElementById('editFormContainer');
     formContainer.innerHTML = '';
 
-    // Skapa ett formulär med befintliga attribut som textfält
+    // Skapa ett formulär med befintliga attribut som text och ett fält för föreslagna ändringar
     for (let key in properties) {
         const fieldContainer = document.createElement('div');
         fieldContainer.style.marginBottom = '10px';
 
-        const label = document.createElement('label');
-        label.textContent = key;
+        const originalLabel = document.createElement('label');
+        originalLabel.textContent = `Original ${key}:`;
 
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = key;
-        input.value = properties[key]; // Fyll fältet med befintligt värde
-        input.placeholder = 'Föreslagen ändring'; // Lägg till "Föreslagen ändring" som placeholder
+        const originalValue = document.createElement('p');
+        originalValue.textContent = properties[key];
+        originalValue.style.fontWeight = 'bold';
+        originalValue.style.marginBottom = '5px';
 
-        // Lägg till etikett och inmatningsfält till det nya fältets container
-        fieldContainer.appendChild(label);
-        fieldContainer.appendChild(input);
+        const suggestionLabel = document.createElement('label');
+        suggestionLabel.textContent = `Föreslå ändring för ${key}:`;
+
+        const suggestionInput = document.createElement('textarea');
+        suggestionInput.name = key;
+        suggestionInput.placeholder = 'Föreslagen ändring här...';
+        suggestionInput.rows = 3;
+        suggestionInput.style.width = '100%';
+
+        // Lägg till originaldata och inmatningsfält till det nya fältets container
+        fieldContainer.appendChild(originalLabel);
+        fieldContainer.appendChild(originalValue);
+        fieldContainer.appendChild(suggestionLabel);
+        fieldContainer.appendChild(suggestionInput);
 
         // Lägg till det nya fältet till formulärcontainern
         formContainer.appendChild(fieldContainer);
@@ -114,7 +124,7 @@ function openEditForm(properties) {
 
 function submitEditSuggestions(originalProperties) {
     const formContainer = document.getElementById('editFormContainer');
-    const inputs = formContainer.getElementsByTagName('input');
+    const inputs = formContainer.getElementsByTagName('textarea');
     let suggestions = {};
 
     // Samla in alla ändringsförslag från formuläret
@@ -122,15 +132,29 @@ function submitEditSuggestions(originalProperties) {
         const key = input.name;
         const newValue = input.value;
 
-        if (newValue !== originalProperties[key]) {
+        if (newValue.trim() !== "") {
             suggestions[key] = newValue;
         }
     }
 
-    console.log('Föreslagna ändringar:', suggestions);
+    // Skicka ändringsförslagen till Google Apps Script
+    const payload = {
+        original: originalProperties,
+        suggestions: suggestions
+    };
 
-    // Här kan du lägga till kod för att skicka ändringsförslagen till en server eller spara dem lokalt.
-    alert('Dina ändringsförslag har registrerats.');
-    formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
+    fetch('https://script.google.com/macros/s/AKfycbyxJ8FVb_D34OWxGyPDj3Jn9xgiNremnHEqBRBxlapdyhvMhShbn_ZwdL-kLMLaE7Jnpw/exec', {
+        method: 'POST',
+        mode: 'no-cors', // Observera att vi använder no-cors eftersom vi inte förväntar oss ett svar från Google Apps Script.
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(payload)
+    }).then(() => {
+        alert('Dina ändringsförslag har skickats.');
+        formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
+    }).catch(error => {
+        console.error('Fel vid skickning av ändringsförslag:', error);
+        alert('Ett fel uppstod vid skickning av ändringsförslag.');
+    });
 }
-
