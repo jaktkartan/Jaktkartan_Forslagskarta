@@ -23,7 +23,6 @@
         <button onclick="showNewObjectMenu()">Föreslå nytt objekt i jaktkartan!</button>
         <button onclick="showAdvertiseMenu()">Annonsera din jaktrelaterade kurs!</button>
         <button onclick="handleSuggestChanges()">Föreslå ändringar i befintligt objekt (kommer snart)</button>
-
     </div>
 
     <!-- Meny för nya objekt -->
@@ -108,10 +107,15 @@
         <button onclick="goToJaktkartan()">Till Jaktkartan.se</button>
     </div>
 
-        <!-- Formulär för redigering av objekt -->
-    <div id="editFormContainer" style="display:none; padding: 10px; background-color: white; position: absolute; top: 20%; left: 50%; transform: translate(-50%, -20%); z-index: 1000; border: 1px solid #ccc;">
+    <!-- Formulär för redigering av objekt -->
+    <div id="editFormContainer" class="subMenu">
+        <h3>Redigera objekt</h3>
+        <input id="editNameInput" type="text" placeholder="Namn">
+        <input id="editUrlInput" type="text" placeholder="URL">
+        <input id="editCategoryInput" type="text" placeholder="Kategori">
+        <button id="editSubmitButton">Skicka ändringar</button>
     </div>
-    
+
     <script src="script.js"></script>
     <script src="Foresla_edits.js"></script>
 </body>
