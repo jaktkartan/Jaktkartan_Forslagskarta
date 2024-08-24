@@ -189,25 +189,8 @@ function submitEditSuggestions(originalProperties) {
         }
     }
 
-    // Skapa en kopia av originalProperties utan icke-serialiserbara objekt
-    const cleanOriginalProperties = {};
-
-    for (let key in originalProperties) {
-        if (originalProperties.hasOwnProperty(key) && typeof originalProperties[key] !== 'object') {
-            cleanOriginalProperties[key] = originalProperties[key];
-        } else if (originalProperties[key] && typeof originalProperties[key] === 'object') {
-            // Serialisera bara om det är ett enkelt objekt eller null
-            try {
-                JSON.stringify(originalProperties[key]);
-                cleanOriginalProperties[key] = originalProperties[key];
-            } catch (e) {
-                console.warn(`Skipping non-serializable property: ${key}`);
-            }
-        }
-    }
-
     // Fyll i de dolda fälten i formuläret
-    document.getElementById('originalDataInput').value = JSON.stringify(cleanOriginalProperties);
+    document.getElementById('originalDataInput').value = JSON.stringify(originalProperties);
     document.getElementById('suggestionsDataInput').value = JSON.stringify(suggestions);
 
     // Skicka formuläret utan omdirigering
@@ -216,8 +199,10 @@ function submitEditSuggestions(originalProperties) {
         body: new FormData(document.getElementById('editSuggestionForm'))
     }).then(response => {
         if (response.ok) {
-            alert("Tack för ditt förslag!");
-            formContainer.style.display = 'none'; // Dölj formuläret efter inskick
+            // Visa tack-meddelande och dirigera om till startsidan vid OK
+            if (confirm("Tack för ditt förslag!")) {
+                window.location.href = "/"; // Ändra till din startsida om det inte är "/"
+            }
         } else {
             alert("Något gick fel, försök igen.");
         }
