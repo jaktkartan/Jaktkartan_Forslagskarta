@@ -1,5 +1,3 @@
-// Foresla_edits.js
-
 function handleSuggestChanges() {
     // Dölj startrutan
     document.getElementById('mainSelection').style.display = 'none';
