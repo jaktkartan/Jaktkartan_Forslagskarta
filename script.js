@@ -1,5 +1,3 @@
-const webAppUrl = 'https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec';
-
 var map = L.map('map', {
     scrollWheelZoom: true,
     zoomControl: true
@@ -154,41 +152,46 @@ function addObject() {
     updateSubmitButton();
 }
 
-function submitEdit() {
-    // Samla in data från formuläret i editFormContainer
-    var formData = new FormData();
-    formData.append('id', document.getElementById('editObjectId').value);
-    formData.append('namn', document.getElementById('editNameInput').value);
-    formData.append('url', document.getElementById('editUrlInput').value);
-    formData.append('typ', document.getElementById('editCategoryInput').value);
-    formData.append('info', document.getElementById('editInfoInput').value);
+document.getElementById('submitBtn').onclick = function() {
+    if (confirm("Är du säker på att du vill skicka objekten?")) {
+        addedObjects.forEach(function(object) {
+            var formData = new FormData();
+            formData.append('typ', object.category);
+            formData.append('namn', object.name);
+            formData.append('url', object.url);
+            formData.append('info', object.info);
+            formData.append('latitud', object.lat);
+            formData.append('longitud', object.lng);
 
-    fetch(webAppUrl, {  // Använd centraliserad URL-variabel
-        method: 'POST',
-        body: formData
-    }).then(response => {
-        if (response.ok) {
-            alert("Ändringarna har skickats in!");
-            document.getElementById('editFormContainer').style.display = 'none';
-        } else {
-            alert("Fel vid inskickning av ändringar.");
-        }
-    }).catch(error => {
-        console.error("Nätverksfel vid inskickning av ändringar", error);
-    });
+            fetch(newObjectWebAppUrl, {  // Använd URL för att skicka nya objekt
+                method: "POST",
+                body: formData,
+            }).then(response => {
+                if (response.ok) {
+                    console.log("Objekt skickades: ", object.name);
+                } else {
+                    console.error("Fel vid skickning av objekt: ", object.name);
+                }
+            }).catch(error => {
+                console.error("Nätverksfel vid skickning av objekt: ", object.name, error);
+            });
+        });
+
+        showThankYouMessage();
+    }
+};
+
+function showThankYouMessage() {
+    hideAllMenus();
+    document.getElementById('thankYouMessage').style.display = 'block';
 }
 
-// Koppla funktionen till en knapp i editFormContainer
-document.getElementById('editSubmitButton').addEventListener('click', submitEdit);
+function addNewSuggestion() {
+    location.reload();
+}
 
-function showInputFields() {
-    // Om kursläge är aktiverat, hoppa direkt till kursalternativet
-    if (isCourseMode) {
-        selectType('Kurs', 'bilder/kurser_ikon.png');
-    } else {
-        hideAllMenus();
-        document.getElementById('newObjectMenu').style.display = 'block';
-    }
+function goToJaktkartan() {
+    window.location.href = 'https://www.jaktkartan.se';
 }
 
 function collapseInputContainer() {
@@ -237,56 +240,6 @@ function toggleObjectDetails(detailsElement) {
     }
 }
 
-function cancelAndRemove() {
-    if (lastMarker) {
-        map.removeLayer(lastMarker); // Ta bort den senaste markören
-        markers.pop(); // Ta bort markören från markers arrayen
-        lastMarker = null;
-    }
-
-    clearFormData(); // Rensa inmatningsfälten
-
-    // Kontrollera om elementet med id 'formTitle' och 'formIcon' existerar innan du ändrar dem
-    var formTitle = document.getElementById('formTitle');
-    var formIcon = document.getElementById('formIcon');
-
-    if (formTitle) {
-        formTitle.innerText = 'Lägg till menyn'; // Uppdatera rubriken till "Lägg till menyn"
-    }
-    if (formIcon) {
-        formIcon.src = ''; // Ta bort ikonen om det finns en
-    }
-
-    // Kollapsa inmatningsfälten
-    collapseInputContainer();
-
-    // Dölj både "Lägg till" och "Avbryt"-knapparna
-    document.getElementById('addObjectBtn').style.display = 'none';
-    document.getElementById('cancelBtn').style.display = 'none';
-
-    // Visa "Lägg till fler objekt"-knappen
-    document.getElementById('addMoreBtn').style.display = 'block';
-}
-
-function updateSubmitButton() {
-    var submitButton = document.getElementById('submitBtn');
-    var addedObjectsList = document.getElementById('addedObjectsList');
-
-    if (addedObjectsList.children.length > 0) {
-        submitButton.disabled = false;
-    } else {
-        submitButton.disabled = true;
-        submitButton.style.display = 'none';
-    }
-}
-
-function closeAllObjectDetails() {
-    var detailsElements = document.querySelectorAll('.object-details');
-    detailsElements.forEach(function(details) {
-        details.style.display = 'none';
-    });
-}
-
 function clearFormData() {
     document.getElementById('nameInput').value = '';
     document.getElementById('urlInput').value = '';
@@ -301,55 +254,6 @@ function hideAllMenus() {
     document.getElementById('advertiseMenu').style.display = 'none';
     document.getElementById('inputForm').style.display = 'none';
     document.getElementById('thankYouMessage').style.display = 'none';
-}
-
-document.getElementById('suggestionForm').onsubmit = function(event) {
-    event.preventDefault();
-
-    if (document.getElementById('submitBtn').disabled) {
-        alert("Lägg till minst ett objekt innan du skickar.");
-        return;
-    }
-
-    if (confirm("Är du säker på att du vill skicka objekten?")) {
-        addedObjects.forEach(function(object) {
-            var formData = new FormData();
-            formData.append('typ', object.category);
-            formData.append('namn', object.name);
-            formData.append('url', object.url);
-            formData.append('info', object.info);
-            formData.append('latitud', object.lat);
-            formData.append('longitud', object.lng);
-
-            fetch(webAppUrl, {  // Använd centraliserad URL-variabel
-                method: "POST",
-                body: formData,
-            }).then(response => {
-                if (response.ok) {
-                    console.log("Objekt skickades: ", object.name);
-                } else {
-                    console.error("Fel vid skickning av objekt: ", object.name);
-                }
-            }).catch(error => {
-                console.error("Nätverksfel vid skickning av objekt: ", object.name, error);
-            });
-        });
-
-        showThankYouMessage();
-    }
-};
-
-function showThankYouMessage() {
-    hideAllMenus();
-    document.getElementById('thankYouMessage').style.display = 'block';
-}
-
-function addNewSuggestion() {
-    location.reload();
-}
-
-function goToJaktkartan() {
-    window.location.href = 'https://www.jaktkartan.se';
 }
 
 window.onload = function() {
