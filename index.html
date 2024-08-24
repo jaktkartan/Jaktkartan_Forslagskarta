@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Objektskartan - Lägg till objekt</title>
+    <title>Objektskartan - Redigera objekt</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css"> <!-- Länk till din CSS-fil -->
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="Foresla_edits.js"></script> <!-- Inkludera ditt Foresla_edits.js här -->
 </head>
-
 <body>
     <div id="map"></div>
 
@@ -22,7 +22,7 @@
         <h3>Välkommen till Objektskartan!</h3>
         <button onclick="showNewObjectMenu()">Föreslå nytt objekt i jaktkartan!</button>
         <button onclick="showAdvertiseMenu()">Annonsera din jaktrelaterade kurs!</button>
-        <button onclick="handleSuggestChanges()">Föreslå ändringar i befintligt objekt (kommer snart)</button>
+        <button onclick="handleSuggestChanges()">Föreslå ändringar i befintligt objekt</button>
     </div>
 
     <!-- Meny för nya objekt -->
@@ -72,7 +72,7 @@
             Lägg till objekt
         </h3>
 
-        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec" method="POST">
+        <form id="suggestionForm">
             <input type="hidden" name="typ" id="categoryInput">
             <input type="hidden" name="latitud" id="latitudeInput">
             <input type="hidden" name="longitud" id="longitudeInput">
@@ -96,7 +96,7 @@
         <div id="addedObjectsList"></div>
 
         <!-- Skicka objekt-knappen -->
-        <button type="submit" id="submitBtn" form="suggestionForm" disabled>Skicka objekt</button>
+        <button type="button" id="submitBtn" disabled>Skicka objekt</button>
     </div>
 
     <!-- Tackmeddelande -->
@@ -107,24 +107,19 @@
         <button onclick="goToJaktkartan()">Till Jaktkartan.se</button>
     </div>
 
-<!-- Formulär för redigering av objekt -->
-<div id="editFormContainer" class="subMenu">
-    <h3>Redigera objekt</h3>
-    <form id="editSuggestionForm" action="DIN_WEB_APP_URL" method="POST">
-        <input type="hidden" name="typ" id="editCategoryInput">
-        <input type="text" name="namn" id="editNameInput" placeholder="Namn på objektet" required>
-        <input type="text" name="url" id="editUrlInput" placeholder="Objektets hemsida/facebook">
-        <textarea name="info" id="editInfoInput" rows="3" placeholder="Övrig information"></textarea>
-        <input type="hidden" name="latitud" id="editLatitudeInput">
-        <input type="hidden" name="longitud" id="editLongitudeInput">
-        
-        <button type="submit" id="editSubmitButton">Skicka ändringar</button>
-    </form>
-</div>
-
-
+    <!-- Formulär för redigering av objekt -->
+    <div id="editFormContainer" class="subMenu" style="display:none;">
+        <h3>Redigera objekt</h3>
+        <form id="editSuggestionForm">
+            <input type="hidden" name="id" id="editObjectId">
+            <input type="text" name="namn" id="editNameInput" placeholder="Namn på objektet" required>
+            <input type="text" name="url" id="editUrlInput" placeholder="Objektets hemsida/facebook">
+            <input type="text" name="typ" id="editCategoryInput" placeholder="Kategori">
+            <textarea name="info" id="editInfoInput" rows="3" placeholder="Övrig information"></textarea>
+            <button type="button" id="editSubmitButton">Skicka ändringar</button>
+        </form>
+    </div>
 
     <script src="script.js"></script>
-    <script src="Foresla_edits.js"></script>
 </body>
 </html>
