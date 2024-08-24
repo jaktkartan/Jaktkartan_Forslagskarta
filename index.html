@@ -110,10 +110,18 @@
     <!-- Formulär för redigering av objekt -->
     <div id="editFormContainer" class="subMenu">
         <h3>Redigera objekt</h3>
-        <input id="editNameInput" type="text" placeholder="Namn">
-        <input id="editUrlInput" type="text" placeholder="URL">
-        <input id="editCategoryInput" type="text" placeholder="Kategori">
-        <button id="editSubmitButton">Skicka ändringar</button>
+        <form id="editSuggestionForm" action="https://script.google.com/macros/s/AKfycbyxJ8FVb_D34OWxGyPDj3Jn9xgiNremnHEqBRBxlapdyhvMhShbn_ZwdL-kLMLaE7Jnpw/exec" method="POST">
+            <input type="hidden" name="id" id="editObjectId">
+            <input type="hidden" name="typ" id="editCategoryInput">
+            <input type="hidden" name="latitud" id="editLatitudeInput">
+            <input type="hidden" name="longitud" id="editLongitudeInput">
+            
+            <input type="text" name="namn" id="editNameInput" placeholder="Namn på objektet" required>
+            <input type="text" name="url" id="editUrlInput" placeholder="Objektets hemsida/facebook">
+            <textarea name="info" id="editInfoInput" rows="3" placeholder="Övrig information"></textarea>
+            
+            <button type="submit" id="editSubmitButton">Skicka ändringar</button>
+        </form>
     </div>
 
     <script src="script.js"></script>
