@@ -18,6 +18,11 @@ var currentMenu = '';
 var markers = []; // Ny array för att hålla koll på alla markörer
 var isCourseMode = false; // Flagg för att markera om kursläge är aktiverat
 
+function showMainMenu() {
+    hideAllMenus(); // Dölj alla menyer
+    document.getElementById('mainSelection').style.display = 'block'; // Visa startmenyn
+}
+
 function showNewObjectMenu() {
     hideAllMenus();
     document.getElementById('newObjectMenu').style.display = 'block';
