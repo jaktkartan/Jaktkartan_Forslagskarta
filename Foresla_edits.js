@@ -66,7 +66,7 @@ function handleSuggestChanges() {
 
                         return marker;
                     }
-                }).addTo(map);  // 'map' antas vara den globala Leaflet-kartan definierad i din script.js
+                }).addTo(map);
             })
             .catch(error => console.error('Fel vid laddning av GeoJSON-fil:', error));
     }
@@ -121,14 +121,12 @@ function submitEditSuggestions(originalProperties) {
 
     console.log('Föreslagna ändringar:', suggestions);
 
-    // Förbered POST-data för att skicka till din Google Apps Script
     let formData = new FormData();
     for (let key in suggestions) {
         formData.append(key, suggestions[key]);
     }
     formData.append('id', originalProperties['id']);  // Om det finns ett ID, skicka det också
 
-    // Skicka ändringsförslagen till Google Apps Script Web App
     fetch(editObjectWebAppUrl, {  // Använd URL för att skicka ändringsförslag
         method: 'POST',
         body: formData
