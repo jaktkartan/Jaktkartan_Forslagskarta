@@ -156,6 +156,25 @@ function addObject() {
     updateSubmitButton();
 }
 
+function submitEdit() {
+    // Samla in data från formuläret i editFormContainer
+    var editedData = {
+        name: document.getElementById('editNameInput').value,
+        url: document.getElementById('editUrlInput').value,
+        category: document.getElementById('editCategoryInput').value,
+        // Lägg till andra relevanta fält här
+    };
+
+    // Skicka den redigerade datan till servern eller hantera den på ett liknande sätt som vid "Lägg till"
+    alert("Dina ändringar har skickats in: " + JSON.stringify(editedData));
+
+    // Dölja formuläret efter inskick
+    document.getElementById('editFormContainer').style.display = 'none';
+}
+
+// Koppla funktionen till en knapp i editFormContainer
+document.getElementById('editSubmitButton').addEventListener('click', submitEdit);
+
 function showInputFields() {
     // Om kursläge är aktiverat, hoppa direkt till kursalternativet
     if (isCourseMode) {
