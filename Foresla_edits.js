@@ -1,5 +1,8 @@
 // Foresla_edits.js
 
+// Definiera Web App URL på ett ställe
+const webAppUrl = 'https://script.google.com/macros/s/AKfycbyxJ8FVb_D34OWxGyPDj3Jn9xgiNremnHEqBRBxlapdyhvMhShbn_ZwdL-kLMLaE7Jnpw/exec';  // Ersätt med din faktiska Web App URL
+
 function handleSuggestChanges() {
     // Dölj startrutan
     document.getElementById('mainSelection').style.display = 'none';
@@ -121,7 +124,26 @@ function submitEditSuggestions(originalProperties) {
 
     console.log('Föreslagna ändringar:', suggestions);
 
-    // Här kan du lägga till kod för att skicka ändringsförslagen till en server eller spara dem lokalt.
-    alert('Dina ändringsförslag har registrerats.');
-    formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
+    // Förbered POST-data för att skicka till din Google Apps Script
+    let formData = new FormData();
+    for (let key in suggestions) {
+        formData.append(key, suggestions[key]);
+    }
+    formData.append('id', originalProperties['id']);  // Om det finns ett ID, skicka det också
+
+    // Skicka ändringsförslagen till Google Apps Script Web App
+    fetch(webAppUrl, {  // Använd centraliserad URL-variabel
+        method: 'POST',
+        body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+        console.log('Resultat från servern:', result);
+        alert('Dina ändringsförslag har skickats.');
+        formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
+    })
+    .catch(error => {
+        console.error('Fel vid skickning av ändringsförslag:', error);
+        alert('Ett fel uppstod vid skickning av dina ändringsförslag.');
+    });
 }
