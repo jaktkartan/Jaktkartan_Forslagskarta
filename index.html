@@ -8,7 +8,12 @@
     <link rel="stylesheet" href="styles.css"> <!-- Länk till din CSS-fil -->
     <script src="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.js"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.7.1/dist/leaflet.css" />
-    <script src="Foresla_edits.js"></script> <!-- Inkludera ditt Foresla_edits.js här -->
+
+    <!-- Här deklarerar vi två webAppUrl som globala variabler -->
+    <script>
+        const newObjectWebAppUrl = 'https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec';  
+        const editObjectWebAppUrl = 'https://script.google.com/macros/s/AKfycbyxJ8FVb_D34OWxGyPDj3Jn9xgiNremnHEqBRBxlapdyhvMhShbn_ZwdL-kLMLaE7Jnpw/exec'; 
+    </script>
 </head>
 <body>
     <div id="map"></div>
@@ -121,5 +126,6 @@
     </div>
 
     <script src="script.js"></script>
+    <script src="Foresla_edits.js"></script>
 </body>
 </html>
