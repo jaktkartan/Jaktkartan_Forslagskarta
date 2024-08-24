@@ -148,26 +148,10 @@ function submitEditSuggestions(originalProperties) {
         }
     }
 
-    // Skicka ändringsförslagen till Google Apps Script
-    const payload = {
-        original: originalProperties,
-        suggestions: suggestions
-    };
+    // Fyll i de dolda fälten i formuläret
+    document.getElementById('originalDataInput').value = JSON.stringify(originalProperties);
+    document.getElementById('suggestionsDataInput').value = JSON.stringify(suggestions);
 
-    console.log('Payload:', payload); // Lägg till denna rad för att logga vad som skickas
-
-    fetch(editScriptUrl, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(payload)
-    }).then(() => {
-        alert('Dina ändringsförslag har skickats.');
-        formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
-    }).catch(error => {
-        console.error('Fel vid skickning av ändringsförslag:', error);
-        alert('Ett fel uppstod vid skickning av ändringsförslag.');
-    });
+    // Skicka formuläret
+    document.getElementById('editSuggestionForm').submit();
 }
