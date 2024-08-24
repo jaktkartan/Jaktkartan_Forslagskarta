@@ -138,19 +138,6 @@ function openEditForm(properties) {
     formContainer.style.display = 'block';
 }
 
-    // Lägg till en knapp för att skicka in ändringsförslag
-    const submitButton = document.createElement('button');
-    submitButton.textContent = 'Föreslå ändringar';
-    submitButton.onclick = function() {
-        submitEditSuggestions(properties);
-    };
-
-    formContainer.appendChild(submitButton);
-
-    // Visa formuläret
-    formContainer.style.display = 'block';
-}
-
 function submitEditSuggestions(originalProperties) {
     const formContainer = document.getElementById('editFormContainer');
     const inputs = formContainer.getElementsByTagName('textarea');
