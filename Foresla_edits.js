@@ -1,5 +1,3 @@
-// Foresla_edits.js
-
 function handleSuggestChanges() {
     // Dölj startrutan
     document.getElementById('mainSelection').style.display = 'none';
@@ -77,18 +75,49 @@ function openEditForm(properties) {
     const formContainer = document.getElementById('editFormContainer');
     formContainer.innerHTML = '';
 
-    // Skapa ett formulär med befintliga attribut som textfält
-    for (let key in properties) {
-        const label = document.createElement('label');
-        label.textContent = key;
-        const input = document.createElement('input');
-        input.type = 'text';
-        input.name = key;
-        input.value = properties[key]; // Fyll fältet med befintligt värde
+    // Begränsa höjden till 70 % av skärmhöjden och gör den skrollbar vid behov
+    formContainer.style.maxHeight = '70vh';
+    formContainer.style.overflowY = 'auto';
 
-        // Lägg till etikett och inmatningsfält till formuläret
-        formContainer.appendChild(label);
-        formContainer.appendChild(input);
+    // Flytta formuläret längre ned på sidan
+    formContainer.style.marginTop = '50px';
+
+    // Lista över fält som ska exkluderas från redigering
+    const excludedFields = ["Bild_jaktkort", "id", "Bild_jaktskyttebanor", "Bild_massor", "AKTUALITET"];
+
+    // Skapa ett formulär med befintliga attribut som text och ett fält för föreslagna ändringar
+    for (let key in properties) {
+        if (excludedFields.includes(key)) {
+            continue; // Hoppa över fält som inte ska visas
+        }
+
+        const fieldContainer = document.createElement('div');
+        fieldContainer.style.marginBottom = '10px';
+
+        // Skapa etikett för fältet
+        const originalLabel = document.createElement('label');
+        originalLabel.innerHTML = `<strong>Fält:</strong> ${key}`;
+
+        // Skapa etikett och innehåll för befintlig text på samma rad
+        const originalValueLabel = document.createElement('label');
+        originalValueLabel.innerHTML = `<strong>Befintlig text:</strong> ${properties[key]}`;
+
+        // Skapa textfält för att föreslå ändring
+        const suggestionInput = document.createElement('textarea');
+        suggestionInput.name = key;
+        suggestionInput.placeholder = `Föreslå ändring av ${key} här...`;
+        suggestionInput.rows = 3;
+        suggestionInput.style.width = '100%';
+
+        // Lägg till etikett och inmatningsfält till det nya fältets container
+        fieldContainer.appendChild(originalLabel);
+        fieldContainer.appendChild(document.createElement('br')); // Radbrytning
+        fieldContainer.appendChild(originalValueLabel);
+        fieldContainer.appendChild(document.createElement('br')); // Radbrytning
+        fieldContainer.appendChild(suggestionInput);
+
+        // Lägg till det nya fältet till formulärcontainern
+        formContainer.appendChild(fieldContainer);
     }
 
     // Lägg till en knapp för att skicka in ändringsförslag
@@ -106,7 +135,7 @@ function openEditForm(properties) {
 
 function submitEditSuggestions(originalProperties) {
     const formContainer = document.getElementById('editFormContainer');
-    const inputs = formContainer.getElementsByTagName('input');
+    const inputs = formContainer.getElementsByTagName('textarea');
     let suggestions = {};
 
     // Samla in alla ändringsförslag från formuläret
@@ -114,14 +143,15 @@ function submitEditSuggestions(originalProperties) {
         const key = input.name;
         const newValue = input.value;
 
-        if (newValue !== originalProperties[key]) {
+        if (newValue.trim() !== "") {
             suggestions[key] = newValue;
         }
     }
 
-    console.log('Föreslagna ändringar:', suggestions);
+    // Fyll i de dolda fälten i formuläret
+    document.getElementById('originalDataInput').value = JSON.stringify(originalProperties);
+    document.getElementById('suggestionsDataInput').value = JSON.stringify(suggestions);
 
-    // Här kan du lägga till kod för att skicka ändringsförslagen till en server eller spara dem lokalt.
-    alert('Dina ändringsförslag har registrerats.');
-    formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
+    // Skicka formuläret
+    document.getElementById('editSuggestionForm').submit();
 }
