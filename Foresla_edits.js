@@ -214,7 +214,7 @@ function submitEditSuggestions(originalProperties) {
     }).then(response => {
         if (response.ok) {
             alert("Tack för ditt förslag!");
-            window.location.href = "/"; // Omdirigera till startsidan efter att användaren trycker på "OK"
+            window.location.href = "https://jaktkartan.github.io/Jaktkartan_upptack_objektskartan/"; // Omdirigera till startsidan efter att användaren trycker på "OK"
         } else {
             alert("Något gick fel, försök igen.");
         }
