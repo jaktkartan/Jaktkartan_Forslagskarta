@@ -148,10 +148,27 @@ function submitEditSuggestions(originalProperties) {
         }
     }
 
+    // Lägg till latitud och longitud till originalProperties
+    originalProperties.lat = map.getCenter().lat.toFixed(6);
+    originalProperties.lng = map.getCenter().lng.toFixed(6);
+
     // Fyll i de dolda fälten i formuläret
     document.getElementById('originalDataInput').value = JSON.stringify(originalProperties);
     document.getElementById('suggestionsDataInput').value = JSON.stringify(suggestions);
 
-    // Skicka formuläret
-    document.getElementById('editSuggestionForm').submit();
+    // Skicka formuläret utan omdirigering
+    fetch(document.getElementById('editSuggestionForm').action, {
+        method: "POST",
+        body: new FormData(document.getElementById('editSuggestionForm'))
+    }).then(response => {
+        if (response.ok) {
+            alert("Tack för ditt förslag!");
+            formContainer.style.display = 'none'; // Dölj formuläret efter inskick
+        } else {
+            alert("Något gick fel, försök igen.");
+        }
+    }).catch(error => {
+        console.error("Nätverksfel:", error);
+        alert("Ett nätverksfel uppstod. Försök igen senare.");
+    });
 }
