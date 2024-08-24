@@ -214,7 +214,7 @@ function submitEditSuggestions(originalProperties) {
     }).then(response => {
         if (response.ok) {
             alert("Tack för ditt förslag!");
-            formContainer.style.display = 'none'; // Dölj formuläret efter inskick
+            window.location.href = "/"; // Omdirigera till startsidan efter att användaren trycker på "OK"
         } else {
             alert("Något gick fel, försök igen.");
         }
