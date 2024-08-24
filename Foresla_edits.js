@@ -95,10 +95,10 @@ function openEditForm(properties) {
         fieldContainer.style.marginBottom = '10px';
 
         const originalLabel = document.createElement('label');
-        originalLabel.textContent = `Fält: ${key}`;
+        originalLabel.innerHTML = `<strong>Fält:</strong> ${key}`;
 
         const originalValueLabel = document.createElement('label');
-        originalValueLabel.textContent = 'Befintlig text:';
+        originalValueLabel.innerHTML = `<strong>Befintlig text:</strong>`;
 
         const originalValue = document.createElement('p');
         originalValue.textContent = properties[key];
@@ -115,6 +115,7 @@ function openEditForm(properties) {
 
         // Lägg till originaldata och inmatningsfält till det nya fältets container
         fieldContainer.appendChild(originalLabel);
+        fieldContainer.appendChild(document.createElement('br')); // Radbrytning
         fieldContainer.appendChild(originalValueLabel);
         fieldContainer.appendChild(originalValue);
         fieldContainer.appendChild(suggestionLabel);
@@ -123,6 +124,19 @@ function openEditForm(properties) {
         // Lägg till det nya fältet till formulärcontainern
         formContainer.appendChild(fieldContainer);
     }
+
+    // Lägg till en knapp för att skicka in ändringsförslag
+    const submitButton = document.createElement('button');
+    submitButton.textContent = 'Föreslå ändringar';
+    submitButton.onclick = function() {
+        submitEditSuggestions(properties);
+    };
+
+    formContainer.appendChild(submitButton);
+
+    // Visa formuläret
+    formContainer.style.display = 'block';
+}
 
     // Lägg till en knapp för att skicka in ändringsförslag
     const submitButton = document.createElement('button');
