@@ -126,6 +126,14 @@ function openEditForm(properties, latlng) {
         formContainer.appendChild(fieldContainer);
     }
 
+    // Lägg till en knapp för att föreslå ny position
+    const changePositionButton = document.createElement('button');
+    changePositionButton.textContent = 'Ändra objektets position';
+    changePositionButton.onclick = function() {
+        enablePositionChange(properties);
+    };
+    formContainer.appendChild(changePositionButton);
+
     // Lägg till en knapp för att skicka in ändringsförslag
     const submitButton = document.createElement('button');
     submitButton.textContent = 'Föreslå ändringar';
@@ -137,6 +145,27 @@ function openEditForm(properties, latlng) {
 
     // Visa formuläret
     formContainer.style.display = 'block';
+}
+
+function enablePositionChange(properties) {
+    alert('Välj en ny position genom att klicka på kartan.');
+    
+    // Låt användaren klicka på kartan för att välja ny position
+    map.once('click', function(event) {
+        const newLatLng = event.latlng;
+
+        // Uppdatera properties med den nya positionen
+        properties.newLat = newLatLng.lat.toFixed(6);
+        properties.newLng = newLatLng.lng.toFixed(6);
+
+        // Placera en ny markör på den valda platsen för visuell feedback
+        if (properties.tempMarker) {
+            map.removeLayer(properties.tempMarker);
+        }
+        properties.tempMarker = L.marker(newLatLng).addTo(map);
+
+        alert(`Ny position vald: ${newLatLng.lat.toFixed(6)}, ${newLatLng.lng.toFixed(6)}`);
+    });
 }
 
 function submitEditSuggestions(originalProperties) {
