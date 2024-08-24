@@ -59,7 +59,7 @@ function handleSuggestChanges() {
 
                         // Lägg till en popup med attribut och ett formulär för att föreslå ändringar
                         marker.on('click', function() {
-                            openEditForm(feature.properties);
+                            openEditForm(feature.properties, latlng);
                         });
 
                         return marker;
@@ -70,7 +70,13 @@ function handleSuggestChanges() {
     }
 }
 
-function openEditForm(properties) {
+function openEditForm(properties, latlng) {
+    // Lägg till latitud och longitud till properties om de inte redan finns
+    if (!properties.lat || !properties.lng) {
+        properties.lat = latlng.lat.toFixed(6);
+        properties.lng = latlng.lng.toFixed(6);
+    }
+
     // Rensa eventuell tidigare inmatning i formuläret
     const formContainer = document.getElementById('editFormContainer');
     formContainer.innerHTML = '';
@@ -147,10 +153,6 @@ function submitEditSuggestions(originalProperties) {
             suggestions[key] = newValue;
         }
     }
-
-    // Lägg till latitud och longitud till originalProperties
-    originalProperties.lat = map.getCenter().lat.toFixed(6);
-    originalProperties.lng = map.getCenter().lng.toFixed(6);
 
     // Fyll i de dolda fälten i formuläret
     document.getElementById('originalDataInput').value = JSON.stringify(originalProperties);
