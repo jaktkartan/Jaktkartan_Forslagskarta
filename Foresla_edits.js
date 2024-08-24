@@ -79,6 +79,9 @@ function openEditForm(properties) {
     formContainer.style.maxHeight = '70vh';
     formContainer.style.overflowY = 'auto';
 
+    // Flytta formuläret längre ned på sidan
+    formContainer.style.marginTop = '50px';
+
     // Lista över fält som ska exkluderas från redigering
     const excludedFields = ["Bild_jaktkort", "id", "Bild_jaktskyttebanor", "Bild_massor", "AKTUALITET"];
 
@@ -92,11 +95,13 @@ function openEditForm(properties) {
         fieldContainer.style.marginBottom = '10px';
 
         const originalLabel = document.createElement('label');
-        originalLabel.textContent = key;
+        originalLabel.textContent = `Fält: ${key}`;
+
+        const originalValueLabel = document.createElement('label');
+        originalValueLabel.textContent = 'Befintlig text:';
 
         const originalValue = document.createElement('p');
         originalValue.textContent = properties[key];
-        originalValue.style.fontWeight = 'bold';
         originalValue.style.marginBottom = '5px';
 
         const suggestionLabel = document.createElement('label');
@@ -104,12 +109,13 @@ function openEditForm(properties) {
 
         const suggestionInput = document.createElement('textarea');
         suggestionInput.name = key;
-        suggestionInput.placeholder = 'Föreslagen ändring här...';
+        suggestionInput.placeholder = 'Föreslå ändring av befintlig text här...';
         suggestionInput.rows = 3;
         suggestionInput.style.width = '100%';
 
         // Lägg till originaldata och inmatningsfält till det nya fältets container
         fieldContainer.appendChild(originalLabel);
+        fieldContainer.appendChild(originalValueLabel);
         fieldContainer.appendChild(originalValue);
         fieldContainer.appendChild(suggestionLabel);
         fieldContainer.appendChild(suggestionInput);
