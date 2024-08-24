@@ -23,7 +23,6 @@
         <button onclick="showNewObjectMenu()">Föreslå nytt objekt i jaktkartan!</button>
         <button onclick="showAdvertiseMenu()">Annonsera din jaktrelaterade kurs!</button>
         <button onclick="handleSuggestChanges()">Föreslå ändringar i befintligt objekt</button>
-
     </div>
 
     <!-- Meny för nya objekt -->
@@ -73,7 +72,7 @@
             Lägg till objekt
         </h3>
 
-        <form id="suggestionForm" action="https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec" method="POST">
+        <form id="suggestionForm" action="https://script.google.com/macros/s/YOUR_NEW_OBJECT_SCRIPT_URL/exec" method="POST">
             <input type="hidden" name="typ" id="categoryInput">
             <input type="hidden" name="latitud" id="latitudeInput">
             <input type="hidden" name="longitud" id="longitudeInput">
@@ -113,6 +112,10 @@
     </div>
     
     <script src="script.js"></script>
-    <script src="Foresla_edits.js"></script> <!-- Se till att rätt JavaScript-fil laddas -->
+    <script>
+        // URL till Google Apps Script för redigeringar
+        const editScriptUrl = "https://script.google.com/macros/s/YOUR_EDIT_OBJECT_SCRIPT_URL/exec";
+    </script>
+    <script src="Foresla_edits.js"></script> <!-- Länk till JavaScript-filen som hanterar redigeringar -->
 </body>
 </html>
