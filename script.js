@@ -158,18 +158,26 @@ function addObject() {
 
 function submitEdit() {
     // Samla in data från formuläret i editFormContainer
-    var editedData = {
-        name: document.getElementById('editNameInput').value,
-        url: document.getElementById('editUrlInput').value,
-        category: document.getElementById('editCategoryInput').value,
-        // Lägg till andra relevanta fält här
-    };
+    var formData = new FormData();
+    formData.append('id', document.getElementById('editObjectId').value);
+    formData.append('namn', document.getElementById('editNameInput').value);
+    formData.append('url', document.getElementById('editUrlInput').value);
+    formData.append('typ', document.getElementById('editCategoryInput').value);
+    formData.append('info', document.getElementById('editInfoInput').value);
 
-    // Skicka den redigerade datan till servern eller hantera den på ett liknande sätt som vid "Lägg till"
-    alert("Dina ändringar har skickats in: " + JSON.stringify(editedData));
-
-    // Dölja formuläret efter inskick
-    document.getElementById('editFormContainer').style.display = 'none';
+    fetch('DIN_WEB_APP_URL', {
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.ok) {
+            alert("Ändringarna har skickats in!");
+            document.getElementById('editFormContainer').style.display = 'none';
+        } else {
+            alert("Fel vid inskickning av ändringar.");
+        }
+    }).catch(error => {
+        console.error("Nätverksfel vid inskickning av ändringar", error);
+    });
 }
 
 // Koppla funktionen till en knapp i editFormContainer
@@ -351,3 +359,27 @@ window.onload = function() {
     document.getElementById('mainSelection').style.display = 'block';
     updateSubmitButton();
 };
+
+function loadExistingObjects() {
+    fetch('/path/to/your/objects') // Anpassa med den faktiska URL:en för dina objekt
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(object => {
+                var marker = L.marker([object.latitud, object.longitud]).addTo(map);
+                marker.on('click', () => {
+                    openEditForm(object);
+                });
+            });
+        });
+}
+
+function openEditForm(object) {
+    document.getElementById('editObjectId').value = object.id;
+    document.getElementById('editNameInput').value = object.namn;
+    document.getElementById('editUrlInput').value = object.url;
+    document.getElementById('editCategoryInput').value = object.typ; // Om du har typ som kategori
+    document.getElementById('editInfoInput').value = object.info;
+
+    // Visa redigeringsformuläret
+    document.getElementById('editFormContainer').style.display = 'block';
+}
