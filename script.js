@@ -152,8 +152,38 @@ function addObject() {
     updateSubmitButton();
 }
 
+function removeObject(index, button) {
+    // Ta bort markören från kartan
+    if (markers[index]) {
+        map.removeLayer(markers[index]);
+        markers.splice(index, 1); // Ta bort markören från markers arrayen
+    }
+
+    // Ta bort objektet från addedObjects arrayen
+    addedObjects.splice(index, 1);
+
+    // Ta bort objektet från DOM
+    var objectTab = button.closest('.object-tab');
+    objectTab.remove();
+
+    updateSubmitButton(); // Uppdatera knappen efter att ett objekt tagits bort
+}
+
+function updateSubmitButton() {
+    var submitButton = document.getElementById('submitBtn');
+    var addedObjectsList = document.getElementById('addedObjectsList');
+
+    if (addedObjectsList.children.length > 0) {
+        submitButton.disabled = false;  // Aktivera knappen
+        submitButton.style.display = 'block';  // Visa knappen
+    } else {
+        submitButton.disabled = true;  // Inaktivera knappen
+        submitButton.style.display = 'none';  // Dölj knappen om inga objekt finns
+    }
+}
+
 document.getElementById('submitBtn').onclick = function() {
-    if (confirm("Är du säker på att du vill skicka objekten?")) {
+    if (!this.disabled && confirm("Är du säker på att du vill skicka objekten?")) {
         addedObjects.forEach(function(object) {
             var formData = new FormData();
             formData.append('typ', object.category);
@@ -223,19 +253,6 @@ function cancelAndRemove() {
 
     // Visa "Lägg till fler objekt"-knappen
     document.getElementById('addMoreBtn').style.display = 'block';
-}
-
-function updateSubmitButton() {
-    var submitButton = document.getElementById('submitBtn');
-    var addedObjectsList = document.getElementById('addedObjectsList');
-
-    if (addedObjectsList.children.length > 0) {
-        submitButton.disabled = false;  // Aktivera knappen
-        submitButton.style.display = 'block';  // Se till att knappen alltid visas
-    } else {
-        submitButton.disabled = true;  // Inaktivera knappen om inga objekt finns
-        submitButton.style.display = 'block';  // Se till att knappen alltid är synlig, även om den är inaktiverad
-    }
 }
 
 function toggleObjectDetails(detailsElement) {
