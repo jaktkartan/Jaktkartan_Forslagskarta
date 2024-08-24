@@ -1,3 +1,5 @@
+const webAppUrl = 'https://script.google.com/macros/s/AKfycby4rNJwH4iyxze3ZkhMeRIOet-jxAW2ElQeXUrZX9eB6OCsuaWXHxnALlejDck7kNu88g/exec';
+
 var map = L.map('map', {
     scrollWheelZoom: true,
     zoomControl: true
@@ -30,10 +32,6 @@ function showAdvertiseMenu() {
     document.getElementById('advertiseMenu').style.display = 'block';
     currentMenu = 'advertise';
     isCourseMode = true; // Aktivera kursläget
-}
-
-function suggestEdit() {
-    alert("Funktion för att föreslå ändring är inte implementerad ännu.");
 }
 
 function selectType(type, iconSrc) {
@@ -165,7 +163,7 @@ function submitEdit() {
     formData.append('typ', document.getElementById('editCategoryInput').value);
     formData.append('info', document.getElementById('editInfoInput').value);
 
-    fetch('DIN_WEB_APP_URL', {
+    fetch(webAppUrl, {  // Använd centraliserad URL-variabel
         method: 'POST',
         body: formData
     }).then(response => {
@@ -323,7 +321,7 @@ document.getElementById('suggestionForm').onsubmit = function(event) {
             formData.append('latitud', object.lat);
             formData.append('longitud', object.lng);
 
-            fetch(document.getElementById('suggestionForm').action, {
+            fetch(webAppUrl, {  // Använd centraliserad URL-variabel
                 method: "POST",
                 body: formData,
             }).then(response => {
@@ -359,27 +357,3 @@ window.onload = function() {
     document.getElementById('mainSelection').style.display = 'block';
     updateSubmitButton();
 };
-
-function loadExistingObjects() {
-    fetch('/path/to/your/objects') // Anpassa med den faktiska URL:en för dina objekt
-        .then(response => response.json())
-        .then(data => {
-            data.forEach(object => {
-                var marker = L.marker([object.latitud, object.longitud]).addTo(map);
-                marker.on('click', () => {
-                    openEditForm(object);
-                });
-            });
-        });
-}
-
-function openEditForm(object) {
-    document.getElementById('editObjectId').value = object.id;
-    document.getElementById('editNameInput').value = object.namn;
-    document.getElementById('editUrlInput').value = object.url;
-    document.getElementById('editCategoryInput').value = object.typ; // Om du har typ som kategori
-    document.getElementById('editInfoInput').value = object.info;
-
-    // Visa redigeringsformuläret
-    document.getElementById('editFormContainer').style.display = 'block';
-}
