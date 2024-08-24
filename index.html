@@ -43,6 +43,8 @@
                 <span>Mässa</span>
             </div>
         </div>
+        <!-- Ny knapp för att gå tillbaka till startmenyn -->
+        <button onclick="showMainMenu()">Tillbaka till startmenyn</button>
     </div>
 
     <!-- Meny för annonsering -->
@@ -108,11 +110,11 @@
         <button onclick="goToJaktkartan()">Till Jaktkartan.se</button>
     </div>
 
-        <!-- Formulär för redigering av objekt -->
+    <!-- Formulär för redigering av objekt -->
     <div id="editFormContainer" style="display:none; padding: 10px; background-color: white; position: absolute; top: 20%; left: 50%; transform: translate(-50%, -20%); z-index: 1000; border: 1px solid #ccc;">
     </div>
     
-        <!-- Formulär för att skicka redigeringsförslag på befintliga objekt -->
+    <!-- Formulär för att skicka redigeringsförslag på befintliga objekt -->
     <form id="editSuggestionForm" action="https://script.google.com/macros/s/AKfycbwb5aXQlw4tNJzVSVFW2lYKrAz4q_p088BVhhzYFjHDIgThbGycfZ_6mjOei_Go5x9Zxg/exec" method="POST" style="display:none;">
         <input type="hidden" name="originalData" id="originalDataInput">
         <input type="hidden" name="suggestionsData" id="suggestionsDataInput">
