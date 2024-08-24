@@ -94,31 +94,26 @@ function openEditForm(properties) {
         const fieldContainer = document.createElement('div');
         fieldContainer.style.marginBottom = '10px';
 
+        // Skapa etikett för fältet
         const originalLabel = document.createElement('label');
         originalLabel.innerHTML = `<strong>Fält:</strong> ${key}`;
 
+        // Skapa etikett och innehåll för befintlig text på samma rad
         const originalValueLabel = document.createElement('label');
-        originalValueLabel.innerHTML = `<strong>Befintlig text:</strong>`;
+        originalValueLabel.innerHTML = `<strong>Befintlig text:</strong> ${properties[key]}`;
 
-        const originalValue = document.createElement('p');
-        originalValue.textContent = properties[key];
-        originalValue.style.marginBottom = '5px';
-
-        const suggestionLabel = document.createElement('label');
-        suggestionLabel.textContent = `Föreslå ändring för ${key}:`;
-
+        // Skapa textfält för att föreslå ändring
         const suggestionInput = document.createElement('textarea');
         suggestionInput.name = key;
-        suggestionInput.placeholder = 'Föreslå ändring av befintlig text här...';
+        suggestionInput.placeholder = `Föreslå ändring av ${key} här...`;
         suggestionInput.rows = 3;
         suggestionInput.style.width = '100%';
 
-        // Lägg till originaldata och inmatningsfält till det nya fältets container
+        // Lägg till etikett och inmatningsfält till det nya fältets container
         fieldContainer.appendChild(originalLabel);
         fieldContainer.appendChild(document.createElement('br')); // Radbrytning
         fieldContainer.appendChild(originalValueLabel);
-        fieldContainer.appendChild(originalValue);
-        fieldContainer.appendChild(suggestionLabel);
+        fieldContainer.appendChild(document.createElement('br')); // Radbrytning
         fieldContainer.appendChild(suggestionInput);
 
         // Lägg till det nya fältet till formulärcontainern
