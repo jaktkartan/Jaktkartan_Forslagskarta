@@ -79,8 +79,15 @@ function openEditForm(properties) {
     formContainer.style.maxHeight = '70vh';
     formContainer.style.overflowY = 'auto';
 
+    // Lista över fält som ska exkluderas från redigering
+    const excludedFields = ["Bild_jaktkort", "id", "Bild_jaktskyttebanor", "Bild_massor", "AKTUALITET"];
+
     // Skapa ett formulär med befintliga attribut som text och ett fält för föreslagna ändringar
     for (let key in properties) {
+        if (excludedFields.includes(key)) {
+            continue; // Hoppa över fält som inte ska visas
+        }
+
         const fieldContainer = document.createElement('div');
         fieldContainer.style.marginBottom = '10px';
 
