@@ -136,7 +136,7 @@ function openEditForm(properties, latlng) {
 
     // Lägg till en knapp för att skicka in ändringsförslag
     const submitButton = document.createElement('button');
-    submitButton.textContent = 'Föreslå ändringar';
+    submitButton.textContent = 'Skicka föreslagen ändring';
     submitButton.onclick = function() {
         submitEditSuggestions(properties);
     };
