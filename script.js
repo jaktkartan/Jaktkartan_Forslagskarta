@@ -143,9 +143,10 @@ function addObject() {
     // Kollapsa inmatningsfälten
     collapseInputContainer();
 
-    // Visa "Lägg till fler objekt"-knappen
+    // Visa "Lägg till fler objekt"-knappen och "Skicka objekt"-knappen
     document.getElementById('addMoreBtn').style.display = 'block';
     document.getElementById('submitBtn').style.display = 'block';
+    document.getElementById('submitBtn').disabled = false;
     document.getElementById('addObjectBtn').style.display = 'none';
     document.getElementById('cancelBtn').style.display = 'none';
 
