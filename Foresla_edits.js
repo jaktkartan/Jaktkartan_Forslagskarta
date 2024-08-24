@@ -1,8 +1,5 @@
 // Foresla_edits.js
 
-// Definiera Web App URL på ett ställe
-const webAppUrl = 'https://script.google.com/macros/s/AKfycbyxJ8FVb_D34OWxGyPDj3Jn9xgiNremnHEqBRBxlapdyhvMhShbn_ZwdL-kLMLaE7Jnpw/exec';  // Ersätt med din faktiska Web App URL
-
 function handleSuggestChanges() {
     // Dölj startrutan
     document.getElementById('mainSelection').style.display = 'none';
@@ -132,7 +129,7 @@ function submitEditSuggestions(originalProperties) {
     formData.append('id', originalProperties['id']);  // Om det finns ett ID, skicka det också
 
     // Skicka ändringsförslagen till Google Apps Script Web App
-    fetch(webAppUrl, {  // Använd centraliserad URL-variabel
+    fetch(editObjectWebAppUrl, {  // Använd URL för att skicka ändringsförslag
         method: 'POST',
         body: formData
     })
