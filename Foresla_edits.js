@@ -1,3 +1,5 @@
+// Foresla_edits.js
+
 function handleSuggestChanges() {
     // Dölj startrutan
     document.getElementById('mainSelection').style.display = 'none';
@@ -64,7 +66,7 @@ function handleSuggestChanges() {
 
                         return marker;
                     }
-                }).addTo(map);
+                }).addTo(map);  // 'map' antas vara den globala Leaflet-kartan definierad i din script.js
             })
             .catch(error => console.error('Fel vid laddning av GeoJSON-fil:', error));
     }
@@ -119,24 +121,7 @@ function submitEditSuggestions(originalProperties) {
 
     console.log('Föreslagna ändringar:', suggestions);
 
-    let formData = new FormData();
-    for (let key in suggestions) {
-        formData.append(key, suggestions[key]);
-    }
-    formData.append('id', originalProperties['id']);  // Om det finns ett ID, skicka det också
-
-    fetch(editObjectWebAppUrl, {  // Använd URL för att skicka ändringsförslag
-        method: 'POST',
-        body: formData
-    })
-    .then(response => response.text())
-    .then(result => {
-        console.log('Resultat från servern:', result);
-        alert('Dina ändringsförslag har skickats.');
-        formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
-    })
-    .catch(error => {
-        console.error('Fel vid skickning av ändringsförslag:', error);
-        alert('Ett fel uppstod vid skickning av dina ändringsförslag.');
-    });
+    // Här kan du lägga till kod för att skicka ändringsförslagen till en server eller spara dem lokalt.
+    alert('Dina ändringsförslag har registrerats.');
+    formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
 }

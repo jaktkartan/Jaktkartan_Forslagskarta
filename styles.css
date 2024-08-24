@@ -284,23 +284,3 @@ button {
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
-#editFormContainer {
-    display: none; /* Dölja elementet vid start */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: white;
-    border: 2px solid #444;
-    padding: 20px;
-    z-index: 10000;
-    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.5);
-    border-radius: 10px;
-    width: 80%;
-    max-width: 500px;
-}
-
-#editFormContainer h3 {
-    margin-top: 0;
-}
