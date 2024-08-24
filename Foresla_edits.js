@@ -154,7 +154,7 @@ function submitEditSuggestions(originalProperties) {
         suggestions: suggestions
     };
 
-    fetch('https://script.google.com/macros/s/AKfycbyxJ8FVb_D34OWxGyPDj3Jn9xgiNremnHEqBRBxlapdyhvMhShbn_ZwdL-kLMLaE7Jnpw/exec', {
+    fetch(editScriptUrl, {  // Använder den globala variabeln från index.html
         method: 'POST',
         mode: 'no-cors', // Observera att vi använder no-cors eftersom vi inte förväntar oss ett svar från Google Apps Script.
         headers: {
