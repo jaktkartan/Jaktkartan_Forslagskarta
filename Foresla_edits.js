@@ -89,7 +89,7 @@ function openEditForm(properties, latlng) {
     formContainer.style.marginTop = '50px';
 
     // Lista över fält som ska exkluderas från redigering
-    const excludedFields = ["Bild_jaktkort", "id", "Bild_jaktskyttebanor", "Bild_massor", "AKTUALITET"];
+    const excludedFields = ["Bild_jaktkort", "id", "Bild_jaktskyttebanor", "Bild_massor", "AKTUALITET", "lat", "lng"];
 
     // Skapa ett formulär med befintliga attribut som text och ett fält för föreslagna ändringar
     for (let key in properties) {
@@ -130,7 +130,7 @@ function openEditForm(properties, latlng) {
     const changePositionButton = document.createElement('button');
     changePositionButton.textContent = 'Ändra objektets position';
     changePositionButton.onclick = function() {
-        enablePositionChange(properties);
+        hideFormAndEnablePositionChange(properties, formContainer);
     };
     formContainer.appendChild(changePositionButton);
 
@@ -147,7 +147,10 @@ function openEditForm(properties, latlng) {
     formContainer.style.display = 'block';
 }
 
-function enablePositionChange(properties) {
+function hideFormAndEnablePositionChange(properties, formContainer) {
+    // Dölj formuläret
+    formContainer.style.display = 'none';
+
     alert('Välj en ny position genom att klicka på kartan.');
     
     // Låt användaren klicka på kartan för att välja ny position
@@ -165,6 +168,9 @@ function enablePositionChange(properties) {
         properties.tempMarker = L.marker(newLatLng).addTo(map);
 
         alert(`Ny position vald: ${newLatLng.lat.toFixed(6)}, ${newLatLng.lng.toFixed(6)}`);
+
+        // Visa formuläret igen
+        formContainer.style.display = 'block';
     });
 }
 
