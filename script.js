@@ -34,7 +34,7 @@ function showAdvertiseMenu() {
 
 function selectType(type, iconSrc) {
     clearFormData();
-    closeAllObjectDetails();
+    closeAllObjectDetails();  // Funktion kallas här
     selectedIconSrc = iconSrc;
     document.getElementById('categoryInput').value = type;
     document.getElementById('formTitle').innerText = 'Lägg till ' + type;
@@ -254,6 +254,27 @@ function hideAllMenus() {
     document.getElementById('advertiseMenu').style.display = 'none';
     document.getElementById('inputForm').style.display = 'none';
     document.getElementById('thankYouMessage').style.display = 'none';
+}
+
+// Lägg till de saknade funktionerna
+
+function closeAllObjectDetails() {
+    var detailsElements = document.querySelectorAll('.object-details');
+    detailsElements.forEach(function(details) {
+        details.style.display = 'none';
+    });
+}
+
+function updateSubmitButton() {
+    var submitButton = document.getElementById('submitBtn');
+    var addedObjectsList = document.getElementById('addedObjectsList');
+
+    if (addedObjectsList.children.length > 0) {
+        submitButton.disabled = false;
+    } else {
+        submitButton.disabled = true;
+        submitButton.style.display = 'none';
+    }
 }
 
 window.onload = function() {
