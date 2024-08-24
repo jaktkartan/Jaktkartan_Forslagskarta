@@ -152,46 +152,41 @@ function addObject() {
     updateSubmitButton();
 }
 
-document.getElementById('submitBtn').onclick = function() {
-    if (confirm("Är du säker på att du vill skicka objekten?")) {
-        addedObjects.forEach(function(object) {
-            var formData = new FormData();
-            formData.append('typ', object.category);
-            formData.append('namn', object.name);
-            formData.append('url', object.url);
-            formData.append('info', object.info);
-            formData.append('latitud', object.lat);
-            formData.append('longitud', object.lng);
+function submitEdit() {
+    // Samla in data från formuläret i editFormContainer
+    var formData = new FormData();
+    formData.append('id', document.getElementById('editObjectId').value);
+    formData.append('namn', document.getElementById('editNameInput').value);
+    formData.append('url', document.getElementById('editUrlInput').value);
+    formData.append('typ', document.getElementById('editCategoryInput').value);
+    formData.append('info', document.getElementById('editInfoInput').value);
 
-            fetch(newObjectWebAppUrl, {  // Använd URL för att skicka nya objekt
-                method: "POST",
-                body: formData,
-            }).then(response => {
-                if (response.ok) {
-                    console.log("Objekt skickades: ", object.name);
-                } else {
-                    console.error("Fel vid skickning av objekt: ", object.name);
-                }
-            }).catch(error => {
-                console.error("Nätverksfel vid skickning av objekt: ", object.name, error);
-            });
-        });
+    fetch(editObjectWebAppUrl, {  // Använd URL för att skicka ändringar
+        method: 'POST',
+        body: formData
+    }).then(response => {
+        if (response.ok) {
+            alert("Ändringarna har skickats in!");
+            document.getElementById('editFormContainer').style.display = 'none';
+        } else {
+            alert("Fel vid inskickning av ändringar.");
+        }
+    }).catch(error => {
+        console.error("Nätverksfel vid inskickning av ändringar", error);
+    });
+}
 
-        showThankYouMessage();
+// Koppla funktionen till en knapp i editFormContainer
+document.getElementById('editSubmitButton').addEventListener('click', submitEdit);
+
+function showInputFields() {
+    // Om kursläge är aktiverat, hoppa direkt till kursalternativet
+    if (isCourseMode) {
+        selectType('Kurs', 'bilder/kurser_ikon.png');
+    } else {
+        hideAllMenus();
+        document.getElementById('newObjectMenu').style.display = 'block';
     }
-};
-
-function showThankYouMessage() {
-    hideAllMenus();
-    document.getElementById('thankYouMessage').style.display = 'block';
-}
-
-function addNewSuggestion() {
-    location.reload();
-}
-
-function goToJaktkartan() {
-    window.location.href = 'https://www.jaktkartan.se';
 }
 
 function collapseInputContainer() {
@@ -256,13 +251,35 @@ function hideAllMenus() {
     document.getElementById('thankYouMessage').style.display = 'none';
 }
 
-// Lägg till de saknade funktionerna
+function cancelAndRemove() {
+    if (lastMarker) {
+        map.removeLayer(lastMarker); // Ta bort den senaste markören
+        markers.pop(); // Ta bort markören från markers arrayen
+        lastMarker = null;
+    }
 
-function closeAllObjectDetails() {
-    var detailsElements = document.querySelectorAll('.object-details');
-    detailsElements.forEach(function(details) {
-        details.style.display = 'none';
-    });
+    clearFormData(); // Rensa inmatningsfälten
+
+    // Kontrollera om elementet med id 'formTitle' och 'formIcon' existerar innan du ändrar dem
+    var formTitle = document.getElementById('formTitle');
+    var formIcon = document.getElementById('formIcon');
+
+    if (formTitle) {
+        formTitle.innerText = 'Lägg till menyn'; // Uppdatera rubriken till "Lägg till menyn"
+    }
+    if (formIcon) {
+        formIcon.src = ''; // Ta bort ikonen om det finns en
+    }
+
+    // Kollapsa inmatningsfälten
+    collapseInputContainer();
+
+    // Dölj både "Lägg till" och "Avbryt"-knapparna
+    document.getElementById('addObjectBtn').style.display = 'none';
+    document.getElementById('cancelBtn').style.display = 'none';
+
+    // Visa "Lägg till fler objekt"-knappen
+    document.getElementById('addMoreBtn').style.display = 'block';
 }
 
 function updateSubmitButton() {
@@ -275,6 +292,13 @@ function updateSubmitButton() {
         submitButton.disabled = true;
         submitButton.style.display = 'none';
     }
+}
+
+function closeAllObjectDetails() {
+    var detailsElements = document.querySelectorAll('.object-details');
+    detailsElements.forEach(function(details) {
+        details.style.display = 'none';
+    });
 }
 
 window.onload = function() {
