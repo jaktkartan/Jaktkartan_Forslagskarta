@@ -189,8 +189,22 @@ function submitEditSuggestions(originalProperties) {
         }
     }
 
+    // Lägg till latitud och longitud till originalProperties om de finns
+    let extractedData = {};
+    for (let key in originalProperties) {
+        if (originalProperties.hasOwnProperty(key) && typeof originalProperties[key] !== 'object') {
+            extractedData[key] = originalProperties[key];
+        }
+    }
+
+    // Inkludera latitud och longitud om de är nödvändiga
+    if (originalProperties.lat) extractedData.lat = originalProperties.lat;
+    if (originalProperties.lng) extractedData.lng = originalProperties.lng;
+    if (suggestions.newLat) extractedData.newLat = suggestions.newLat;
+    if (suggestions.newLng) extractedData.newLng = suggestions.newLng;
+
     // Fyll i de dolda fälten i formuläret
-    document.getElementById('originalDataInput').value = JSON.stringify(originalProperties);
+    document.getElementById('originalDataInput').value = JSON.stringify(extractedData);
     document.getElementById('suggestionsDataInput').value = JSON.stringify(suggestions);
 
     // Skicka formuläret utan omdirigering
@@ -199,10 +213,8 @@ function submitEditSuggestions(originalProperties) {
         body: new FormData(document.getElementById('editSuggestionForm'))
     }).then(response => {
         if (response.ok) {
-            // Visa tack-meddelande och dirigera om till startsidan vid OK
-            if (confirm("Tack för ditt förslag!")) {
-                window.location.href = "/"; // Ändra till din startsida om det inte är "/"
-            }
+            alert("Tack för ditt förslag!");
+            formContainer.style.display = 'none'; // Dölj formuläret efter inskick
         } else {
             alert("Något gick fel, försök igen.");
         }
