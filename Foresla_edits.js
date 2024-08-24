@@ -79,16 +79,24 @@ function openEditForm(properties) {
 
     // Skapa ett formulär med befintliga attribut som textfält
     for (let key in properties) {
+        const fieldContainer = document.createElement('div');
+        fieldContainer.style.marginBottom = '10px';
+
         const label = document.createElement('label');
         label.textContent = key;
+
         const input = document.createElement('input');
         input.type = 'text';
         input.name = key;
         input.value = properties[key]; // Fyll fältet med befintligt värde
+        input.placeholder = 'Föreslagen ändring'; // Lägg till "Föreslagen ändring" som placeholder
 
-        // Lägg till etikett och inmatningsfält till formuläret
-        formContainer.appendChild(label);
-        formContainer.appendChild(input);
+        // Lägg till etikett och inmatningsfält till det nya fältets container
+        fieldContainer.appendChild(label);
+        fieldContainer.appendChild(input);
+
+        // Lägg till det nya fältet till formulärcontainern
+        formContainer.appendChild(fieldContainer);
     }
 
     // Lägg till en knapp för att skicka in ändringsförslag
@@ -125,3 +133,4 @@ function submitEditSuggestions(originalProperties) {
     alert('Dina ändringsförslag har registrerats.');
     formContainer.style.display = 'none'; // Dölj formuläret efter att det skickats
 }
+
