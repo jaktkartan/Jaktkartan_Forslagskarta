@@ -1,5 +1,3 @@
-// Foresla_edits.js
-
 function handleSuggestChanges() {
     // Dölj startrutan
     document.getElementById('mainSelection').style.display = 'none';
@@ -77,13 +75,17 @@ function openEditForm(properties) {
     const formContainer = document.getElementById('editFormContainer');
     formContainer.innerHTML = '';
 
+    // Begränsa höjden till 70 % av skärmhöjden och gör den skrollbar vid behov
+    formContainer.style.maxHeight = '70vh';
+    formContainer.style.overflowY = 'auto';
+
     // Skapa ett formulär med befintliga attribut som text och ett fält för föreslagna ändringar
     for (let key in properties) {
         const fieldContainer = document.createElement('div');
         fieldContainer.style.marginBottom = '10px';
 
         const originalLabel = document.createElement('label');
-        originalLabel.textContent = `Original ${key}:`;
+        originalLabel.textContent = key;
 
         const originalValue = document.createElement('p');
         originalValue.textContent = properties[key];
