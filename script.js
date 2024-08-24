@@ -163,7 +163,7 @@ document.getElementById('submitBtn').onclick = function() {
             formData.append('latitud', object.lat);
             formData.append('longitud', object.lng);
 
-            fetch(newObjectWebAppUrl, {  // Använd URL för att skicka nya objekt
+            fetch(newObjectWebAppUrl, {
                 method: "POST",
                 body: formData,
             }).then(response => {
@@ -230,10 +230,11 @@ function updateSubmitButton() {
     var addedObjectsList = document.getElementById('addedObjectsList');
 
     if (addedObjectsList.children.length > 0) {
-        submitButton.disabled = false;
+        submitButton.disabled = false;  // Aktivera knappen
+        submitButton.style.display = 'block';  // Se till att knappen alltid visas
     } else {
-        submitButton.disabled = true;
-        submitButton.style.display = 'none';
+        submitButton.disabled = true;  // Inaktivera knappen om inga objekt finns
+        submitButton.style.display = 'block';  // Se till att knappen alltid är synlig, även om den är inaktiverad
     }
 }
 
